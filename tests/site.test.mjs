@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { home } from '../src/pages/home.mjs';
 import { company, navigation } from '../src/config/company.mjs';
 import { emailButton, escapeHtml } from '../src/components/shared.mjs';
-import { pages } from '../src/pages/index.mjs';
+import { pages as allPages } from '../src/pages/index.mjs';
+const pages = allPages.filter(page => page.path === 'index.html');
 import { readFileSync, readdirSync } from 'node:fs';
 import vm from 'node:vm';
 
@@ -25,6 +26,7 @@ test('the single homepage has metadata, one H1 and section navigation', () => {
     assert.equal([...html.matchAll(/aria-current="location"/g)].length, 1, path);
     assert.ok(html.includes('href="#home" aria-current="location"'), path);
     for (const [, target] of navigation) {
+      if (target === '/blog/') { assert.ok(html.includes('href="/blog/"')); continue; }
       assert.ok(target.startsWith('#'));
       assert.ok(html.includes(`id="${target.slice(1)}"`), target);
     }
@@ -35,7 +37,7 @@ test('the single homepage has metadata, one H1 and section navigation', () => {
 });
 
 test('all page links, fragments, assets and accessibility references resolve', () => {
-  const output = new Map(pages.map(({ path, render }) => [path, render()]));
+  const output = new Map(allPages.map(({ path, render }) => [path, render()]));
   for (const [path, html] of output) {
     const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
     assert.equal(ids.length, new Set(ids).size, `Duplicate ID: ${path}`);
@@ -46,7 +48,8 @@ test('all page links, fragments, assets and accessibility references resolve', (
       const link = match[1].replaceAll('&amp;', '&');
       if (/^(https?:|mailto:)/.test(link)) continue;
       const [file, fragment] = link.split('#');
-      const target = file ? file.replace(/^\.\//, '') : path;
+      let target = file ? file.replace(/^\.?\//, '') : path;
+      if (!target || target.endsWith('/')) target += 'index.html';
       if (output.has(target)) {
         if (fragment) assert.ok(output.get(target).includes(`id="${fragment}"`), `${path}: missing ${link}`);
       } else {
@@ -99,7 +102,8 @@ test('the homepage has minimal eyebrows and no visible development or image labe
   for (const { path, render } of pages) {
     const html = render();
     for (const image of html.matchAll(/<img\b[^>]+>/g)) {
-      assert.match(image[0], /alt="[^"]*temporary stock photograph[^\"]*"/i);
+      if (image[0].includes('/images/ohajiugwo-symbol.svg')) assert.match(image[0], /alt=""/);
+      else assert.match(image[0], /alt="[^"]*temporary stock photograph[^\"]*"/i);
       assert.match(image[0], /width="\d+"/);
       assert.match(image[0], /height="\d+"/);
     }
@@ -113,7 +117,7 @@ test('the homepage has minimal eyebrows and no visible development or image labe
 test('the original saved homepage content and section balance are restored', () => {
   const html = home();
   const saved = readFileSync('backups/original-homepage-20261015T131833Z.mjs', 'utf8');
-  const headings = source => [...source.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)].map(match => [match[1], match[2]]);
+  const headings = source => [...source.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)].map(match => [match[1], match[2].replaceAll('&amp;', '&')]);
   assert.deepEqual(headings(html), headings(saved), 'Heading sequence matches the recovered implementation');
   assert.deepEqual([...html.matchAll(/<section id="([^"]+)"/g)].map(match => match[1]), ['home', 'products', 'practices', 'about', 'services', 'contact']);
   assert.equal([...html.matchAll(/class="product-card"/g)].length, 3);
@@ -173,8 +177,8 @@ test('section navigation follows hashes and nested anchors without replacing nat
   const script = readFileSync('src/client.js', 'utf8');
   assert.ok(!script.includes('preventDefault'), 'Native fragment scrolling and history stay available');
   const styles = readFileSync('src/styles/main.css', 'utf8');
-  assert.match(styles, /scroll-behavior:smooth/);
-  assert.match(styles, /prefers-reduced-motion:reduce.*scroll-behavior:auto/);
+  assert.match(styles, /scroll-behavior:\s*smooth/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce[\s\S]*?scroll-behavior:\s*auto/);
 });
 
 test('copy email uses the configured address and announces successful copy', async () => {
@@ -232,7 +236,10 @@ test('development preview stays unindexed with no unsupported business data', ()
 test('content has one H1, descriptive images and separated company locations', () => {
   const html = home();
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
-  for (const image of html.matchAll(/<img\b[^>]*>/g)) assert.match(image[0], /alt="[^"]+"/);
+  for (const image of html.matchAll(/<img\b[^>]*>/g)) {
+    if(image[0].includes('/images/ohajiugwo-symbol.svg')) {assert.match(image[0],/alt=""/);assert.ok(html.includes(`aria-label="${company.name} — Home"`));}
+    else assert.match(image[0],/alt="[^"]+"/);
+  }
   assert.ok(html.includes(company.headquarters));
   assert.ok(html.includes(company.farmland));
   assert.match(html, /Skip to main content/);

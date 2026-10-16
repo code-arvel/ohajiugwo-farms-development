@@ -1,5 +1,6 @@
 # Generated output and dependencies
 /dist/
+/local-editor/generated/
 node_modules/
 coverage/
 .cache/

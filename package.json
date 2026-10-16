@@ -5,9 +5,28 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "node scripts/serve.mjs",
+    "dev": "npm run editor:build && node scripts/serve.mjs",
     "preview": "node scripts/serve.mjs --production",
-    "check": "node --test tests/site.test.mjs"
+    "check": "npm run editor:build && node --test tests/*.test.mjs",
+    "editor:build": "node scripts/build-editor.mjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@tiptap/core": "^3.0.0",
+    "@tiptap/pm": "^3.0.0",
+    "@tiptap/extension-document": "^3.0.0",
+    "@tiptap/extension-paragraph": "^3.0.0",
+    "@tiptap/extension-text": "^3.0.0",
+    "@tiptap/extension-heading": "^3.0.0",
+    "@tiptap/extension-bullet-list": "^3.0.0",
+    "@tiptap/extension-ordered-list": "^3.0.0",
+    "@tiptap/extension-list-item": "^3.0.0",
+    "@tiptap/extension-link": "^3.0.0",
+    "@tiptap/extensions": "^3.0.0"
+  },
+  "devDependencies": {
+    "esbuild": ">=0.25.0 <1"
+  }
 }

@@ -3,7 +3,7 @@ export const company = {
   name: 'OHAJIUGWO ORGANIC FARMS LTD',
   displayName: 'Ohajiugwo Organic Farms Ltd',
   email: 'ohajiugwochimeziebibi@gmail.com',
-  logo: '', // Optional local image path, e.g. /images/company-logo.svg
+  logo: '/images/ohajiugwo-symbol.svg', // Owner-supplied symbol, preserved unchanged.
   siteUrl: '', // Set to the approved public HTTPS origin before publication.
   publicationReady: false,
   locationsConfirmed: true, // Both spellings confirmed by the owner on 15 October 2026.
@@ -21,7 +21,7 @@ export const company = {
 export const navigation = [
   ['Home', '#home'], ['About', '#about'], ['Products', '#products'],
   ['Services & Training', '#services'], ['Our Practices', '#practices'],
-  ['Let’s talk', '#contact']
+  ['Blog', '/blog/'], ['Let’s talk', '#contact']
 ];
 
 // Temporary licensed stock: these images do not depict the company or its farmland.

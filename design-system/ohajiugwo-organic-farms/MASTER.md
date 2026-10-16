@@ -79,3 +79,29 @@ The hero is the single H1; original section headings remain H2 and cards/practic
 The homepage retains one title, description, canonical URL and social metadata. Native section anchors are #home, #products, #practices, #about, #services and #contact, with #practice-details and #locations as nested links. Smooth scrolling respects reduced motion and the mobile menu closes after selection.
 
 Recovery evidence and original source copies are linked from HANDOFF.md and docs/HOMEPAGE-RESTORATION.md. The project was backed up before restoration.
+
+## Authorised public navbar update — 16 October 2026
+
+Supersedes the original cream navbar/typographic navbar wordmark only. Public pages use the unchanged owner-supplied symbol on a small cream backing, beside “Ohajiugwo” in local Manrope 600 and “Organic Farms” in local Source Serif 4 with restrained letter spacing. Keep SVG colours/proportions; body typography and existing footer remain as approved. Navbar forest background, cream links, cream contact button with forest text. Main navbar alone sticks at viewport top as a direct body child; information strip scrolls away. Desktop navbar height 104px, mobile 88px; shared CSS variable drives anchor clearance and long-article contents offset. Mobile menu uses the same forest palette, visible light focus rings and a bounded scroll area. These changes are isolated in `src/styles/navbar.css`; existing base CSS and article reading width remain unchanged. Await visual review before committing.
+
+## Navbar palette correction — 16 October 2026
+
+The owner requested restoration of the original warm cream navbar while retaining sticky behaviour and the supplied symbol/lettering arrangement. Supersedes the forest-background/cream-backing paragraph above: symbol has no backing, border or badge; main lettering and navigation are forest green, supporting logo lettering is brown `#705036`, contact button is forest with cream text. Logo fonts, dimensions and offsets remain. Focus rings use the original amber on cream. No other layout change. Await visual review before any commit.
+
+## Shared logo unification — 16 October 2026
+
+Use `logo()` from `src/components/logo.mjs` and `logo.css` for public header/footer, local editor and future admin shells. Exact lower line is now “Organic Farms LTD”. Keep original transparent SVG and forest/brown lettering; compact supporting type is 13.5px, unwrapped. The footer surface is cream to preserve colour contrast without a symbol badge. Future dark layouts must provide a light surrounding surface rather than recolouring the mark. Other layout/content decisions remain unchanged. Usage: `docs/SHARED-LOGO.md`. Pending visual review; keep uncommitted.
+
+## Original surfaces restored — 16 October 2026
+
+Owner correction supersedes the cream-footer adaptation: retain the cream sticky navbar and original dark-green footer. The shared logo, symbol wrapper and image have no background, badge, border or box shadow. Do not change surrounding section colours to accommodate the logo. Original SVG and green/brown lettering remain unchanged; their low contrast on the dark footer is recorded for visual review. Preserve layout/fonts/LTD wording.
+
+
+### Footer white variant — owner-authorised correction
+
+Only the dark-green public footer selects the shared logo's `white` variant. Both wordmark lines render white; a scoped CSS filter makes the original symbol white while preserving transparency and original SVG bytes. No background, badge or border is introduced. Navbar/editor keep original multicolour symbol and green/brown lettering. Font families, responsive dimensions, arrangement and surrounding section colours are unchanged. This resolves and supersedes the previous low-contrast footer note.
+
+
+### Stage 1 final approval and preserved manual refinements
+
+The owner approved Stage 1 on 16 October 2026. Preserve the manual footer logo treatment: `#e3e9d9` lettering and SVG silhouette mask on the unchanged dark-green footer, with transparent backing. This supersedes the white-filter note above. Preserve the information-strip Google Maps link and lighter hover colours (`#6b713d` navigation, `#dce6c9` information-strip link). Further editor styling is deferred; Stage 2 must reuse the current editor and keep the public design unchanged. Checkpoint/merge remains pending host-terminal execution because `.git` is read-only to the agent.
