@@ -1,0 +1,85 @@
+/* Shared extensions to the approved homepage design. */
+.section-intro{padding:clamp(65px,7.5vw,115px) var(--gutter) clamp(45px,5vw,75px);text-align:center;border-bottom:1px solid var(--line)}
+.section-intro h2{font-size:clamp(36px,3.5vw,55px);line-height:1.15;letter-spacing:-2px;max-width:1000px;margin:0 auto 24px}
+.section-intro h2 em{color:var(--muted)}
+.section-intro>p{font-size:16px;line-height:1.8;max-width:600px;margin-inline:auto;color:var(--muted)}
+.editorial-split{display:grid;grid-template-columns:1fr 1fr;gap:9%;align-items:center}
+.editorial-split>*{min-width:0}
+.editorial-image{position:relative;overflow:hidden;border-radius:5px;background:var(--sage);aspect-ratio:1.1}
+.editorial-image img{height:100%;width:100%}
+.editorial-image figcaption{position:absolute;left:12px;right:12px;bottom:12px;width:fit-content;max-width:calc(100% - 24px);padding:5px 8px;border-radius:2px;background:var(--deep);color:var(--cream);font-size:10px;line-height:1.5}
+.prose h3{margin-bottom:26px}
+.prose>p{font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:18px}
+.prose>.lead{font-size:18px;line-height:1.75;color:var(--forest)}
+.purpose-section{padding-top:0}
+.purpose-section>h3{margin-bottom:35px;max-width:720px}
+.purpose-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+.purpose-grid article{padding:40px;background:var(--paper);border-radius:4px}
+.purpose-grid article:nth-child(2){background:var(--sage)}
+.purpose-grid h4{font-size:28px;margin-bottom:18px}
+.purpose-grid p{font-size:16px;line-height:1.85;color:var(--muted)}
+.purpose-grid p+p{margin-top:18px;font-size:14px}
+.values-section{padding-top:0}
+.scroll-section .services-grid p{font-size:15px;line-height:1.85}
+.location-section{background:var(--sage);padding:70px var(--gutter) 5px;text-align:center}
+.location-section>.locations{margin-top:35px}
+.location-section .locations p,.scroll-section .locations p{font-size:14px}
+.location-section .locations h4,.scroll-section .locations h4{font-size:14px}
+.future-section,.learning-section{background:var(--forest);color:var(--cream);padding:var(--space-section) var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:9%}
+.future-section h3,.learning-section h3{margin-bottom:22px}
+.future-section>div>p,.learning-section>div>p{font-size:15px;line-height:1.85;color:var(--sage);max-width:440px}
+.future-list{list-style:none;counter-reset:plan;margin:0;padding:0}
+.future-list li{counter-increment:plan;position:relative;padding:0 0 24px 42px;margin-bottom:24px;border-bottom:1px solid #5c7060}
+.future-list li:last-child{border:0;padding-bottom:0;margin-bottom:0}
+.future-list li:before{content:counter(plan,decimal-leading-zero);position:absolute;left:0;top:4px;font-size:12px;color:var(--sage)}
+.future-list h4{margin-bottom:10px;font-size:24px}
+.future-list p{font-size:14px;line-height:1.85;color:var(--sage)}
+.enquiry-banner{text-align:center;background:var(--paper);padding:80px var(--gutter)}
+.enquiry-banner h3{max-width:900px;margin:0 auto 24px}
+.enquiry-banner>p{max-width:570px;margin:0 auto 26px;color:var(--muted);font-size:16px}
+.range-section{padding-top:0}
+.catalogue .product-copy h4{min-height:62px}
+.catalogue .product-copy p{font-size:15px}
+.editorial-note{display:grid;grid-template-columns:1fr 1fr;gap:9%;border-top:1px solid var(--line)}
+.inline-link{text-decoration:underline;text-underline-offset:4px}
+.topic-list{list-style:none;margin:0;padding:0}
+.topic-list li{display:flex;gap:18px;align-items:center;padding:20px 0;border-bottom:1px solid #5c7060;font-size:16px}
+.topic-list li:first-child{padding-top:0}
+.topic-list li:last-child{border-bottom:0;padding-bottom:0}
+.topic-list .icon{color:var(--sage)}
+.practice-group{padding-top:0}
+.practice-group>h3{margin-bottom:35px}
+.method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.method-grid.two-columns{grid-template-columns:repeat(2,minmax(0,1fr))}
+.method-grid article{border-top:1px solid var(--line);padding-top:25px;min-width:0}
+.method-grid h4{font-size:25px;margin-bottom:14px}
+.method-grid p{font-size:15px;line-height:1.9;color:var(--muted)}
+.biodiversity-section{background:var(--forest);color:var(--cream);padding:var(--space-section) var(--gutter);margin-bottom:var(--space-section)}
+.biodiversity-section .section-heading>p,.biodiversity-section .method-grid p{color:var(--sage)}
+.biodiversity-section .method-grid article{border-color:#5c7060}
+.related-links{display:flex;gap:15px 25px;flex-wrap:wrap}
+.footer-email{margin-top:-20px;margin-bottom:28px;font-size:12px;color:var(--sage);overflow-wrap:anywhere}
+.footer-email>a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere;word-break:break-word}
+.scroll-section .email-address{font-size:clamp(20px,2.5vw,30px)}
+.scroll-section .contact-top>p:not(.eyebrow){font-size:16px}
+.scroll-section .email-only{font-size:12px!important}
+#main-nav .nav-contact[aria-current]:after{display:none}
+.section-intro~.section h3,.future-section h3,.learning-section h3{overflow-wrap:break-word}
+@media(min-width:1700px){.future-section,.learning-section,.biodiversity-section{padding-inline:max(var(--gutter),calc((100vw - 1400px)/2))}}
+@media(max-width:1100px){.editorial-split,.editorial-note,.future-section,.learning-section{gap:6%}.purpose-grid article{padding:30px}.method-grid{gap:22px}.method-grid h4{font-size:23px}}
+@media(max-width:760px){.editorial-split,.editorial-note,.future-section,.learning-section{grid-template-columns:1fr;gap:40px}.editorial-image{max-width:600px;aspect-ratio:1.3}.section-intro h2{font-size:42px}.purpose-grid{gap:18px}.purpose-grid article{padding:25px}.method-grid{grid-template-columns:1fr;gap:30px}.method-grid.two-columns{grid-template-columns:1fr}.method-grid h4{font-size:25px}.future-list{margin-top:5px}.scroll-section .services-grid{gap:20px}.catalogue .product-copy h4{min-height:88px}.scroll-section .section-heading>p{font-size:15px}.footer-email{margin-top:-20px}.scroll-section .location-section h3{font-size:38px}}
+@media(max-width:550px){.section-intro{padding-top:60px;padding-bottom:45px}.section-intro h2{font-size:36px;letter-spacing:-1.4px}.section-intro>p{font-size:16px}.purpose-grid{grid-template-columns:1fr}.purpose-grid h4{font-size:27px}.prose>p,.scroll-section .services-grid p,.method-grid p,.future-list p,.future-section>div>p,.learning-section>div>p{font-size:16px}.editorial-image figcaption{font-size:10px}.purpose-grid p+p{font-size:15px}.future-list li{padding-left:33px}.future-list h4{font-size:23px}.enquiry-banner{padding:60px var(--gutter)}.enquiry-banner h3{font-size:36px}.enquiry-banner>p{font-size:16px}.catalogue .product-copy h4{min-height:0}.catalogue .product-copy p{font-size:16px}.scroll-section .contact-section{padding-top:50px}.scroll-section .contact-top h3{font-size:38px}.scroll-section .email-address{font-size:22px}.contact-actions{flex-direction:column}.footer-email{font-size:12px}.location-section{padding-top:55px}.topic-list li{font-size:16px}.scroll-section .locations p{font-size:14px}}
+
+/* Preserve the approved scale while section content nests below the single H1. */
+.scroll-section h3{font-size:clamp(36px,3.5vw,55px);line-height:1.2;letter-spacing:-1.8px}
+.scroll-section h4{font-family:var(--heading);font-size:24px;font-weight:400;line-height:1.35;letter-spacing:-.6px;margin:0 0 12px}
+.scroll-section .services-grid h4,.scroll-section .product-copy h4{font-size:23px}
+.scroll-section .purpose-grid h4{font-size:28px;margin-bottom:18px}
+.scroll-section .future-list h4{font-size:24px;margin-bottom:10px}
+.scroll-section .method-grid h4{font-size:25px;margin-bottom:14px}
+.scroll-section .locations h4{font-family:var(--body);font-size:14px;font-weight:600;letter-spacing:0;margin-bottom:6px}
+.scroll-section .contact-top h3{margin-bottom:23px}
+.scroll-section .email-address{margin-inline:auto}
+.scroll-section .enquiry-banner h3{max-width:900px;margin:0 auto 24px}
+.scroll-section:focus-visible{outline:3px solid var(--earth);outline-offset:-3px}
+@media(max-width:550px){.scroll-section h3{font-size:36px;letter-spacing:-1.3px}.scroll-section .product-copy h4{font-size:25px}.scroll-section .enquiry-banner h3{font-size:36px}}
