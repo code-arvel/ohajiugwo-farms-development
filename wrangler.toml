@@ -1,5 +1,11 @@
-# Configuration only. Do not run a deploy/upload command without owner approval.
+# Pages configuration for the approved free development preview.
 name = "ohajiugwo-organic-farms"
 compatibility_date = "2025-01-01"
 pages_build_output_dir = "hosting-output"
 # Credentials belong in Cloudflare secrets or ignored .dev.vars, never this file.
+
+# The media processor is only bound to preview deployments. Production has no
+# binding or runtime secrets until its separate public release is prepared.
+[[env.preview.services]]
+binding = "MEDIA_PROCESSOR"
+service = "ohajiugwo-image-processor-development"
