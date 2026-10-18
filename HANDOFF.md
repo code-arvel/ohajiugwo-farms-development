@@ -12,6 +12,8 @@ The internal `ohajiugwo-image-processor-development` Worker was deployed with it
 
 Hosted HTTPS verification passed for the configured combined preview: `/` and `/blog/` return 200; `/admin` redirects to `/admin/login` (303); login/accept return 200; unauthenticated `/admin/api/session` returns 401; `/.env.admin` and unknown routes return the branded 404; `robots.txt` disallows crawling. Responses were checked with verified TLS; admin pages/API send `private, no-store` and `noindex, nofollow`. No environment key names/values appear in the 404. The preview is publicly reachable but explicitly unindexed, and its sample content remains review-only; it is not a production release. The latest preview deployment is `659e6526` on branch `stage2-preview`, source commit `769a487` plus the staged-only Pages config. Wrangler's deployment list contains Preview entries only; no production deployment exists.
 
+On 18 October, the owner requested removal of obsolete Preview snapshots. The three older deployment records (`e7bfc8bb`, `08715f10`, `45676ca4`) were deleted. Only `659e6526` remains; both its direct URL and the `stage2-preview` alias returned HTTP 200 after cleanup.
+
 Next: finish verification of the Pages Preview `MEDIA_PROCESSOR` binding and actual no-member denial boundary. Do not report Stage 2 complete: first-admin execution, real Auth/account flow, active-member editing/media, cleanup/recovery/concurrency, and screen-reader/physical-device evidence remain separate.
 
 ## 18 October — combined unindexed site and Stage 2 preview
