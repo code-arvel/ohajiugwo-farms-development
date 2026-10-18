@@ -50,3 +50,14 @@ secrets.json
 .DS_Store
 Thumbs.db
 .history/
+
+# Hosted admin preparation: local secrets and generated hosting/runtime data
+.dev.vars
+.dev.vars.*
+.wrangler/
+/hosting-output/
+/admin/generated/
+/supabase/.temp/
+/supabase/.branches/
+/private-exports/
+!.env.admin.example

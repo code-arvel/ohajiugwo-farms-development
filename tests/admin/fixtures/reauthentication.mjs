@@ -1,0 +1,24 @@
+// Isolated rotating provider/RPC fixture, not PostgreSQL or real Auth.
+import {loadAdminConfig} from '../../../server/config.mjs';
+import {createAuthService,AuthError} from '../../../server/auth/sessions.mjs';
+export function reauthFixture({origin='http://127.0.0.1:4322'}={}){
+ let now=Date.now(),active=true,allowed=true,finishMode='',proofUser='',cleanupFails=false,signs=0;
+ const config=loadAdminConfig({ADMIN_ENVIRONMENT:'hosted-development',ADMIN_ORIGIN:origin,SUPABASE_PROJECT_REF:'abcdefghijklmnopqrst',SUPABASE_URL:'https://abcdefghijklmnopqrst.supabase.co',SUPABASE_PUBLISHABLE_KEY:'mock',SUPABASE_SECRET_KEY:'mock',ADMIN_SESSION_KEY:'ab'.repeat(32)}),user='11111111-1111-4111-8111-111111111111',other='33333333-3333-4333-8333-333333333333',rows=new Map(),calls=[];
+ const tokens=new Map(),invalidated=new Set(),issued=[],issue=()=>{const sub=proofUser||user,id=crypto.randomUUID(),access_token='header.'+btoa(JSON.stringify({sub,session_id:id,role:'authenticated',aud:'authenticated',iss:config.supabaseUrl+'/auth/v1',exp:Math.floor(now/1000)+3600})).replace(/=+$/,'')+'.signature';tokens.set(access_token,{sub,id});const value={access_token,refresh_token:'MOCK_REFRESH_'+id};issued.push(value);return value;};
+ const provider={signIn:async(email,password)=>{signs++;if(password!=='DummyFarmPass123!')throw new AuthError('MOCK_PASSWORD',400);return issue();},getUser:async token=>{if(invalidated.has(token))throw new AuthError('MOCK_REVOKED',401);return {id:tokens.get(token).sub,email:tokens.get(token).sub===user?'owner@example.test':'other@example.test',email_confirmed_at:'2026-10-16T00:00:00Z'};},signOut:async token=>{calls.push('signOut');if(cleanupFails)throw new Error('MOCK_CLEANUP');invalidated.add(token);}};
+ const live=row=>active&&row&&!row.revoked_at&&Date.parse(row.absolute_expires_at)>now&&Date.parse(row.idle_expires_at)>now;
+ const rpc=async(name,p)=>{calls.push(name);
+  if(name==='farm_auth_attempt')return allowed;
+  if(name==='farm_session_open'){const row={id:crypto.randomUUID(),user_id:p.p_user_id,provider_session_id:p.p_provider_session_id,cookie_hash:p.p_cookie_hash,encrypted_credentials:p.p_encrypted_credentials,csrf_hash:p.p_csrf_hash,absolute_expires_at:new Date(now+43200000).toISOString(),idle_expires_at:new Date(now+1800000).toISOString(),reauthenticated_at:new Date(now).toISOString(),refresh_version:0};rows.set(row.cookie_hash,row);return {...row};}
+  if(name==='farm_session_read'){const row=rows.get(p.p_cookie_hash);return live(row)?{...row}:null;}
+  if(name==='farm_session_reauth_prepare'){const old=rows.get(p.p_old_cookie_hash);if(!live(old)||old.user_id!==p.p_user_id||old.provider_session_id!==p.p_old_provider_session_id)return null;const row={...old,id:crypto.randomUUID(),provider_session_id:p.p_provider_session_id,cookie_hash:p.p_cookie_hash,encrypted_credentials:p.p_encrypted_credentials,csrf_hash:p.p_csrf_hash,revoked_at:new Date(now).toISOString(),provider_cleanup_pending:true,reauth_parent:old.id,reauth_until:new Date(now+60000).toISOString(),reauthenticated_at:null};rows.set(row.cookie_hash,row);return {...row};}
+  if(name==='farm_session_reauth_finish'){const old=rows.get(p.p_old_cookie_hash),next=rows.get(p.p_cookie_hash);if(finishMode==='before')throw new Error('MOCK_DATABASE');if(finishMode==='revoke')active=false;if(!live(old)||!next?.reauth_until||Date.parse(next.reauth_until)<=now||next.reauth_parent!==old.id)return null;old.revoked_at=new Date(now).toISOString();old.provider_cleanup_pending=true;next.revoked_at=null;next.reauth_until=null;next.reauthenticated_at=new Date(now).toISOString();next.provider_cleanup_pending=false;if(finishMode==='after')throw new Error('MOCK_LOST_ACK');return {session:{...next},previous:{...old}};}
+  if(name==='farm_session_reauth_abort'){const row=rows.get(p.p_cookie_hash);if(row?.reauth_until&&row.revoked_at){row.reauth_until=null;return {...row};}return null;}
+  if(name==='farm_session_close'){const row=rows.get(p.p_cookie_hash);if(row)row.revoked_at=new Date(now).toISOString();return row;}
+  if(name==='farm_session_cleanup_done'){for(const row of rows.values())if(row.id===p.p_session_id&&row.revoked_at)row.provider_cleanup_pending=false;return null;}
+  throw new Error('Unexpected fixture command');
+ };
+ const service=createAuthService(config,{provider,rpc,now:()=>now});
+ const request=(cookie,csrf)=>new Request(config.origin+'/admin/api/reauthenticate',{method:'POST',headers:{cookie,origin:config.origin,'x-csrf-token':csrf||'', 'content-type':'application/json'},body:JSON.stringify({password:'DummyFarmPass123!'})});
+ return {config,service,rows,calls,request,other,provider,issued,get signs(){return signs;},setMode:mode=>finishMode=mode,setActive:value=>active=value,setAllowed:value=>allowed=value,setProofUser:value=>proofUser=value,setCleanupFails:value=>cleanupFails=value,advance:ms=>now+=ms,login:()=>service.login({email:'owner@example.test',password:'DummyFarmPass123!'})};
+}

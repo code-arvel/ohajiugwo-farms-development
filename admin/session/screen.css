@@ -1,0 +1,10 @@
+/* Reuse the approved form system without modifying acceptance/public/editor styles. */
+@import url('/admin/accept/screen.css');
+#session-message{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;margin:0 0 24px;padding:16px;border-left:3px solid #8a7048;background:var(--paper);overflow-wrap:anywhere}
+#session-message::before{content:'!';display:grid;place-items:center;width:19px;height:19px;border:1.5px solid currentColor;border-radius:50%;font-size:14px;line-height:1;margin-top:2px}
+#session-message strong{display:block;font-size:16px;line-height:1.4;font-weight:600;margin-bottom:6px}#session-message p{font-size:15px;line-height:1.6;margin:0}
+#session-message[data-state=error]{background:var(--error-bg);color:var(--error);border-color:var(--error)}#session-message[data-state=retry]{background:#f0e9dc;color:#654626;border-color:#866037}.session-identity{overflow-wrap:anywhere;margin:0 0 24px}.session-logout{margin-top:8px}
+
+#session-message[data-state=confirmed]{background:var(--sage);color:var(--forest);border-color:var(--forest)}
+#session-message[data-state=confirmed]::before{content:"✓"}
+#session-reload{border:1px solid currentColor;padding:10px 16px;font-weight:600}

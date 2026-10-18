@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "include": [
+    "/admin",
+    "/admin/*",
+    "/__editor",
+    "/__editor/*",
+    "/__review",
+    "/__review/*",
+    "/_worker.js",
+    "/_routes.json"
+  ],
+  "exclude": []
+}

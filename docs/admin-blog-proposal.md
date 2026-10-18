@@ -2,6 +2,12 @@
 
 **16 October 2026 · Planning only · Awaiting owner approval**
 
+## Owner-authorised hosted Stage 2 amendment — 16 October 2026
+
+Stage 2 now uses an owner-controlled **hosted Supabase Free development project**, not Docker/local Supabase. The owner authorises free Supabase, Cloudflare and source-hosting configuration after their sign-in and secure access; reuse existing accounts/projects. Prepare Cloudflare build/private-function configuration without public deployment, first-build Git integration, automatic deployments or remote pushes. Local developer code/tests can use the hosted development backend; no Docker prerequisite. The revised implementation detail is in `docs/superpowers/plans/2026-10-16-stage-2-secure-content.md`; its service gates supersede the older local-only passages below.
+
+Use disposable data; inspect the project before migrations. Credentials stay in ignored server environment/provider secrets. Public registration is disabled; RLS/private media and invite-only membership remain mandatory. Further editor styling stays deferred, Stage 3 still owns public publishing/independent scheduled backups, Stage 4 analytics/monitoring. No paid upgrade/domain purchase. The owner chose to inspect existing email settings before selecting SMTP: Supabase default-team-recipient/rate restrictions must be reported, not presented as production delivery. Laptop Mailpit is not a hosted SMTP destination without separately authorised networking; no tunnel is implied. Ask before selecting a sender or domain-dependent setup. A complete hosting-readiness checklist is in `docs/HOSTED-STAGE-2-SETUP.md`.
+
 ## Staged plan in plain language
 
 This revision keeps the technical requirements below and divides delivery into four reviewable stages. Each stage needs approval before implementation. Approval to build locally does not authorise an external account, paid service, publishing automation or deployment. Analytics can wait until the editing, security, publishing and recovery work is complete.

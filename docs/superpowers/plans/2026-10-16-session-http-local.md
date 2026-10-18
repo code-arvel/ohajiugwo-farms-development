@@ -1,0 +1,10 @@
+# Local session HTTP integration — approved Stage 2 sequence 2
+
+Continuation of the approved Stage 2 plan and existing session service. Owner authorises the next unfinished local step; no new UI or hosted enablement is included. Preserve the visually approved acceptance form, public site/editor, credentials and all completed migration/verification checkpoints.
+
+1. Write/run failing Request/Response tests for login context and POST, authenticated session GET and logout POST. Exercise the real session service through mocked provider/RPC fixtures. Cover origin/CSRF, bounded JSON/unknown fields, opaque cookies and token redaction, inactive membership, provider failures, throttling, refresh/revocation and logout with old cookies.
+2. Implement an injected session HTTP factory only. Use encrypted expiring anonymous CSRF context for login, exact same-origin routes/methods, strict bounded bodies, private headers and explicit response projections. Authentication/membership/refresh stay in the existing service. Logout CSRF failures must have a safe explicit 403 status. Do not wire to production or add a browser login screen.
+3. Run targeted tests and the full admin/public suites plus local build/function compilation because this change adds authentication HTTP boundaries. Review the patch for credential exposure and fail-closed behaviour. No completed hosted checks are repeated.
+4. Record exact local evidence and remaining gaps in HANDOFF. Next local work is browser sign-in/logout integration and lifecycle flows; any real provider/account/email/SMTP/HTTPS or production route enablement stays separately gated. Acceptance accessibility gaps remain pending.
+
+Execution record: continuing in the existing feature branch, preserving uncommitted/untracked Stage 2 dependencies; no checkout/reset, dependency installation or git writes. No migration is needed. Tests simulate database/service outcomes and cannot establish hosted grants, timeout/locking enforcement, real Auth or email delivery.

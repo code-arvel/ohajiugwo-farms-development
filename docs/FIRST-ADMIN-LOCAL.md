@@ -1,0 +1,66 @@
+# First-administrator flow — local implementation checkpoint
+
+**Subsequent local checkpoint:** owner reports the implemented acceptance form looks good at 200% browser zoom; visual review only, with unconfirmed accessibility/hosted checks still pending. Browser sign-in/logout and protected session confirmation now pass isolated local checks; see SESSION-BROWSER-LOCAL.md and latest HANDOFF for 95 admin/51 public results and limits. Production routing/live bootstrap are still closed. This supersedes older pending-zoom/browser-integration statements below.
+
+**Latest local screen checkpoint:** owner approved the centred acceptance form and it is implemented. Fresh 73 admin / 51 public-editor regressions, build/function compilation and isolated real-Chrome fixture checks pass. The browser check covers desktop/mobile fit, validation, focus association, synthetic Space/Enter, success/rejection/retry and terminal cleanup; it does not prove screen-reader announcements, physical keyboard/touch/virtual-keyboard behaviour or actual 200% zoom. Earlier owner-reported manual fixture passes relate to the previous design. See [ACCEPTANCE-BROWSER-QA.md](ACCEPTANCE-BROWSER-QA.md) for their provenance and the revised-screen manual recheck. This supersedes older statements below that no browser checks have run. No hosted authentication/email result is inferred; production admin routing and live bootstrap remain closed.
+
+**Latest hosted checkpoint:** owner reported migration 003 success and the complete `supabase/tests/first-admin.sql` PASS, with fixture rows rolled back. Its DB assertions are now owner-run hosted evidence. Do not rerun migrations 001/002/003 or these completed checks without cause. The historical application instructions below are retained as reference, not a request to repeat them. Real provider/token/password, browser/HTTPS, multi-process concurrency and email-delivery results remain unverified. Live bootstrap remains disabled. Local screen/callback integration now has mocked controller/VM/loopback HTTP tests; this is separate from hosted evidence and real browser QA.
+
+This is work sequence 2 of the approved Stage 2 plan. It is **not a working hosted administrator setup**. Keep the approved website/editor styling and existing `.env.admin`/session key. The owner has confirmed the existing built-in sender and intended recipient's organisation Owner membership; sender selection remains deferred. Organisation ownership does not grant farm administration.
+
+## What is implemented
+
+- Server-only `createFirstAdminService`: reserve, issue a generated provider invitation, inspect safe pending status, cancel, and accept with recipient/password verification and atomic activation.
+- Injectable maintainer command runner: `prepare --email ADDRESS`, then `issue`, `status` or `cancel --id ID`, with exact `--confirm-project REF` matching on every command. No password/token/link arguments or secret output. Its installed executable deliberately refuses hosted execution, including when provider credentials or an enable-looking environment variable exist. `npm run admin:bootstrap -- --help` is safe and does not load `.env.admin`.
+- Locally tested HTTP adapter at `/admin/accept`: GET issues an encrypted, ten-minute CSRF cookie/token only; explicit same-origin JSON POST verifies and accepts. It rejects URL query material, extra fields, oversized bodies, wrong/expired CSRF, cross-origin requests and replay. It is **not connected to the production handler**; that handler still returns unavailable for administrator requests. No first-admin HTTP bootstrap endpoint exists.
+- An additive, service-only SQL command set in `202610160003_first_admin.sql`, plus `supabase/tests/first-admin.sql`. The owner has applied migration 003 and reported its whole-script hosted verification PASS. The agent did not execute hosted SQL. Earlier migrations remain unchanged.
+- Browser screen and injected HTML/callback integration: immediate fragment/query removal, strict memory-only invitation parsing, password confirmation, safe terminal/transient states, explicit retry and short-lived encrypted completion receipt. Production handler/live bootstrap remain disabled. Final local tests: 68 admin and existing 51 public/editor checks pass; build/function compilation and artifact exclusion checks pass. No enabled browser was available, so real visual/DOM/keyboard checks remain pending.
+
+## Account and failure behaviour
+
+Preparing and generating an invitation never activate membership. Generation binds only the returned recipient identity as pending. Application nonce/provider invitation/verified progress stay encrypted; lookup and acceptance use the nonce digest. A lease serialises each stage and activation rechecks current state/generation/recipient/expiry and zero active administrators under the singleton lock. Revoked membership cannot be revived by acceptance.
+
+Acceptance verifies the stored provider invite token through Auth, confirms the exact bound recipient via the provider user endpoint and requires confirmed email. It saves verified credentials before password work. Password setup uses the recipient's user token, followed by password sign-in and another identity check. Minimum password length is twelve characters, maximum seventy-two UTF-8 bytes; spaces/paste are permitted. Passwords are never stored by the app. Atomic activation consumes the invitation once, creates no application session and requires a normal sign-in afterward.
+
+Retries reuse a saved generated invitation or encrypted verified progress. They do not pretend external Auth calls share a database transaction. If generation may have succeeded but its result was not saved, the record requires maintainer review; no automatic duplicate generation. If provider verification consumes its token but the progress write is lost, acceptance stays closed and needs maintainer recovery/cancellation/reissue rather than claiming success. Saved access-token invalidation can refresh under the same lease: reverify recipient identity and persist rotated encrypted credentials before password work. Provider outages do not cause speculative refresh; a failed refresh or lost rotation write fails closed and may need maintainer recovery. Cleanup failures retain pending encrypted work for later worker integration; an always-running cleanup worker is not implemented. Cancellation invalidates the application generation and retains any outstanding cleanup record; it does not delete a provider identity.
+
+## Run the isolated checks
+
+```bash
+npm run admin:test-first-admin
+npm run check:admin:unit
+npm run check
+npm run build
+npm run hosting:check
+```
+
+The first-admin tests use a test-only in-memory RPC model and mocked provider responses. They create **no real hosted accounts and send no mail**; email delivery is bypassed. Even a full green run is not proof of PostgreSQL/RLS/row-lock enforcement, real Auth acceptance or delivery. No `.env.admin` is loaded by these tests or the blocked bootstrap command. A sandbox may need permission for Node's local test subprocesses; this is unrelated to hosted access.
+
+## Local screen review — mocked accounts only
+
+The step-by-step expected results and a separate **pending manual QA record** are in [ACCEPTANCE-BROWSER-QA.md](ACCEPTANCE-BROWSER-QA.md). Automated controller/VM/HTTP passes are not manual browser passes; report actual browser observations before marking that checklist complete.
+
+```bash
+npm run admin:dev-acceptance
+```
+
+Open `http://127.0.0.1:4323/__fixtures/` in your browser. Choose valid, expired, cancelled, used or retry. The index and screen explicitly identify local tests. Use a fake password (at least 12 characters, at most 72 UTF-8 bytes), never a real password. The retry scenario fails once after invitation verification; retry in the same tab should complete without reusing the consumed provider token. Restart this fixture server to reset its disposable state. Stop it with Ctrl+C when finished.
+
+The server binds loopback, accepts an exact Host/origin, and uses a test-only provider/repository. It loads no credentials and has no real mail/account capability. Its fake invitation-link index is never included in public/hosting output. The production handler does not import this harness or enable its routes. No SQL, email template, SMTP or provider setting change is needed.
+
+Check desktop and phone widths, keyboard labels/focus/show-password, confirmation/length errors, terminal invalid/expired/reused states, explicit retry and completion. The address bar should lose all invitation material before client import; only same-origin private assets/API requests should occur. Nothing should enter local/session storage. GET never activates; success sets no admin-session cookie. A five-minute encrypted receipt can recover a lost body after cookie delivery; losing the entire response including cookies remains ambiguous and must not be called confirmed success. Current automated VM/controller/loopback checks do not replace these browser checks; attempted CUA browser creation returned unavailable.
+
+## Completed owner-run SQL verification — historical application procedure
+
+1. Review only `supabase/migrations/202610160003_first_admin.sql`. Do not rerun `202610160001` or `202610160002` or repeat their completed checks without cause.
+2. When authorised for this new database step, use the existing `ohajiugwo-development` project's owner/postgres SQL Editor session to run the entire new migration once. It adds commands/columns only; it creates no administrator and sends no mail. On error, stop and share safe error text. Do not reset/drop objects.
+3. Run the **entire** `supabase/tests/first-admin.sql`, not only its final PASS statement. Its SQL-only fixture identities, pending/active membership and audit rows roll back; it never calls provider Auth or sends email. It refuses an existing real bootstrap/pending invitation. A genuine whole-script PASS closes only these DB checks. If an earlier error left an aborted transaction, run `ROLLBACK;` separately before the complete test file.
+4. Report the full-script PASS or safe error. Do not run live bootstrap, send invitation/reset mail or change SMTP/templates/settings as part of SQL verification.
+
+Pre-execution source review confirmed migration 003 adds fields/functions and its migration marker without replacing existing data, functions, RLS/table grants or Storage policies. New fields get NULL/default values on existing invitation rows. Its mutating functions are defined, not invoked, during migration. The script requires the 002 marker and rejects repeat 003 application. The owner has since completed migration and whole-script SQL verification successfully; this does not establish provider/browser/email operation.
+
+The fixture rows roll back, but audit-event identity sequences can advance and leave harmless ID gaps because PostgreSQL does not roll back sequence allocation; do not reset sequences. A standalone final PASS is not sufficient: the entire script must finish without errors. A failed verification does not undo the separately committed migration; report the error rather than rerunning any successful migration. [PostgreSQL sequence behaviour](https://www.postgresql.org/docs/current/functions-sequence.html).
+
+Before real setup, complete available-browser QA, ordinary sign-in/session HTTP integration and deliberate live gates, maintainer recovery for provider effects followed by lost checkpoints, and separately authorised disposable provider/HTTP/DB/Storage/concurrency tests. The future delivery adapter must construct a fixed-origin app acceptance link with secrets in its fragment; the local shell now clears it and uses explicit POST. Default provider confirmation links consume tokens on GET and must not be silently substituted. No real endpoint should return generated invitation links. Delivery/redirect/template settings and actual mail still need separate approval; sender selection stays deferred. Equal second-admin invitations, resets, private content/media and durable cleanup integration remain Stage 2 work. Real delivery and HTTPS/browser behaviour remain unverified. No deployment or SMTP configuration is authorised.
+
+Provider contracts consulted: [generated invitations](https://supabase.com/docs/reference/javascript/auth-admin-generatelink), [verifyOtp](https://supabase.com/docs/reference/javascript/auth-verifyotp), [user password update](https://supabase.com/docs/reference/javascript/auth-updateuser). No SDK or package dependency was added.

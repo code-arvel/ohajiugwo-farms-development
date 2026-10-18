@@ -1,0 +1,14 @@
+import test from'node:test';import assert from'node:assert/strict';import{seal}from'../../server/security.mjs';
+const mod=await import('../../server/auth/additional-admin-acceptance.mjs');
+test('password reset accepts only recovery proofs, keeps membership active, and uses reset-only SQL effects',async()=>{
+ const id='11111111-1111-4111-8111-111111111111',user='22222222-2222-4222-8222-222222222222',nonce='a'.repeat(43),tokenHash='recovery-token-hash-12345678901234567890',key='ab'.repeat(32),calls=[],effectCalls=[];
+ const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(nonce)),nonceHash=btoa(String.fromCharCode(...new Uint8Array(digest))).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
+ const resetRow=async()=>({id,user_id:user,recipient_email:'admin@example.test',invited_by:'33333333-3333-4333-8333-333333333333',purpose:'password_reset',nonce_hash:nonceHash,generation:3,issue_state:'ready',state:'queued',lease_until:new Date(Date.now()+60000).toISOString(),encrypted_invite:await seal({tokenHash},key,`first-admin:${id}:3`)});
+ const rpc=async(name,params)=>{calls.push(name);if(name==='farm_invitation_read'||name==='farm_admin_reset_accept_claim')return resetRow();if(name==='farm_auth_attempt')return true;if(name==='farm_admin_reset_accept_effect_progress'||name==='farm_admin_reset_activate')return true;if(name==='farm_admin_reset_release'||name==='farm_admin_invite_cleanup_done')return null;throw Error(`unexpected ${name}`);};
+ const provider={verifyRecovery:async value=>{assert.equal(value,tokenHash);return{access_token:'recovery-access',refresh_token:'recovery-refresh'};},verifyInvite:async()=>{throw Error('invite verification must not run');},getUser:async()=>({id:user,email:'admin@example.test',email_confirmed_at:'2026-01-01T00:00:00Z'}),updatePassword:async()=>null,signIn:async()=>({access_token:'proof-access',refresh_token:'proof-refresh'}),signOut:async()=>null};
+ const effects={async begin(operation){effectCalls.push(operation);return{id:crypto.randomUUID(),owner:crypto.randomUUID()};},async capture(){return true;},async firstAdminProgress(_effect,params){calls.push('farm_admin_reset_accept_effect_progress');assert.ok(params.p_encrypted_credentials);return true;},async release(){return true;},async abort(){return{safe:true};}};
+ const service=mod.createInvitationAcceptanceService({sessionKey:key},{provider,rpc,effects});
+ const result=await service.accept({id,nonce,tokenHash,password:'DummyRecoveryPass123!',clientIp:'127.0.0.1'});
+ assert.deepEqual(result,{activated:true,signInRequired:true,providerCleanupPending:false});assert.deepEqual(effectCalls,['reset_verify','reset_proof']);
+ assert.deepEqual(calls,['farm_invitation_read','farm_auth_attempt','farm_auth_attempt','farm_admin_reset_accept_claim','farm_admin_reset_accept_effect_progress','farm_admin_reset_accept_effect_progress','farm_admin_reset_activate','farm_admin_invite_cleanup_done','farm_admin_reset_release']);
+});

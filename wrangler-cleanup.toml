@@ -1,0 +1,7 @@
+# Separate Free Worker PREPARATION ONLY. No deploy, credentials or active cron.
+name = "ohajiugwo-cleanup-development"
+main = "hosting/cleanup-worker.mjs"
+compatibility_date = "2025-01-01"
+# ADMIN_ENABLE_CLEANUP_WORKER remains unset; cron activation requires reviewed deployment approval.
+# [triggers]
+# crons = ["*/5 * * * *"]

@@ -35,10 +35,11 @@ export function validatePosts(posts) {
   if (!Array.isArray(posts) || posts.length > 100) fail('Use a list of up to 100 local sample posts.');
   const ids = new Set(); const slugs = new Set();
   for (const post of posts) {
-    object(post, ['id', 'revision', 'status', 'slug', 'title', 'excerpt', 'publishedAt', 'cover'], 'Article', ['blocks','body','author','reviewOnly']);
+    object(post, ['id', 'revision', 'status', 'slug', 'title', 'excerpt', 'publishedAt', 'cover'], 'Article', ['blocks','body','author','reviewOnly','mediaVersionId']);
     if (Object.hasOwn(post,'body') === Object.hasOwn(post,'blocks')) fail('Use exactly one structured article body.');
     if (post.author !== undefined) text(post.author, 80, 'Author', true);
     if (post.reviewOnly !== undefined && typeof post.reviewOnly !== 'boolean') fail('Invalid content provenance.');
+    if (post.mediaVersionId !== undefined && post.mediaVersionId !== '' && (typeof post.mediaVersionId!=='string'||!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(post.mediaVersionId))) fail('Choose a valid private farm photograph.');
     text(post.id, 80, 'Article ID'); revision(post.revision);
     if (ids.has(post.id)) fail('Article IDs must be unique.'); ids.add(post.id);
     if (!['draft', 'published'].includes(post.status)) fail('Choose an explicit draft or published sample state.');

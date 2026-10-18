@@ -7,26 +7,42 @@
     "build": "node scripts/build.mjs",
     "dev": "npm run editor:build && node scripts/serve.mjs",
     "preview": "node scripts/serve.mjs --production",
-    "check": "npm run editor:build && node --test tests/*.test.mjs",
-    "editor:build": "node scripts/build-editor.mjs"
+    "check": "npm run editor:build && node --test --test-concurrency=1 tests/*.test.mjs",
+    "editor:build": "node scripts/build-editor.mjs",
+    "check:admin:unit": "node --test --test-concurrency=1 tests/admin/*.test.mjs",
+    "admin:test-first-admin": "node --test tests/admin/first-admin*.test.mjs",
+    "admin:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "admin:dev-acceptance": "node scripts/serve-first-admin-fixtures.mjs",
+    "hosting:check": "node scripts/check-hosting.mjs",
+    "hosting:check-runtime": "node scripts/check-hosting-runtime.mjs",
+    "hosting:build": "node scripts/build-hosting.mjs",
+    "admin:inspect": "node --env-file=.env.admin scripts/inspect-hosted-project.mjs",
+    "admin:configure-storage": "node --env-file=.env.admin scripts/configure-photo-storage.mjs",
+    "admin:test-session-access": "node --env-file=.env.admin scripts/check-session-access.mjs",
+    "admin:test-reauth-access": "node --env-file=.env.admin scripts/check-reauthentication-access.mjs",
+    "admin:test-stage2-access": "node --env-file=.env.admin scripts/check-stage2-command-access.mjs",
+    "admin:test-stage2-access:unit": "node --test tests/admin/stage2-access-probe.test.mjs tests/admin/stage2-storage-access-probe.test.mjs",
+    "admin:test-stage2-storage-access": "node --env-file=.env.admin scripts/check-stage2-storage-access.mjs",
+    "admin:test-stage2-nonmember-access": "node --env-file=.env.admin scripts/check-stage2-nonmember-access.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
     "@tiptap/core": "^3.0.0",
-    "@tiptap/pm": "^3.0.0",
+    "@tiptap/extension-bullet-list": "^3.0.0",
     "@tiptap/extension-document": "^3.0.0",
+    "@tiptap/extension-heading": "^3.0.0",
+    "@tiptap/extension-link": "^3.0.0",
+    "@tiptap/extension-list-item": "^3.0.0",
+    "@tiptap/extension-ordered-list": "^3.0.0",
     "@tiptap/extension-paragraph": "^3.0.0",
     "@tiptap/extension-text": "^3.0.0",
-    "@tiptap/extension-heading": "^3.0.0",
-    "@tiptap/extension-bullet-list": "^3.0.0",
-    "@tiptap/extension-ordered-list": "^3.0.0",
-    "@tiptap/extension-list-item": "^3.0.0",
-    "@tiptap/extension-link": "^3.0.0",
-    "@tiptap/extensions": "^3.0.0"
+    "@tiptap/extensions": "^3.0.0",
+    "@tiptap/pm": "^3.0.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.3",
     "esbuild": ">=0.25.0 <1"
   }
 }

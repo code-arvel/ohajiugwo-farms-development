@@ -1,0 +1,8 @@
+# Browser session integration — local Stage 2 continuation
+
+Owner authorises the next local task in sequence 2 after session HTTP integration. Reuse the approved centred form styling and existing shared logo without changing acceptance/public/editor files. No dependency installation, migrations, credential reads, hosted actions or production enablement.
+
+1. Failing controller/route tests: explicit sign-in and logout, generic validation/errors, duplicate submission and pagehide handling, lost logout response recovery, strict fixed redirects and authenticated protected page access.
+2. Implement browser controller and injected page/router factory. Login/password and CSRF stay in memory only; provider credentials never enter page or browser storage. Protected page checks the existing session service before returning HTML. It is a minimal session confirmation/sign-out surface, not an unlocked editor or dashboard. Keep all production routes closed. Existing acceptance CSS is reused as a read-only asset; new message styling is scoped to session pages.
+3. Add loopback-only mocked browser fixtures and real Chrome checks for sign-in, failed credentials, no-member/revoked access, logout/retry, keyboard submission, mobile fit and private transport. Run relevant regressions/build checks because these are new authentication pages and routes. A separate read-only review checks security boundaries.
+4. Record fresh local results and pending manual/hosted verification separately. Owner's 200% acceptance result is visual only. Next lifecycle/editor/media work remains unfinished; real provider/HTTPS/mail and enabling live routes require separately approved verification.

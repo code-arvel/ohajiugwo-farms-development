@@ -1,0 +1,19 @@
+# Session HTTP integration — local, injected and disabled in production
+
+This is the next local Stage 2 slice after the owner visually approved the centred acceptance screen. It adds no UI and does not enable real sign-in. `server/handler.mjs` still returns private 503 responses for all administrator routes, including these API paths. The bootstrap executable remains blocked. No real identity, mail, SMTP/provider setting or migration operation is involved.
+
+`createSessionHandler(config, {service, now, getClientIp})` in `server/auth/session-http.mjs` wraps the existing `createAuthService` using injected dependencies:
+
+| Route | Method | Local contract |
+| --- | --- | --- |
+| `/admin/api/login` | GET | Anonymous CSRF context only: random token in JSON, encrypted ten-minute HttpOnly/host-only cookie scoped to this route. Secure on HTTPS. No provider call. |
+| `/admin/api/login` | POST | Same-origin JSON `{email,password}`, encrypted context cookie and matching `x-csrf-token`. Existing service applies durable attempt limits and verifies recipient/membership. Success returns only `{user:{id,email},csrfToken}`, sets a fresh opaque application-session cookie and clears the login-context cookie. No redirects or provider tokens are returned. |
+| `/admin/api/session` | GET | Existing service checks live session/membership and provider identity, refreshing under its lease when necessary. JSON is explicitly projected to user/CSRF only. No protected content is served by this slice. |
+| `/admin/api/logout` | POST | Same-origin JSON `{}` and `x-csrf-token`. Existing live sessions require their matching token. App revocation precedes provider cleanup; cleanup failure returns `signedOut:true` plus `providerCleanupPending:true`. Failed app revocation returns 503 without clearing the cookie or claiming success. An already-ended session can clear its stale cookie. |
+| `/admin/api/reauthenticate` | POST | Local-only password confirmation/rotation; needs prepared migration 004 before hosted use. See REAUTHENTICATION-LOCAL.md for staging, expiry and unresolved recovery gates. No browser confirmation UI or production enablement yet. |
+
+All responses are private/no-store/noindex/no-referrer. Unknown paths, wrong methods, queries, cross-origin/site requests, non-JSON, malformed/unknown fields and bodies over 4096 bytes fail closed. The body limit is enforced while reading, even without Content-Length. Sign-in failures are generic; provider/database messages are not exposed. A trusted transport must supply the client IP; forwarded browser headers are not trusted by this factory. HTTPS cookie attributes are asserted locally, not proven in a hosted browser.
+
+Run `node --test tests/admin/session-http.test.mjs` or `npm run check:admin:unit`. These tests use the real service plus isolated in-memory RPC/provider fixtures, including a real temporary loopback HTTP server for cookie/header transport. They load no `.env.admin`, send no mail and make no hosted requests. SQL membership, timeout/lease/concurrency enforcement and real provider wire behaviour are not established by these fixtures.
+
+The next browser sign-in/logout and protected session-route slice is now locally implemented and tested: see [SESSION-BROWSER-LOCAL.md](SESSION-BROWSER-LOCAL.md). Production remains closed and protected editing does not exist yet. Remaining local work includes account lifecycle/recovery/cleanup/content/media. Preserve the acceptance form/public/editor styles. The owner reports the acceptance form looks good at 200% zoom; this is visual only, with screen-reader, visible-focus and unconfirmed keyboard/mobile checks pending. Before real setup, separately authorise and verify hosted Auth/provider recovery, HTTPS cookies/CSRF, DB/Storage old-JWT permissions and concurrency; email delivery/sender selection remain deferred.

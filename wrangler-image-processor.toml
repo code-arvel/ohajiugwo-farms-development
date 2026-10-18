@@ -1,0 +1,7 @@
+# Separate internal-only development Worker. Deployment and binding activation require owner approval.
+name = "ohajiugwo-image-processor-development"
+main = "hosting/image-processor-worker.mjs"
+compatibility_date = "2025-01-01"
+workers_dev = false
+[images]
+binding = "IMAGES"
