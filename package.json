@@ -11,7 +11,7 @@
     "editor:build": "node scripts/build-editor.mjs",
     "check:admin:unit": "node --test --test-concurrency=1 tests/admin/*.test.mjs",
     "admin:test-first-admin": "node --test tests/admin/first-admin*.test.mjs",
-    "admin:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "admin:bootstrap": "node --env-file=.env.admin scripts/bootstrap-admin.mjs",
     "admin:dev-acceptance": "node scripts/serve-first-admin-fixtures.mjs",
     "hosting:check": "node scripts/check-hosting.mjs",
     "hosting:check-runtime": "node scripts/check-hosting-runtime.mjs",

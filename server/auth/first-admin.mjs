@@ -14,20 +14,21 @@ const emailAddress=value=>{
  if(!/^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/.test(email))throw deny();
  return email;
 };
-function summary(row,now){
+function summary(row,now,delivery){
  let state=row.state;
- if(['queued','sent'].includes(state))state=Date.parse(row.expires_at)<=now?'expired':row.issue_state==='review'?'needs_review':row.issue_state==='ready'?'ready_for_delivery':'pending';
+ if(['queued','sent'].includes(state))state=Date.parse(row.expires_at)<=now?'expired':row.issue_state==='review'?'needs_review':row.issue_state==='ready'?(delivery==='supabase-email'?'sent_to_provider':'ready_for_delivery'):'pending';
  return {id:row.id,state,generation:row.generation,expiresAt:row.expires_at};
 }
-// This service never sends mail or grants an app session. Its RPCs must be service-only.
-// Real provider calls are possible only for the explicit server caller; CLI/production routes stay closed.
-export function createFirstAdminService(config,{provider,rpc,now=Date.now,effects,verifyLink,operations={}}){
+// Mail is possible only through the injected, explicitly gated maintainer adapter; this service never returns links or grants an app session.
+// Its RPCs must be service-only. Production first-admin issue routes do not exist.
+export function createFirstAdminService(config,{provider,rpc,now=Date.now,effects,verifyLink,sendInvite,operations={}}){
  const verifyProviderLink=verifyLink||((tokenHash)=>provider.verifyInvite(tokenHash));
  const effectOperations={verify:'invite_verify',refresh:'invite_refresh',proof:'password_proof',...operations};
  async function guarded(work){
   try{return await work();}catch(error){if(error instanceof FirstAdminError)throw error;throw new FirstAdminError(503);}
  }
  async function read(id){if(!uuid.test(id||''))throw deny();const row=await rpc('farm_bootstrap_read',{p_id:id});if(!row)throw deny();return row;}
+ async function safeSummary(row){let delivery;try{if(row.encrypted_invite)delivery=(await unseal(row.encrypted_invite,config.sessionKey,aad(row))).delivery;}catch{}return summary(row,now(),delivery);}
  async function release(id,owner){try{await rpc('farm_bootstrap_release',{p_id:id,p_owner:owner});}catch{/* Lease expires in the DB. Never hide the original outcome. */}}
  async function verified(tokens,row){
   if(typeof tokens?.access_token!=='string'||!tokens.access_token||typeof tokens.refresh_token!=='string'||!tokens.refresh_token)throw deny();
@@ -55,15 +56,27 @@ export function createFirstAdminService(config,{provider,rpc,now=Date.now,effect
   const row=await rpc('farm_bootstrap_claim',{p_id:id,p_owner:owner,p_phase:'issue',p_nonce_hash:null});
   if(!row)throw deny();
   try{
-   if(row.issue_state==='ready')return summary(row,now());
-   const generated=await provider.generateInvite(row.recipient_email);
-   if(!uuid.test(generated?.user?.id||'')||generated.user.email?.toLowerCase()!==row.recipient_email||!providerHash.test(generated.tokenHash||''))throw deny();
-   const encrypted=await seal({tokenHash:generated.tokenHash},config.sessionKey,aad(row));
-   if(await rpc('farm_bootstrap_issue_finish',{p_id:id,p_owner:owner,p_user_id:generated.user.id,p_encrypted_invite:encrypted})!==true)throw deny();
-   return summary({...row,issue_state:'ready'},now());
+   if(row.issue_state==='ready')return safeSummary(row);
+   let invited,encrypted;
+   if(sendInvite){
+    // The provider's invite template appends {{ .TokenHash }} to this fragment.
+    // Keeping the unpredictable app nonce in the redirect binds the provider link
+    // to this exact pending invitation without returning a bearer link to the CLI.
+    const saved=await unseal(row.encrypted_nonce,config.sessionKey,row.nonce_hash);
+    const redirect=`${config.origin}/admin/accept#id=${encodeURIComponent(id)}&nonce=${encodeURIComponent(saved.nonce)}`;
+    invited=await sendInvite(row.recipient_email,redirect);
+    if(!uuid.test(invited?.user?.id||'')||invited.user.email?.toLowerCase()!==row.recipient_email)throw deny();
+    encrypted=await seal({delivery:'supabase-email'},config.sessionKey,aad(row));
+   }else{
+    invited=await provider.generateInvite(row.recipient_email);
+    if(!uuid.test(invited?.user?.id||'')||invited.user.email?.toLowerCase()!==row.recipient_email||!providerHash.test(invited.tokenHash||''))throw deny();
+    encrypted=await seal({tokenHash:invited.tokenHash},config.sessionKey,aad(row));
+   }
+   if(await rpc('farm_bootstrap_issue_finish',{p_id:id,p_owner:owner,p_user_id:invited.user.id,p_encrypted_invite:encrypted})!==true)throw deny();
+   return summary({...row,issue_state:'ready'},now(),sendInvite?'supabase-email':undefined);
   }finally{await release(id,owner);}
  });
- const status=id=>guarded(async()=>summary(await read(id),now()));
+ const status=id=>guarded(async()=>safeSummary(await read(id)));
  const cancel=id=>guarded(async()=>{
   if(!uuid.test(id||'')||await rpc('farm_bootstrap_cancel',{p_id:id})!==true)throw deny();
   return {cancelled:true};
@@ -91,7 +104,9 @@ export function createFirstAdminService(config,{provider,rpc,now=Date.now,effect
   }
   try{
    const expected=await unseal(row.encrypted_invite,config.sessionKey,aad(row));
-   if(expected.tokenHash!==tokenHash)throw deny();
+   if(expected.delivery==='supabase-email'){
+    if(!provider.verifyInvite||!row.user_id)throw deny();
+   }else if(expected.tokenHash!==tokenHash)throw deny();
    if(row.encrypted_credentials)progress=await unseal(row.encrypted_credentials,config.sessionKey,aad(row));
    else{
     const item=await begin(effectOperations.verify),invite=await verifyProviderLink(tokenHash);await capture(item,invite);

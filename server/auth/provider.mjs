@@ -22,6 +22,15 @@ export function createHostedAuthProvider(config,{fetchImpl=fetch}={}){
    if(result?.verification_type!=='invite'||typeof result.hashed_token!=='string')throw new AuthError('Invitation response could not be verified.',503);
    return {user:{id:result.id,email:result.email},tokenHash:result.hashed_token};
   },
+  // Unlike generateInvite, this endpoint sends through Supabase Auth's configured
+  // sender. The email template must append {{ .TokenHash }} to {{ .RedirectTo }};
+  // it never returns the action link or token to this process.
+  inviteUserByEmail:async(email,redirectTo)=>{
+   const result=await request('/auth/v1/invite?redirect_to='+encodeURIComponent(redirectTo),{privileged:true,body:{email}});
+   const user=result?.user||result;
+   if(!user||typeof user.id!=='string'||typeof user.email!=='string')throw new AuthError('Invitation response could not be verified.',503);
+   return {user:{id:user.id,email:user.email}};
+  },
   generateRecovery:async email=>{
    const redirect=config.origin+'/admin/accept';
    const result=await request('/auth/v1/admin/generate_link?redirect_to='+encodeURIComponent(redirect),{privileged:true,body:{type:'recovery',email}});

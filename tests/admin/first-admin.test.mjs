@@ -14,6 +14,14 @@ test('bootstrap stays pending until verified password completion and activation 
  await assert.rejects(()=>s.accept(input));assert.equal(h.calls.filter(x=>x==='verifyInvite').length,1);
  assert.ok(!JSON.stringify(result).includes('private-'));assert.ok(!JSON.stringify(result).includes(input.nonce));
 });
+test('built-in email delivery accepts only the invite verified for the reserved recipient and activates once',async()=>{
+ const h=fixture(),s=module.createFirstAdminService(h.config,{provider:h.provider,rpc:h.rpc,now:h.clock,sendInvite:async(email,redirectTo)=>{
+  assert.equal(email,h.user.email);assert.match(redirectTo,new RegExp('^'+h.config.origin.replaceAll('.','\\.')+'/admin/accept#id='));
+  return {user:{id:h.user.id,email:h.user.email}};
+ }});
+ const pending=await s.prepare(h.user.email);await s.issue(pending.id);
+ const input=await h.inputs();assert.equal((await s.accept(input)).activated,true);assert.equal(h.member,'active');
+});
 test('duplicate or closed bootstrap stops before provider effects',async()=>{
  const h=fixture(),s=service(h);await s.prepare('owner@example.test');await assert.rejects(()=>s.prepare('owner@example.test'));
  h.setActive(1);await assert.rejects(()=>s.prepare('owner@example.test'));assert.ok(!h.calls.includes('generateInvite'));
