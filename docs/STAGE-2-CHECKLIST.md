@@ -2,7 +2,7 @@
 
 Updated 18 October 2026. This is the one current checklist; older handoff entries are historical checkpoints. Local tests, owner-run hosted SQL, hosted HTTP probes and real provider/browser/email evidence are separate layers.
 
-The owner authorizes GitHub publication and full Free hosting setup, and explicitly requested that development gates be opened. The existing GitHub repository `code-arvel/ohajiugwo-farms-development` is public; `stage-2-secure-content` is pushed and is now its default branch. Preview runtime secrets/features are configured; production remains undeployed because the app only implements `hosted-development` and the public content is still a review preview. Do not repeat successful migrations 001–009. Keep public signup disabled; SMTP sender selection remains deferred; no account or email operation is performed just by deploying. Preserve the approved website, Blog, editor and acceptance presentation, and preserve `.env.admin` and its session key.
+The owner authorizes GitHub publication and full Free hosting setup, and explicitly requested that development gates be opened. The existing GitHub repository `code-arvel/ohajiugwo-farms-development` is public; `main` is the default branch, and `stage-2-secure-content` is pushed separately. Preview runtime secrets/features are configured; production remains undeployed because the app only implements `hosted-development` and the public content is still a review preview. Do not repeat successful migrations 001–009. Keep public signup disabled; SMTP sender selection remains deferred; no account or email operation is performed just by deploying. Preserve the approved website, Blog, editor and acceptance presentation, and preserve `.env.admin` and its session key.
 
 | Requirement | Local implementation and evidence | Hosted evidence / remaining gate |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ The owner authorizes GitHub publication and full Free hosting setup, and explici
 
 ## Next required gates
 
-1. Verify the existing repository's GitHub visibility with the owner (it is currently public), then connect it to Cloudflare Pages only after confirming deployment/environment scoping. Configure `stage-2-secure-content` for preview deployment without triggering a production release. The source branch is already pushed; do not recreate the repository.
+1. Verify the existing repository's GitHub visibility with the owner (it is currently public), then connect it to Cloudflare Pages only after confirming deployment/environment scoping. Configure `stage-2-secure-content` for preview deployment without triggering a production release. The source branch is already pushed; `main` remains the default; do not recreate the repository.
 2. No farm administrator exists. Verify app-session HTTP/cookies, provider login, active-member content saves, old-JWT revocation and account lifecycle with the real first farm administrator once that real account is created; local mocks and the hosted non-member denial do not substitute.
 3. Exercise the deployed Images binding with an authenticated member, including upload/private preview/delete and used-media protection. Verify cleanup reconciliation, worker execution, cross-session concurrency and recovery. Cleanup schedules are not active yet.
 4. Bootstrap/invitation/reset email delivery remains unverified; SMTP sender selection is deferred. Do not claim mail delivery from the provider link-generation or preview deployment checks.
