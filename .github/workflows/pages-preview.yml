@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - stage-2-secure-content
+    # Docs do not affect the hosting artifact; avoid redundant Preview deployments.
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'design-system/**'
   workflow_dispatch:
 
 permissions:
