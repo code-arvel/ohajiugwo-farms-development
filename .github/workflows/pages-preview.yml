@@ -1,0 +1,66 @@
+name: Stage 2 Pages preview
+
+on:
+  push:
+    branches:
+      - stage-2-secure-content
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ohajiugwo-stage-2-pages-preview
+  cancel-in-progress: false
+
+jobs:
+  deploy-preview:
+    if: github.ref == 'refs/heads/stage-2-secure-content'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Stage 2
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run Stage 2 administrator tests sequentially
+        run: npm run check:admin:unit
+
+      - name: Run public and editor regression tests
+        run: npm run check
+
+      - name: Check hosting composition
+        run: npm run hosting:check
+
+      - name: Build the unindexed development preview
+        run: npm run hosting:build
+
+      - name: Check Cloudflare deployment credentials
+        id: cloudflare-credentials
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [[ -n "$CLOUDFLARE_API_TOKEN" && -n "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Preview deployment skipped; add the two Cloudflare Actions secrets to enable it."
+          fi
+
+      - name: Deploy only to the Stage 2 Preview branch
+        if: steps.cloudflare-credentials.outputs.configured == 'true'
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: 4.151.1
+          command: pages deploy hosting-output --project-name=ohajiugwo-farms-development --branch=stage2-preview
