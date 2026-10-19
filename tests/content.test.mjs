@@ -40,7 +40,7 @@ test('article validation rejects unsafe or duplicate routes, unsupported blocks 
   }
 });
 
-test('rendered articles escape text and have distinct metadata and correct shared links', () => {
+test('rendered articles escape text, use correct shared links and omit the blog footer email', () => {
   const posts = clone(samplePosts); posts[0].blocks[0].text = '<script>alert("x")</script>';
   const html = blogArticle(posts[0]);
   assert.ok(html.includes('&lt;script&gt;'));
@@ -48,7 +48,7 @@ test('rendered articles escape text and have distinct metadata and correct share
   assert.match(html, /href="\/#products"/);
   assert.match(html, /href="\/blog\/" aria-current="page"/);
   assert.match(html, /href="\/styles.css"/);
-  assert.match(html, /href="mailto:ohajiugwochimeziebibi@gmail.com"/);
+  assert.ok(!html.includes('blog-footer-email'));
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
   assert.notEqual(html.match(/<title>(.*?)<\/title>/)[1], blogListing([]).match(/<title>(.*?)<\/title>/)[1]);
   assert.match(blogListing([]), /No articles published yet/);
@@ -71,7 +71,7 @@ test('structured company edits consistently update the existing slots without ne
   const html = home(data);
   assert.match(html, /Local Sample Farms Ltd is a sustainable agricultural enterprise/);
   assert.match(html, /7-hectare farmland at Local sample farmland/);
-  assert.match(html, /<strong>7 <span>hectares/);
+  assert.ok(!html.includes('land-note'));
   assert.match(html, /7 hectares, cultivated with care/);
   for (const value of data.company.values) assert.ok(html.includes(value));
   assert.ok(!html.includes('ohajiugwochimeziebibi@gmail.com'));
@@ -86,7 +86,7 @@ test('build cleanup only accepts its generated output and allocated temporary bu
   assert.equal(resolveBuildOutput(path.join(tmpdir(), 'ohajiugwo-build-example')), path.join(tmpdir(), 'ohajiugwo-build-example'));
 });
 
-test('approved homepage markup and styling remain preserved except authorised navbar and section focus updates', async () => {
+test('approved homepage markup and styling remain preserved with the approved story overlay removal', async () => {
   const baseline = readFileSync('tests/fixtures/approved-homepage.mjs', 'utf8');
   const asModule = source => `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
   const shared = asModule(readFileSync('tests/fixtures/approved-shared.mjs', 'utf8').replace("'../config/company.mjs'", `'${new URL('../src/config/company.mjs', import.meta.url).href}'`));
@@ -94,8 +94,8 @@ test('approved homepage markup and styling remain preserved except authorised na
   const importable = baseline.replace(/from '(\.\.\/[^']+)'/g, (_, relative) => `from '${relative === '../layouts/page.mjs' ? layout : relative === '../components/shared.mjs' ? shared : new URL(relative, new URL('../src/pages/home.mjs', import.meta.url)).href}'`);
   const approved = await import(`data:text/javascript;base64,${Buffer.from(importable).toString('base64')}`);
   // The original shared header reads today's nav, so this allows precisely the new Blog link.
-  // Authorised shared navbar/footer logo markup, logo CSS and no-JS fallback only.
-  const withoutNavbar=html=>html.replace(/<header class="site-header">[\s\S]*?<\/header>/,'<header class="site-header"></header>').replace('<link rel="stylesheet" href="/logo.css">','').replace('<link rel="stylesheet" href="/navbar.css">','').replace(/(<div class="footer-main">)<a\b[\s\S]*?<\/a>/,'$1<!-- shared logo -->').replace('.site-header{flex-wrap:wrap;position:static}', '.site-header{flex-wrap:wrap}').replaceAll('&amp;', '&').replace(/<div class="topline">[\s\S]*?<\/div>/, '<!-- information strip, checked separately -->');
+  // Approved navbar/logo updates, focus styling, information strip and story overlay removal.
+  const withoutNavbar=html=>html.replace(/<header class="site-header">[\s\S]*?<\/header>/,'<header class="site-header"></header>').replace('<link rel="stylesheet" href="/logo.css">','').replace('<link rel="stylesheet" href="/navbar.css">','').replace(/(<div class="footer-main">)<a\b[\s\S]*?<\/a>/,'$1<!-- shared logo -->').replace('.site-header{flex-wrap:wrap;position:static}', '.site-header{flex-wrap:wrap}').replace(/<div class="land-note">[\s\S]*?<\/div>/, '').replaceAll('&amp;', '&').replace(/<div class="topline">[\s\S]*?<\/div>/, '<!-- information strip, checked separately -->');
   assert.equal(withoutNavbar(home()),withoutNavbar(approved.home()));
   const baselineCss=readFileSync('tests/fixtures/approved-main.css','utf8');
   assert.equal(createHash('sha256').update(baselineCss).digest('hex'), '8b23b08626ebeb5eab750dbd518c250b9a4ce099f78ee29f80f3e4a8daf43375');

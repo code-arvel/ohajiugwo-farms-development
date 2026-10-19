@@ -55,7 +55,7 @@ test('articles omit unsupplied authors and sales panels, and suggest only other 
   assert.ok(related.includes('planning-for-seasonal-produce'));
   assert.ok(!related.includes('getting-to-know-your-soil'));
   assert.ok(!related.includes('unpublished-sample'));
-  assert.match(html,/mailto:ohajiugwochimeziebibi@gmail.com/);
+  assert.ok(!html.includes('blog-footer-email'));
   assert.match(blogArticle({...samplePosts[0],author:'Supplied Writer'}),/Supplied Writer/);
 });
 

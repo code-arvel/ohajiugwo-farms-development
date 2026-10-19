@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { home } from '../src/pages/home.mjs';
 import { company, navigation } from '../src/config/company.mjs';
-import { emailButton, escapeHtml } from '../src/components/shared.mjs';
+import { emailButton, escapeHtml, footer } from '../src/components/shared.mjs';
 import { pages as allPages } from '../src/pages/index.mjs';
 const pages = allPages.filter(page => page.path === 'index.html');
 import { readFileSync, readdirSync } from 'node:fs';
@@ -69,6 +69,21 @@ test('all real mail links use the supplied email and each page offers email enqu
     assert.ok(!html.includes('Company email to be supplied'), path);
     assert.ok(!/<form\b|href="tel:|wa\.me|api\.whatsapp|type="password"/i.test(html), path);
   }
+});
+
+test('the blog and landing footers do not display the company email', () => {
+  for (const html of [footer(true), footer(false)]) {
+    assert.ok(!html.includes(`mailto:${company.email}`));
+    assert.ok(!html.includes(company.email));
+    assert.ok(html.includes('footer-bottom'));
+  }
+});
+
+test('the Abia story keeps its image and copy without the acreage overlay', () => {
+  const html = home();
+  assert.match(html, /class="story-art"><figure><img/);
+  assert.match(html, /Proudly rooted<br>in <em>Abia State\.<\/em>/);
+  assert.ok(!html.includes('class="land-note"'));
 });
 
 test('clearing the email never creates a fake address on any page', () => {

@@ -84,11 +84,6 @@ export function footer(onBlog = false, profile = company) {
   const company = profile;
   const html = `<footer class="site-footer"><div class="footer-main">${logo({ href: "#home", profile: company, className: "footer-brand", variant: "white" })}<p>Good food. Living soil.<br>A future we grow together.</p><div class="footer-links"><a href="#products">Our products</a><a href="#services">Services & training</a><a href="#contact">Contact the farm</a></div></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ${escapeHtml(company.displayName)}. All rights reserved.</span><a href="#home">Back to top ↑</a></div></footer>`;
   return onBlog
-    ? html
-        .replaceAll('href="#', 'href="/#')
-        .replace(
-          '<div class="footer-bottom">',
-          `${company.email ? `<div class="blog-footer-email">${icon("mail")}<a href="mailto:${escapeHtml(company.email)}">${escapeHtml(company.email)}</a></div>` : ""}<div class="footer-bottom">`,
-        )
+    ? html.replaceAll('href="#', 'href="/#')
     : html;
 }
