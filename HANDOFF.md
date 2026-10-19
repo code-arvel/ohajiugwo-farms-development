@@ -1,8 +1,8 @@
 # Ohajiugwo Organic Farms Ltd — handoff
 
-## 19 October — Gmail SMTP saved; Invite User template pending
+## 19 October — Gmail SMTP and Invite User template saved; SMTP enablement pending
 
-The owner selected Gmail SMTP using `jackdarzel@gmail.com` and identifies it as their account. The owner reports Google 2-Step Verification is on, created a dedicated Google App Password, saved Gmail SMTP settings in Supabase, and added the exact Preview acceptance URL to the Auth redirect allowlist. The App Password was not shared or recorded. Custom SMTP enablement and the Invite User template's editability/content remain unconfirmed. No test email or invitation was sent, and SMTP delivery has not been verified. Next, confirm custom SMTP is enabled and update only the Invite User link target to `{{ .RedirectTo }}&amp;token_hash={{ .TokenHash }}`. See [SMTP owner steps](docs/SMTP-SETUP-OWNER-STEPS.md), [Google App Password instructions](https://support.google.com/accounts/answer/185833), and [Google SMTP settings](https://support.google.com/mail/answer/7104828).
+The owner selected Gmail SMTP using `jackdarzel@gmail.com` and identifies it as their account. The owner reports Google 2-Step Verification is on, created a dedicated Google App Password, saved Gmail SMTP settings in Supabase, and added the exact Preview acceptance URL to the Auth redirect allowlist. The App Password was not shared or recorded. The owner reports the Invite User link target was saved as `{{ .RedirectTo }}&amp;token_hash={{ .TokenHash }}`. Whether custom SMTP is enabled remains unconfirmed. No test email or invitation was sent, and SMTP delivery has not been verified. Next, confirm custom SMTP is enabled; then continue with the previously approved single first-admin invitation. See [SMTP owner steps](docs/SMTP-SETUP-OWNER-STEPS.md), [Google App Password instructions](https://support.google.com/accounts/answer/185833), and [Google SMTP settings](https://support.google.com/mail/answer/7104828).
 
 ## 19 October — owner-approved public website content edits
 
