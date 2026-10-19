@@ -4,7 +4,7 @@ Updated 19 October 2026. This is a preparation guide; it records no provider acc
 
 ## Current status
 
-The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, which they identify as their account. The owner reports Google 2-Step Verification is off, no App Password has been created, and no SMTP settings or emails have changed. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction. Supabase's current custom-SMTP guide says the built-in sender only delivers to addresses on the project's organisation team, with a current limit of two messages per hour and no delivery SLA. The intended recipient is owner-reported as an organisation member, so the default sender may accept that address; however, it cannot use the customized fragment-based one-time link this app requires. Eligibility to receive a default email does not make the secure acceptance flow ready.
+The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, which they identify as their account. The owner reports Google 2-Step Verification is on; no App Password has been created, and no SMTP settings or emails have changed. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction. Supabase's current custom-SMTP guide says the built-in sender only delivers to addresses on the project's organisation team, with a current limit of two messages per hour and no delivery SLA. The intended recipient is owner-reported as an organisation member, so the default sender may accept that address; however, it cannot use the customized fragment-based one-time link this app requires. Eligibility to receive a default email does not make the secure acceptance flow ready.
 
 The website's public contact remains `ohajiugwochimeziebibi@gmail.com`; the selected SMTP sender is the separate `jackdarzel@gmail.com`. Messages will show that Gmail address as the sender, with a farm display name if configured. No farm-owned sending domain is needed for the selected Gmail route.
 
@@ -19,8 +19,8 @@ Resend's `onboarding@resend.dev` example/test sender is not evidence that a real
 
 ### Selected route: Gmail SMTP
 
-1. In the owner's Google Account, confirm the mailbox is `jackdarzel@gmail.com` and turn on 2-Step Verification.
-2. Open **Google Account → Security → App passwords**. If that option is unavailable, stop; Google documents reasons such as security-key-only 2-Step Verification, Advanced Protection or a managed account.
+1. In the owner's Google Account, confirm the mailbox is `jackdarzel@gmail.com` and 2-Step Verification is on.
+2. Open [Google App passwords](https://myaccount.google.com/apppasswords) and sign in if prompted. If the option is unavailable, stop; Google documents reasons such as security-key-only 2-Step Verification, Advanced Protection or a managed account.
 3. The owner creates a distinct App Password for Supabase Auth and keeps it private. Do not paste it into chat, shell commands, GitHub, source files or this runbook. It can be revoked in Google Account settings; changing the Google Account password also revokes App Passwords.
 4. In Supabase SMTP settings use host `smtp.gmail.com`, port `465` with SSL (or `587` with TLS), username and From address `jackdarzel@gmail.com`, the App Password as the password, and sender name `Ohajiugwo Organic Farms Ltd`. Google documents these host/port combinations; the owner enters the App Password directly into Supabase.
 
