@@ -6,7 +6,7 @@ The owner selected Gmail SMTP using `jackdarzel@gmail.com` and identifies it as 
 
 ## 19 October — owner-approved public website content edits
 
-Removed the company email row from the Blog footer and removed the hectares callout overlay from the “Proudly rooted in Abia State” section. The landing-page footer, image, and section copy remain. Local verification: `npm run build` succeeded and `npm run check` passed all 53 tests. These are local results only; no deployment occurred. `src/pages/home.mjs` already had unrelated uncommitted formatting edits before this request, which were preserved.
+Removed the company email row from the Blog footer and removed the hectares callout overlay from the “Proudly rooted in Abia State” section. The landing-page footer, image, and section copy remain. Local verification: `npm run build` succeeded and `npm run check` passed all 53 tests. The Stage 2 Preview workflow [39212832300](https://github.com/code-arvel/ohajiugwo-farms-development/actions/runs/39212832300) passed and deployed only to Preview. Hosted Preview checks returned HTTP 200 for `/` and `/blog/`; the homepage image remains, the hectares overlay is absent, and the Blog footer email is absent. Production was not deployed. `src/pages/home.mjs` already had unrelated uncommitted formatting edits before this request; those were preserved locally and excluded from the content commit.
 
 ## 19 October — SMTP setup reopened; provider choice and owner credentials pending
 
