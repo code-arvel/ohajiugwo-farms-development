@@ -1,10 +1,10 @@
 # Supabase Auth SMTP setup — owner runbook
 
-Updated 19 October 2026. This is a preparation guide; it records no provider account, SMTP credential, DNS record or Supabase setting as configured.
+Updated 19 October 2026. This owner runbook records only owner-reported configuration status; it contains no SMTP credential or App Password value.
 
 ## Current status
 
-The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, which they identify as their account. The owner reports Google 2-Step Verification is on and a dedicated App Password has been created; its value was not shared or recorded. No SMTP settings or emails have changed. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction. Supabase's current custom-SMTP guide says the built-in sender only delivers to addresses on the project's organisation team, with a current limit of two messages per hour and no delivery SLA. The intended recipient is owner-reported as an organisation member, so the default sender may accept that address; however, it cannot use the customized fragment-based one-time link this app requires. Eligibility to receive a default email does not make the secure acceptance flow ready.
+The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, which they identify as their account. The owner reports Google 2-Step Verification is on, a dedicated App Password was created, and Gmail SMTP settings were saved in Supabase. The App Password was not shared or recorded. No test email or invitation was sent, and SMTP delivery has not been verified. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction. Supabase's current custom-SMTP guide says the built-in sender only delivers to addresses on the project's organisation team, with a current limit of two messages per hour and no delivery SLA. The intended recipient is owner-reported as an organisation member, so the default sender may accept that address; however, it cannot use the customized fragment-based one-time link this app requires. Eligibility to receive a default email does not make the secure acceptance flow ready.
 
 The website's public contact remains `ohajiugwochimeziebibi@gmail.com`; the selected SMTP sender is the separate `jackdarzel@gmail.com`. Messages will show that Gmail address as the sender, with a farm display name if configured. No farm-owned sending domain is needed for the selected Gmail route.
 
@@ -33,7 +33,7 @@ Resend's `onboarding@resend.dev` example/test sender is not evidence that a real
 
 ## Configure the existing Supabase project
 
-After choosing and preparing exactly one provider, the owner opens the existing `ohajiugwo-development` project and navigates to **Authentication → Settings → SMTP Settings** (dashboard labels can vary). Enable custom SMTP and enter the provider host, port, username, password, From address and sender name. Keep email confirmation enabled and do not enable public signup. Save the settings; do not send a test email yet.
+The owner reports saving Gmail SMTP in the existing `ohajiugwo-development` project. This is owner-reported configuration only; no SMTP test or email delivery has been verified. Keep email confirmation enabled and public signup disabled. Do not send a test email yet.
 
 Then:
 
