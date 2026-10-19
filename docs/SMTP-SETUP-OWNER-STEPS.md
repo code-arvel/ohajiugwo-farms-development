@@ -1,10 +1,10 @@
 # Supabase Auth SMTP setup — owner runbook
 
-Updated 18 October 2026. This is a preparation guide; it records no provider account, SMTP credential, DNS record or Supabase setting as configured.
+Updated 19 October 2026. This is a preparation guide; it records no provider account, SMTP credential, DNS record or Supabase setting as configured.
 
 ## Current status
 
-The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner reopened SMTP setup, but has not chosen a provider. No email has been sent. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction.
+The owner reports that `ohajiugwo-development` is a new Free project using Supabase's built-in email sender, and the Invite User email template is read-only. The owner reopened SMTP setup, but has not chosen a provider. No email has been sent. Supabase's Free-tier restriction for new projects means that custom Auth templates become editable after a custom SMTP provider is configured; do not upgrade the project to work around this restriction. Supabase's current custom-SMTP guide says the built-in sender only delivers to addresses on the project's organisation team, with a current limit of two messages per hour and no delivery SLA. The intended recipient is owner-reported as an organisation member, so the default sender may accept that address; however, it cannot use the customized fragment-based one-time link this app requires. Eligibility to receive a default email does not make the secure acceptance flow ready.
 
 The existing website contact is `ohajiugwochimeziebibi@gmail.com`; ownership and 2-Step Verification status are unconfirmed. No farm-owned sending domain is configured in the repository/hosting records. Choose one route before changing Supabase settings:
 
