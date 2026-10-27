@@ -1,6 +1,18 @@
 # Ohajiugwo Organic Farms Ltd — handoff
 
+## 27 October — remote Images provider and actual Preview-only binding scope verified
+
+GitHub Actions run [40537612472](https://github.com/code-arvel/ohajiugwo-farms-development/actions/runs/40537612472) for `a1a25ca` is now confirmed **completed/success**, including the sequential suites and Preview upload. This supersedes its earlier in-progress status; no replacement run was started.
+
+Previous turn made concrete progress by correcting invitation/reset lease-owner propagation and adding SQL/service integration coverage. The existing source/fix and the pending first-admin replacement-email approval were preserved. No new invitation/account/email was issued.
+
+Independently verified the actual Cloudflare Images service through a temporary remote development session, using the unchanged processor handler and a generated 32×16 PNG with dummy text metadata. The direct Wrangler request first hit the handler's internal-origin guard (404); a temporary development-only transport wrapper supplied the exact existing internal URL without changing production code. Real `IMAGES` processing returned 200 with two correctly bounded 70-byte WebP derivatives. Container parsing confirmed 32×16 output, expected VP8 chunks and absence of the dummy comment/EXIF/XMP/ICC chunks in this fixture; max-dimension 16 returned 16×8. Unsupported MIME and malformed bytes returned safe failures. Both dev sessions were stopped. This is **remote development provider evidence**, not proof of deployed authenticated media or universal metadata/animation handling. Cloudflare documents no usage charges for development Images calls; no paid action, Storage write, Supabase account/session, image deployment or production route change occurred. See [provider verification record](docs/IMAGES-PROVIDER-VERIFICATION.md).
+
+Read-only Cloudflare Pages API inspection resolved the prior service-binding scope uncertainty: `deployment_configs.preview.services.MEDIA_PROCESSOR` targets the existing internal processor; `production.services` is absent and production runtime variables are empty. Preview has the existing twelve variable names; values were not printed. Do not carry forward older statements that effective scope is unknown. Real member upload/preview/delete, cleanup/recovery/concurrency and account/session gates remain unverified.
+
 ## 27 October — additional-admin/reset progress mapping corrected locally; first-admin email still awaits approval
+
+Mapping fix commit `a1a25cad21c325b5eb393fa615b59f8f31f72ec5` is pushed to `stage-2-secure-content`. Its existing push-triggered workflow [40537612472](https://github.com/code-arvel/ohajiugwo-farms-development/actions/runs/40537612472) is confirmed **in progress**; poll this same run before claiming its Preview deployment or GitHub checks passed. No hosted account acceptance is inferred from CI. Unrelated homepage formatting remains local and excluded.
 
 The preceding goal turn made progress: fixed the confirmed Worker redirect transport failure, pushed `3142492`, verified the Preview dummy probe, and started CI. Fresh poll of the same GitHub Actions run [40536944410](https://github.com/code-arvel/ohajiugwo-farms-development/actions/runs/40536944410) now reports **completed/success**. This supersedes its earlier in-progress status; no replacement workflow was started. Owner approval for a replacement first-admin email has **not** arrived, so no new reservation, provider identity, invitation, reset, or email was issued.
 
