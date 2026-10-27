@@ -12,4 +12,23 @@ test('additional administrator acceptance reuses the password proof flow through
  assert.ok(calls.every(([,params])=>!JSON.stringify(params).includes('dummy-password-123')));
 });
 const row={lease_until:new Date(Date.now()+60000).toISOString()};
+test('lookup diagnostic reports only allowlisted failure metadata',async()=>{
+ const reports=[],failure=Object.assign(new Error('PRIVATE'),{status:503,failureKind:'transport',transportType:'TypeError'});
+ const service=mod.createInvitationAcceptanceService({sessionKey:'ab'.repeat(32)},{provider:{},rpc:async()=>{throw failure;},reportLookupFailure:report=>reports.push(report)});
+ await assert.rejects(service.accept({id:'PRIVATE'}));
+ assert.deepEqual(reports,[{event:'admin_acceptance_lookup_failed',upstreamStatus:503,failureKind:'transport',transportType:'TypeError'}]);
+});
+test('failed invitation lookup records only a safe upstream status and preserves the failure',async()=>{
+ const reports=[],failure=Object.assign(new Error('PRIVATE provider detail'),{status:401});
+ const service=mod.createInvitationAcceptanceService({sessionKey:'ab'.repeat(32)},{provider:{},rpc:async()=>{throw failure;},reportLookupFailure:report=>reports.push(report)});
+ await assert.rejects(service.accept({id:'PRIVATE invitation',password:'PRIVATE password'}),error=>error===failure);
+ assert.deepEqual(reports,[{event:'admin_acceptance_lookup_failed',upstreamStatus:401}]);
+ assert.ok(!JSON.stringify(reports).includes('PRIVATE'));
+});
+test('lookup diagnostics reject arbitrary error status text and cannot replace the original failure',async()=>{
+ const reports=[],failure=Object.assign(new Error('PRIVATE detail'),{status:'PRIVATE status'});
+ const service=mod.createInvitationAcceptanceService({sessionKey:'ab'.repeat(32)},{provider:{},rpc:async()=>{throw failure;},reportLookupFailure:report=>{reports.push(report);throw new Error('logger failure');}});
+ await assert.rejects(service.accept({id:'PRIVATE'}),error=>error===failure);
+ assert.deepEqual(reports,[{event:'admin_acceptance_lookup_failed',upstreamStatus:null}]);
+});
 async function awaitDigest(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));return btoa(String.fromCharCode(...new Uint8Array(bytes))).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');}

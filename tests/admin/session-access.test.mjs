@@ -4,7 +4,7 @@ const config={supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',publishable
 test('HTTP probe verifies service access and anonymous denial without bootstrap or account creation',async()=>{
  const calls=[];const report=await probeSessionCommandAccess(config,{fetchImpl:async(url,options)=>{calls.push({url,options});return options.headers.apikey===config.secretKey?new Response('null'):new Response('denied',{status:403});}});
  assert.equal(report.serviceCommandVerified,true);assert.equal(report.anonymousCommandDenied,true);
- assert.equal(calls.length,2);for(const call of calls){assert.match(call.url,/\/rpc\/farm_session_read$/);assert.equal(call.options.redirect,'error');assert.ok(!call.url.includes('sb_secret'));}
+ assert.equal(calls.length,2);for(const call of calls){assert.match(call.url,/\/rpc\/farm_session_read$/);assert.equal(call.options.redirect,'manual');assert.ok(!call.url.includes('sb_secret'));}
  assert.ok(!JSON.stringify(report).includes('sb_secret'));
 });
 test('anonymous success or an unavailable/missing server command cannot become a passing result',async()=>{

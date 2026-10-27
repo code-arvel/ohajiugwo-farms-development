@@ -7,7 +7,7 @@ export async function probeSessionCommandAccess(config,{fetchImpl=fetch}={}){
  const headers={apikey:config.publishableKey,'Content-Type':'application/json'};
  if(config.publishableKey.startsWith('eyJ'))headers.Authorization=`Bearer ${config.publishableKey}`;
  let response;
- try{response=await fetchImpl(config.supabaseUrl+'/rest/v1/rpc/farm_session_read',{method:'POST',headers,body:JSON.stringify(params),redirect:'error',signal:AbortSignal.timeout(12000)});}
+ try{response=await fetchImpl(config.supabaseUrl+'/rest/v1/rpc/farm_session_read',{method:'POST',headers,body:JSON.stringify(params),redirect:'manual',signal:AbortSignal.timeout(12000)});}
  catch{throw new Error('Anonymous command check could not connect; details withheld.');}
  // A 404 is a denial only because the identical service-role route was verified above.
  if(![401,403,404].includes(response.status))throw new Error('Anonymous command denial was not verified. Do not enable administrator routes.');

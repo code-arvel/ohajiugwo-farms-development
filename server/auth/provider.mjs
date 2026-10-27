@@ -7,9 +7,14 @@ export function createHostedAuthProvider(config,{fetchImpl=fetch}={}){
   else if(key.startsWith('eyJ'))headers.Authorization=`Bearer ${key}`;
   if(body!==undefined)headers['Content-Type']='application/json';
   let response;
-  try{response=await fetchImpl(config.supabaseUrl+path,{method,headers,redirect:'error',signal:AbortSignal.timeout(12000),...(body!==undefined?{body:JSON.stringify(body)}:{})});}
-  catch{throw new AuthError('Authentication service is temporarily unavailable.',503);}
-  if(!response.ok)throw new AuthError('Authentication request could not be completed.',response.status);
+  try{response=await fetchImpl(config.supabaseUrl+path,{method,headers,redirect:'manual',signal:AbortSignal.timeout(12000),...(body!==undefined?{body:JSON.stringify(body)}:{})});}
+  catch(error){
+   const failure=new AuthError('Authentication service is temporarily unavailable.',503);failure.failureKind='transport';failure.transportType=['TypeError','TimeoutError','AbortError'].includes(error?.name)?error.name:'other';
+   const text=typeof error?.message==='string'?error.message:'';
+   failure.transportReason=/illegal invocation/i.test(text)?'illegal_invocation':/header|bytestring|byte string/i.test(text)?'invalid_header':/url/i.test(text)?'invalid_url':/dns|resolve|hostname/i.test(text)?'dns':/tls|ssl|certificate/i.test(text)?'tls':/fetch failed|failed to fetch/i.test(text)?'fetch_failed':/timeout|timed out/i.test(text)?'timeout':'other';
+   throw failure;
+  }
+  if(!response.ok){const failure=new AuthError('Authentication request could not be completed.',response.status);failure.failureKind='http';throw failure;}
   if(response.status===204)return null;
   const text=await response.text();if(!text)return null;
   try{return JSON.parse(text);}catch{throw new AuthError('Authentication response could not be verified.',503);}

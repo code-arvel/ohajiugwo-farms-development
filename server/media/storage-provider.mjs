@@ -5,7 +5,7 @@ const pathPattern=/^(?:staging\/[0-9a-f-]{36}\/source|media\/[0-9a-f-]{36}\/[0-9
 function validPath(path){if(typeof path!=='string'||!pathPattern.test(path))throw fail();return path.split('/').map(encodeURIComponent).join('/');}
 export function createPrivateStorageProvider(config,{fetchImpl=fetch}={}){
  const headers={apikey:config.secretKey,Authorization:`Bearer ${config.secretKey}`};
- async function request(path,init={}){let response;try{response=await fetchImpl(config.supabaseUrl+path,{redirect:'error',signal:AbortSignal.timeout(30000),...init});}catch{throw fail();}if(!response.ok)throw fail();return response;}
+ async function request(path,init={}){let response;try{response=await fetchImpl(config.supabaseUrl+path,{redirect:'manual',signal:AbortSignal.timeout(30000),...init});}catch{throw fail();}if(!response.ok)throw fail();return response;}
  return {
   async put(path,bytes,contentType){
    if(!(bytes instanceof Uint8Array)||!['image/jpeg','image/png','image/webp'].includes(contentType))throw fail();

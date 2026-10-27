@@ -46,13 +46,24 @@ export function createPasswordResetAcceptanceService(config,{provider,rpc,effect
  return{accept:input=>acceptance.accept(input)};
 }
 
-export function createInvitationAcceptanceService(config,{provider,rpc,effects,now=Date.now,firstAdmin}){
+export function createInvitationAcceptanceService(config,{provider,rpc,effects,now=Date.now,firstAdmin,reportLookupFailure=report=>console.warn(JSON.stringify(report))}){
  const bootstrap=firstAdmin||createFirstAdminService(config,{provider,rpc,effects,now});
  const additional=createAdditionalAdminAcceptanceService(config,{provider,rpc,effects,now});
  const reset=createPasswordResetAcceptanceService(config,{provider,rpc,effects,now});
  return{
   async accept(input){
-   const row=await rpc('farm_invitation_read',{p_id:input?.id});
+   let row;
+   try{row=await rpc('farm_invitation_read',{p_id:input?.id});}
+   catch(error){
+    // Log only fixed metadata: never the error, request, identity or credentials.
+    const upstreamStatus=Number.isInteger(error?.status)&&error.status>=400&&error.status<=599?error.status:null;
+    const report={event:'admin_acceptance_lookup_failed',upstreamStatus};
+    if(['http','transport'].includes(error?.failureKind))report.failureKind=error.failureKind;
+    if(report.failureKind==='transport'&&['TypeError','TimeoutError','AbortError','other'].includes(error?.transportType))report.transportType=error.transportType;
+    if(report.failureKind==='transport'&&['illegal_invocation','invalid_header','invalid_url','dns','tls','fetch_failed','timeout','other'].includes(error?.transportReason))report.transportReason=error.transportReason;
+    try{reportLookupFailure(report);}catch{}
+    throw error;
+   }
    if(row?.purpose==='password_reset')return reset.accept(input);
    return row?.invited_by?additional.accept(input):bootstrap.accept(input);
   },

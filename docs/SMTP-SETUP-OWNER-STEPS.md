@@ -4,7 +4,9 @@ Updated 19 October 2026. This owner runbook records only owner-reported configur
 
 ## Current status
 
-The owner reports that `ohajiugwo-development` is a Free project and that the Invite User template was read-only while using Supabase's built-in sender. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, reports Google 2-Step Verification is on, created a dedicated App Password, and saved Gmail SMTP settings in Supabase. The password was not shared or recorded. The owner also reports that the exact Preview acceptance URL was added to the Auth redirect allowlist. The owner reports that the Invite User template was editable and its exact token-hash redirect target was saved. Whether custom SMTP is enabled remains unconfirmed. No test email or invitation was sent, and SMTP delivery has not been verified. The owner reports the intended administrator is an organisation member.
+**27 October:** the owner confirmed inbox receipt of the one approved invitation. Its acceptance failed because the deployed Worker used an unsupported redirect mode before contacting Auth, not because email delivery was missing. The runtime fix is now verified in Preview using dummy pre-Auth input; actual password setup/activation are still unverified. That invitation is expired. Do not change SMTP or send a test message. One replacement invitation to the same recipient requires specific approval; use the existing guarded bootstrap commands and existing pending identity. See the newest HANDOFF entry.
+
+The owner reports that `ohajiugwo-development` is a Free project and that the Invite User template was read-only while using Supabase's built-in sender. The owner selected Gmail SMTP using `jackdarzel@gmail.com`, reports Google 2-Step Verification is on, created a dedicated App Password, and saved Gmail SMTP settings in Supabase. The password was not shared or recorded. The owner also reports that the exact Preview acceptance URL was added to the Auth redirect allowlist, the Invite User template became editable and its exact token-hash redirect target was saved, and custom SMTP is enabled. The owner reports the intended administrator is an organisation member. One approved first-admin invite was issued through Supabase Auth and the provider accepted it (`sent_to_provider`); inbox delivery and browser acceptance remain unverified. No separate test email was sent.
 
 The website's public contact remains `ohajiugwochimeziebibi@gmail.com`; the selected SMTP sender is the separate `jackdarzel@gmail.com`. Messages will show that Gmail address as the sender, with a farm display name if configured. No farm-owned sending domain is needed for the selected Gmail route.
 
@@ -33,16 +35,16 @@ Resend's `onboarding@resend.dev` example/test sender is not evidence that a real
 
 ## Configure the existing Supabase project
 
-The owner reports saving Gmail SMTP in the existing `ohajiugwo-development` project and adding the exact Preview acceptance URL to the Auth redirect allowlist. These are owner-reported settings; no SMTP test or email delivery has been verified. Keep email confirmation enabled and public signup disabled. Do not send a test email yet.
+The owner reports saving and enabling Gmail SMTP in the existing `ohajiugwo-development` project and adding the exact Preview acceptance URL to the Auth redirect allowlist. These are owner-reported settings; inbox delivery has not been verified. Keep email confirmation enabled and public signup disabled. Do not send a separate test email; the approved first-admin invitation is the first real message.
 
 Then:
 
 1. **Owner reports complete:** In **Authentication → URL Configuration**, allow the exact Preview acceptance URL `https://stage2-preview.ohajiugwo-farms-development.pages.dev/admin/accept`.
 2. Open **Authentication → Email Templates → Invite User** and confirm the subject/body are now editable. Do not change other email templates.
 3. **Owner reports complete:** Save only the invitation link target as `{{ .RedirectTo }}&amp;token_hash={{ .TokenHash }}`. The current app redirect already contains the invitation id and nonce in the URL fragment; appending the token hash keeps the single-use credentials in that fragment for the acceptance page to clear before any request. Disable provider click tracking for Auth emails.
-4. Keep the existing Site URL unchanged. Confirm custom SMTP is enabled. Report only the enabled status and whether the Invite User template and exact redirect are saved and allowlisted. Never paste the SMTP password, App Password, Resend key, or invitation link.
+4. Keep the existing Site URL unchanged. Custom SMTP enablement, template and allowlist are owner-reported complete. Never paste the SMTP password, App Password, Resend key, or invitation link.
 
-The first-admin CLI stays gated until these prerequisites are reported as complete. The previously approved one-time invitation is not sent by this runbook. After setup, provider/API acceptance is still not proof of inbox delivery or successful browser acceptance; record those separately. The Preview remains unindexed and `main`/production is unchanged.
+The one-time first-admin invitation was issued only after these prerequisites were owner-reported complete, using the exact allowlisted Preview origin and a command-only send gate. `sent_to_provider` means Auth accepted the request; it is not proof of inbox delivery or successful browser acceptance. Check inbox receipt, browser acceptance and normal sign-in separately. The Preview remains unindexed and `main`/production is unchanged.
 
 ## Sources
 

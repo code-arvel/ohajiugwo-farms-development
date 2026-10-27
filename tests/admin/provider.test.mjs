@@ -1,13 +1,36 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createHostedAuthProvider} from '../../server/auth/provider.mjs';
 const config={supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',publishableKey:'sb_publishable_test',secretKey:'sb_secret_test'};
+test('provider works with Workers redirect modes and refuses redirect responses without forwarding credentials',async()=>{
+ let calls=0;
+ const provider=createHostedAuthProvider(config,{fetchImpl:async(_url,options)=>{
+  if(!['manual','follow'].includes(options.redirect))throw new TypeError('Invalid redirect value');
+  calls++;assert.equal(options.redirect,'manual');
+  return calls===1?Response.json({id:'fixture'}):new Response(null,{status:307,headers:{Location:'https://other.example.test/steal'}});
+ }});
+ assert.deepEqual(await provider.rpc('farm_invitation_read',{}),{id:'fixture'});
+ await assert.rejects(provider.rpc('farm_invitation_read',{}),error=>error.status===307);
+ assert.equal(calls,2);
+});
+test('provider failure metadata distinguishes HTTP responses from transport exceptions without raw detail',async()=>{
+ for(const [fetchImpl,kind] of [
+  [async()=>new Response('PRIVATE detail',{status:503}),'http'],
+  [async()=>{throw new TypeError('PRIVATE network detail');},'transport']
+ ]){
+  await assert.rejects(createHostedAuthProvider(config,{fetchImpl}).rpc('farm_invitation_read',{}),error=>error.failureKind===kind&&error.status===503&&!JSON.stringify(error).includes('PRIVATE'));
+ }
+});
+test('transport diagnostics classify fixed runtime failures without retaining provider text',async()=>{
+ const provider=createHostedAuthProvider(config,{fetchImpl:async()=>{throw new TypeError('Failed to fetch PRIVATE details');}});
+ await assert.rejects(provider.rpc('farm_invitation_read',{}),error=>error.transportReason==='fetch_failed'&&!JSON.stringify(error).includes('PRIVATE'));
+});
 test('provider uses server secret only for RPC and public key plus verified user JWT for user calls',async()=>{
  const calls=[],provider=createHostedAuthProvider(config,{fetchImpl:async(url,options)=>{calls.push({url,options});return new Response(JSON.stringify({ok:true}));}});
  await provider.signIn('owner@example.test','private-password');await provider.getUser('user-jwt');await provider.refresh('private-refresh');await provider.signOut('user-jwt');await provider.rpc('farm_session_read',{p_cookie_hash:'hash'});
  assert.equal(calls[0].options.headers.apikey,config.publishableKey);assert.ok(!calls[0].options.headers.Authorization);
  assert.equal(calls[1].options.headers.Authorization,'Bearer user-jwt');assert.equal(calls[4].options.headers.apikey,config.secretKey);assert.ok(!calls[4].options.headers.Authorization);
  assert.equal(new URL(calls[3].url).searchParams.get('scope'),'local');
- for(const {url,options}of calls){assert.equal(options.redirect,'error');assert.ok(!url.includes('private-password'));assert.ok(!url.includes('private-refresh'));assert.ok(!url.includes('sb_secret'));}
+ for(const {url,options}of calls){assert.equal(options.redirect,'manual');assert.ok(!url.includes('private-password'));assert.ok(!url.includes('private-refresh'));assert.ok(!url.includes('sb_secret'));}
 });
 test('provider rejects arbitrary RPC names and redacts network, HTTP and malformed responses',async()=>{
  let calls=0;const provider=createHostedAuthProvider(config,{fetchImpl:async()=>{calls++;return new Response('SECRET PROVIDER RESPONSE',{status:401});}});

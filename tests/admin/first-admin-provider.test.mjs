@@ -20,7 +20,7 @@ test('first-admin provider methods use generated invite tokens and recipient-sco
  assert.equal(calls[1].options.headers.apikey,config.publishableKey);
  assert.equal(calls[2].options.method,'PUT');assert.equal(calls[2].options.headers.Authorization,'Bearer recipient-token');
  assert.equal(calls[2].options.headers.apikey,config.publishableKey);
- for(const {url,options} of calls){assert.equal(options.redirect,'error');assert.ok(!url.includes('private password'));assert.ok(!url.includes('recipient-token'));}
+ for(const {url,options} of calls){assert.equal(options.redirect,'manual');assert.ok(!url.includes('private password'));assert.ok(!url.includes('recipient-token'));}
 });
 test('built-in sender invitation sends a fixed app redirect and never exposes action links',async()=>{
  let call;const provider=createHostedAuthProvider(config,{fetchImpl:async(url,options)=>{call={url,options};return new Response(JSON.stringify({id:'11111111-1111-4111-8111-111111111111',email:'owner@example.test',action_link:'PRIVATE_ACTION_LINK'}));}});
