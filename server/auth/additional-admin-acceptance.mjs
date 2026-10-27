@@ -18,7 +18,7 @@ export function createAdditionalAdminAcceptanceService(config,{provider,rpc,effe
  };
  const acceptanceEffects=effects?{
   ...effects,
-  firstAdminProgress:(effect,params)=>rpc('farm_admin_invite_accept_effect_progress',{p_effect_id:effect.id,p_effect_owner:effect.owner,p_id:params.p_id,p_invitation_owner:params.p_owner,p_encrypted_credentials:params.p_encrypted_credentials}),
+  firstAdminProgress:(effect,params)=>rpc('farm_admin_invite_accept_effect_progress',{p_effect_id:effect.id,p_effect_owner:effect.owner,p_id:params.p_id,p_invitation_owner:params.p_invitation_owner,p_encrypted_credentials:params.p_encrypted_credentials}),
  }:undefined;
  const acceptance=createFirstAdminService(config,{provider,rpc:mappedRpc,effects:acceptanceEffects,now});
  return{accept:input=>acceptance.accept(input)};
@@ -40,7 +40,7 @@ export function createPasswordResetAcceptanceService(config,{provider,rpc,effect
  };
  const acceptanceEffects=effects?{
   ...effects,
-  firstAdminProgress:(effect,params)=>rpc('farm_admin_reset_accept_effect_progress',{p_effect_id:effect.id,p_effect_owner:effect.owner,p_id:params.p_id,p_reset_owner:params.p_owner,p_encrypted_credentials:params.p_encrypted_credentials}),
+  firstAdminProgress:(effect,params)=>rpc('farm_admin_reset_accept_effect_progress',{p_effect_id:effect.id,p_effect_owner:effect.owner,p_id:params.p_id,p_reset_owner:params.p_invitation_owner,p_encrypted_credentials:params.p_encrypted_credentials}),
  }:undefined;
  const acceptance=createFirstAdminService(config,{provider,rpc:mappedRpc,effects:acceptanceEffects,now,verifyLink:tokenHash=>provider.verifyRecovery(tokenHash),operations:{verify:'reset_verify',refresh:'reset_refresh',proof:'reset_proof'}});
  return{accept:input=>acceptance.accept(input)};
