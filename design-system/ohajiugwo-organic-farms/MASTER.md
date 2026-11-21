@@ -1,5 +1,9 @@
 # Ohajiugwo Organic Farms — project design system
 
+## 21 November — client readability increase
+
+Owner requests larger text throughout. Shared relative typography base is 112.5% of the browser preference (normally 18px). Active font sizes use rem equivalents; fluid viewport terms increase proportionately. Lift the former 8–11px captions to a 12px-equivalent base (normally 13.5px). Preserve existing typefaces, weights, colours and hierarchy. Public body normally 18px, workspace body 16.875px; form controls and headings follow their existing proportions. Retain 236px desktop sidebar width at medium breakpoints so larger branding fits; mobile hamburger remains compact. Actual client/owner appearance approval of this increase remains pending.
+
 ## 21 November — compact mobile administrator navigation
 
 Owner requests a hamburger dropdown in mobile administration. Use the existing logo plus a 44px Menu disclosure button, collapsed links by default after enhancement, a single-column dropdown and natural document flow. Desktop navigation stays pinned. Support native Enter/Space, Escape/focus return, selection/outside dismissal and visible keyboard focus. Without script, links remain available. Keep a real word space where the landing story line break disappears on mobile.

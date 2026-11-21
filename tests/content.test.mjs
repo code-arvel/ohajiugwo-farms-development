@@ -108,8 +108,8 @@ test('approved homepage markup and styling remain preserved with the approved st
   const stripHover=/\.topline a:hover\s*\{\s*color:\s*#dce6c9;?\s*\}/;
   assert.match(css,focusPatch);
   assert.match(css,stripHover);
-  // Compile both CSS versions to ignore formatting only; all other rules remain compared.
-  const canonical=value=>transformSync(value,{loader:'css',minify:true}).code.replace(/(--[\w-]+:)([^;}]+)/g,(_,key,val)=>key+val.replace(/\s+/g,'').replaceAll('"', "'"));
+  // Owner authorised larger typography. Exclude font-size declarations only; retain every other approved layout, colour, family and spacing rule.
+  const canonical=value=>transformSync(value.replace(/font-size\s*:[^;}]+;?/g,''),{loader:'css',minify:true}).code.replace(/(--[\w-]+:)([^;}]+)/g,(_,key,val)=>key+val.replace(/\s+/g,'').replaceAll('"', "'"));
   assert.equal(canonical(css.replace(focusPatch,'').replace(stripHover,'').replace('.rooted-accent{color:#85512f}','').replace('.topline .rooted-accent{color:#edce91}','')),canonical(baselineCss));
   assert.ok(home().includes('href="/blog/"'));
 });

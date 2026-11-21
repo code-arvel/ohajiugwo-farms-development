@@ -27,7 +27,7 @@ body {
   color: var(--forest);
   background: var(--cream);
   font-family: var(--body);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
@@ -85,7 +85,7 @@ h2 {
   text-wrap: balance;
 }
 h2 {
-  font-size: clamp(36px, 3.5vw, 55px);
+  font-size: clamp(2.25rem, 3.9375vw, 3.4375rem);
   line-height: 1.2;
   letter-spacing: -1.8px;
 }
@@ -94,7 +94,7 @@ h1 em {
   font-weight: 400;
 }
 h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 1.35;
   letter-spacing: -0.6px;
 }
@@ -123,7 +123,7 @@ div[id] {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  font-size: 11px;
+  font-size: 0.75rem;
   letter-spacing: 0.5px;
 }
 .topline span:last-child {
@@ -157,7 +157,7 @@ div[id] {
 }
 .wordmark-name {
   font-family: var(--heading);
-  font-size: 25px;
+  font-size: 1.5625rem;
   letter-spacing: 1.8px;
   line-height: 1.15;
   font-weight: 600;
@@ -166,7 +166,7 @@ div[id] {
 .wordmark-name span {
   display: block;
   font-family: var(--body);
-  font-size: 10px;
+  font-size: 0.75rem;
   letter-spacing: 4.35px;
   margin-top: 8px;
   font-weight: 500;
@@ -175,7 +175,7 @@ div[id] {
   display: flex;
   align-items: center;
   gap: clamp(20px, 2.5vw, 40px);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 #main-nav > a {
@@ -216,7 +216,7 @@ div[id] {
 }
 .eyebrow {
   font-family: var(--body);
-  font-size: 10px;
+  font-size: 0.75rem;
   line-height: 1.5;
   letter-spacing: 2.2px;
   font-weight: 650;
@@ -261,10 +261,10 @@ div[id] {
   justify-content: center;
   gap: 15px;
   color: #e5eadb;
-  font-size: 10px;
+  font-size: 0.75rem;
 }
 .hero h1 {
-  font-size: clamp(48px, 5.3vw, 82px);
+  font-size: clamp(3rem, 5.9625vw, 5.125rem);
   line-height: 1.11;
   letter-spacing: -2.5px;
   margin: 0 auto 25px;
@@ -277,7 +277,7 @@ div[id] {
 .hero-description {
   max-width: 420px;
   margin-inline: auto;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.8;
   color: #f0f1e9;
 }
@@ -300,7 +300,7 @@ div[id] {
   border-radius: 3px;
   padding: 14px 22px;
   font-weight: 550;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
   transition:
     background 0.18s,
@@ -334,7 +334,7 @@ div[id] {
   display: inline-flex;
   align-items: center;
   gap: 15px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 550;
   min-height: 44px;
   transition: color 0.18s;
@@ -363,7 +363,7 @@ div[id] {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 11px;
+  font-size: 0.75rem;
   letter-spacing: 0.2px;
 }
 .hero-bottom .icon {
@@ -371,7 +371,7 @@ div[id] {
   height: 19px;
 }
 .stock-caption {
-  font-size: 10px;
+  font-size: 0.75rem;
   color: #fff;
   background: rgba(12, 30, 20, 0.75);
   padding: 4px 10px;
@@ -389,7 +389,7 @@ div[id] {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 .principles-strip .icon {
@@ -412,7 +412,7 @@ div[id] {
 .section-heading > p {
   max-width: 335px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.8;
 }
 .product-grid {
@@ -441,7 +441,7 @@ div[id] {
   left: 10px;
   background: rgba(20, 40, 26, 0.85);
   color: white;
-  font-size: 9px;
+  font-size: 0.75rem;
   letter-spacing: 0.25px;
   padding: 3px 7px;
   border-radius: 2px;
@@ -450,18 +450,18 @@ div[id] {
   padding-top: 22px;
 }
 .product-copy h3 {
-  font-size: 23px;
+  font-size: 1.4375rem;
   margin-bottom: 11px;
 }
 .product-copy p {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.8;
   margin-bottom: 12px;
   max-width: 34ch;
 }
 .product-copy .text-link {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .produce-note {
   display: flex;
@@ -471,7 +471,7 @@ div[id] {
   border-top: 1px solid var(--line);
   margin-top: 35px;
   padding-top: 21px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .produce-note strong {
@@ -479,7 +479,7 @@ div[id] {
   color: var(--forest);
 }
 .produce-note > span {
-  font-size: 11px;
+  font-size: 0.75rem;
   text-align: right;
 }
 .practices {
@@ -491,14 +491,14 @@ div[id] {
   padding: var(--space-section) var(--gutter);
 }
 .practices h2 {
-  font-size: clamp(36px, 3.5vw, 55px);
+  font-size: clamp(2.25rem, 3.9375vw, 3.4375rem);
   margin-bottom: 23px;
 }
 .practices h2 em {
   color: #d3dfbf;
 }
 .practices-intro > p:not(.eyebrow) {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.9;
   color: #d5ded1;
   max-width: 380px;
@@ -512,7 +512,7 @@ div[id] {
   font-family: var(--heading);
   font-style: italic;
   color: #dce6cf;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .practice-signoff span {
   display: block;
@@ -537,18 +537,18 @@ div[id] {
   margin-top: 3px;
 }
 .practice-list h3 {
-  font-size: 21px;
+  font-size: 1.3125rem;
   margin-bottom: 9px;
 }
 .practice-list p {
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.85;
   color: #d4ddcf;
   max-width: 40ch;
 }
 .practice-list article > span {
   margin-left: auto;
-  font-size: 10px;
+  font-size: 0.75rem;
   color: #c4cfb9;
 }
 .story {
@@ -580,7 +580,7 @@ div[id] {
   right: 12px;
   width: fit-content;
   max-width: calc(100% - 24px);
-  font-size: 9px;
+  font-size: 0.75rem;
   background: rgba(20, 40, 26, 0.85);
   color: #fff;
   padding: 3px 7px;
@@ -597,15 +597,15 @@ div[id] {
 }
 .land-note strong {
   font-family: var(--heading);
-  font-size: 43px;
+  font-size: 2.6875rem;
   line-height: 1.2;
   font-weight: 400;
 }
 .land-note strong span {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 .land-note p {
-  font-size: 10px;
+  font-size: 0.75rem;
   line-height: 1.6;
   margin-top: 6px;
 }
@@ -614,12 +614,12 @@ div[id] {
 }
 .story-copy .lead {
   color: var(--forest);
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.7;
   margin-bottom: 17px;
 }
 .story-copy p {
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.95;
   color: var(--muted);
   margin-bottom: 15px;
@@ -634,7 +634,7 @@ div[id] {
   display: flex;
   gap: 6px;
   align-items: center;
-  font-size: 10px;
+  font-size: 0.75rem;
   font-weight: 550;
 }
 .values .icon {
@@ -672,23 +672,23 @@ div[id] {
   height: 24px;
 }
 .services-grid h3 {
-  font-size: 23px;
+  font-size: 1.4375rem;
   margin-bottom: 12px;
 }
 .services-grid p {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.9;
   margin-bottom: 20px;
 }
 .services-grid .text-link {
   margin-top: auto;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .service-note {
   margin: 20px auto 0;
   text-align: center;
-  font-size: 11px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .contact-section {
@@ -701,11 +701,11 @@ div[id] {
   margin: auto;
 }
 .contact-top h2 {
-  font-size: clamp(40px, 4vw, 64px);
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
   margin-bottom: 23px;
 }
 .contact-top > p:not(.eyebrow) {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   max-width: 450px;
   margin-left: auto;
@@ -714,7 +714,7 @@ div[id] {
 .contact-top .email-only {
   margin-top: 18px;
   margin-bottom: 0;
-  font-size: 11px !important;
+  font-size: 0.75rem !important;
 }
 .email-pending {
   margin: 24px auto 22px;
@@ -731,10 +731,10 @@ div[id] {
 }
 .email-pending strong {
   font-weight: 550;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .email-pending p {
-  font-size: 11px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.7;
 }
@@ -744,7 +744,7 @@ div[id] {
 .email-address {
   display: block;
   font-family: var(--heading);
-  font-size: clamp(18px, 2.5vw, 30px);
+  font-size: clamp(1.125rem, 2.8125vw, 1.875rem);
   overflow-wrap: anywhere;
   margin: 26px 0 20px;
 }
@@ -761,7 +761,7 @@ div[id] {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-height: 44px;
 }
 .copy-email .icon {
@@ -770,7 +770,7 @@ div[id] {
 .copy-status {
   min-height: 25px;
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .locations {
   display: grid;
@@ -795,13 +795,13 @@ div[id] {
 }
 .locations h3 {
   font-family: var(--body);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0;
   margin-bottom: 6px;
 }
 .locations p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -818,22 +818,22 @@ div[id] {
   margin-bottom: 40px;
 }
 .footer-main .wordmark-name {
-  font-size: 23px;
+  font-size: 1.4375rem;
 }
 .footer-main .wordmark-name span {
-  font-size: 9px;
+  font-size: 0.75rem;
   letter-spacing: 4px;
 }
 .footer-main > p {
   font-family: var(--heading);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: italic;
   line-height: 1.5;
 }
 .footer-links {
   display: flex;
   gap: 25px;
-  font-size: 11px;
+  font-size: 0.75rem;
 }
 .footer-links a {
   display: flex;
@@ -849,7 +849,7 @@ div[id] {
   gap: 20px;
   border-top: 1px solid #4b6150;
   padding-top: 22px;
-  font-size: 10px;
+  font-size: 0.75rem;
   color: #c2cfbb;
 }
 .footer-bottom a {
@@ -871,7 +871,7 @@ div[id] {
   display: flex;
   gap: 9px;
   align-items: center;
-  font-size: 10px;
+  font-size: 0.75rem;
   line-height: 1.5;
   white-space: nowrap;
   max-width: calc(100vw - 20px);
@@ -897,7 +897,7 @@ div[id] {
   display: grid;
   place-items: center;
   color: var(--forest);
-  font-size: 12px;
+  font-size: 0.75rem;
   background: var(--sage);
 }
 @media (min-width: 1700px) {
@@ -906,7 +906,7 @@ div[id] {
     padding-right: max(var(--gutter), calc((100vw - 1400px) / 2));
   }
   .hero h1 {
-    font-size: 82px;
+    font-size: 5.125rem;
   }
 }
 @media (max-width: 1200px) {
@@ -914,10 +914,10 @@ div[id] {
     gap: 20px;
   }
   .wordmark-name {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   .wordmark-name span {
-    font-size: 9px;
+    font-size: 0.75rem;
     letter-spacing: 3.75px;
   }
   .site-header {
@@ -926,7 +926,7 @@ div[id] {
   h3,
   .product-copy h3,
   .services-grid h3 {
-    font-size: 21px;
+    font-size: 1.3125rem;
   }
   .footer-main {
     flex-wrap: wrap;
@@ -951,7 +951,7 @@ div[id] {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 9px 12px;
     border-radius: 3px;
     min-height: 44px;
@@ -988,7 +988,7 @@ div[id] {
     min-height: 600px;
   }
   .hero h1 {
-    font-size: 65px;
+    font-size: 4.0625rem;
   }
   .principles-strip {
     flex-wrap: wrap;
@@ -1019,7 +1019,7 @@ div[id] {
     min-height: 57px;
   }
   .contact-top h2 {
-    font-size: 52px;
+    font-size: 3.25rem;
   }
 }
 @media (max-width: 760px) {
@@ -1028,7 +1028,7 @@ div[id] {
   }
   .topline {
     justify-content: center;
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .topline span:last-child {
     display: none;
@@ -1037,7 +1037,7 @@ div[id] {
     min-height: 610px;
   }
   .hero h1 {
-    font-size: clamp(42px, 7.7vw, 59px);
+    font-size: clamp(2.625rem, 8.6625vw, 3.6875rem);
     letter-spacing: -1.7px;
     max-width: 650px;
   }
@@ -1049,11 +1049,11 @@ div[id] {
     padding-bottom: 110px;
   }
   .hero-description {
-    font-size: 14px;
+    font-size: 0.875rem;
     max-width: 360px;
   }
   .hero .eyebrow {
-    font-size: 9px;
+    font-size: 0.75rem;
     letter-spacing: 1.6px;
   }
   .hero-bottom {
@@ -1063,14 +1063,14 @@ div[id] {
     bottom: 22px;
   }
   .hero-bottom > span:first-child {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .principles-strip {
     padding-top: 22px;
     padding-bottom: 22px;
   }
   .principles-strip > span {
-    font-size: 10px;
+    font-size: 0.75rem;
     gap: 8px;
   }
   .principles-strip .icon {
@@ -1084,20 +1084,20 @@ div[id] {
   .section-heading > p {
     margin-top: 18px;
     max-width: 450px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .product-grid {
     gap: 17px;
   }
   .product-copy h3 {
-    font-size: 19px;
+    font-size: 1.1875rem;
     min-height: 77px;
   }
   .product-copy p {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .product-copy .text-link {
-    font-size: 11px;
+    font-size: 0.75rem;
     gap: 5px;
   }
   .product-copy .text-link .icon {
@@ -1105,10 +1105,10 @@ div[id] {
   }
   .produce-note {
     align-items: flex-start;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .produce-note > span {
-    font-size: 10px;
+    font-size: 0.75rem;
     flex: 0 0 130px;
   }
   .practices {
@@ -1116,7 +1116,7 @@ div[id] {
     gap: 45px;
   }
   .practices h2 {
-    font-size: 42px;
+    font-size: 2.625rem;
   }
   .practice-signoff {
     display: none;
@@ -1126,7 +1126,7 @@ div[id] {
   }
   .practice-list p {
     max-width: 55ch;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .practice-list article {
     padding: 22px 0;
@@ -1154,13 +1154,13 @@ div[id] {
     padding: 30px;
   }
   .services-grid h3 {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   .services-grid p {
     max-width: 60ch;
   }
   .services-grid .text-link {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .service-icon {
     margin-bottom: 20px;
@@ -1172,10 +1172,10 @@ div[id] {
     gap: 30px;
   }
   .locations p {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .footer-main > p {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .footer-links {
     width: 100%;
@@ -1183,22 +1183,22 @@ div[id] {
     gap: 10px;
   }
   .footer-bottom {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .contact-section {
     padding-top: 60px;
   }
   .contact-top h2 {
-    font-size: 46px;
+    font-size: 2.875rem;
   }
 }
 @media (max-width: 550px) {
   .wordmark-name {
-    font-size: 20px;
+    font-size: 1.25rem;
     letter-spacing: 1.4px;
   }
   .wordmark-name span {
-    font-size: 8px;
+    font-size: 0.75rem;
     letter-spacing: 3.5px;
     margin-top: 6px;
   }
@@ -1209,7 +1209,7 @@ div[id] {
   .menu-toggle {
     padding: 8px;
     gap: 5px;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .menu-toggle .icon {
     width: 17px;
@@ -1218,7 +1218,7 @@ div[id] {
     min-height: 630px;
   }
   .hero h1 {
-    font-size: 44px;
+    font-size: 2.75rem;
     letter-spacing: -1.4px;
     line-height: 1.15;
   }
@@ -1231,13 +1231,13 @@ div[id] {
     padding-bottom: 130px;
   }
   .hero .eyebrow {
-    font-size: 8px;
+    font-size: 0.75rem;
     letter-spacing: 1.2px;
     gap: 8px;
   }
   .hero-description {
     max-width: 300px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .hero-actions {
     align-items: center;
@@ -1249,20 +1249,20 @@ div[id] {
     padding: 14px 18px;
   }
   .hero-actions > .text-link {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .hero-bottom > span:first-child {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .stock-caption {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .principles-strip {
     gap: 16px 12px;
   }
   .principles-strip > span {
     width: calc(50% - 6px);
-    font-size: 10px;
+    font-size: 0.75rem;
     line-height: 1.5;
     align-items: flex-start;
   }
@@ -1271,11 +1271,11 @@ div[id] {
     height: 18px;
   }
   h2 {
-    font-size: 36px;
+    font-size: 2.25rem;
     letter-spacing: -1.3px;
   }
   .eyebrow {
-    font-size: 9px;
+    font-size: 0.75rem;
     letter-spacing: 1.7px;
   }
   .product-grid {
@@ -1287,14 +1287,14 @@ div[id] {
   }
   .product-copy h3 {
     min-height: 0;
-    font-size: 25px;
+    font-size: 1.5625rem;
   }
   .product-copy p {
-    font-size: 14px;
+    font-size: 0.875rem;
     max-width: 45ch;
   }
   .product-copy .text-link {
-    font-size: 12px;
+    font-size: 0.75rem;
     gap: 15px;
   }
   .produce-note {
@@ -1305,10 +1305,10 @@ div[id] {
   .produce-note > span {
     flex: auto;
     text-align: left;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .practices h2 {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
   .practice-list article {
     gap: 16px;
@@ -1317,10 +1317,10 @@ div[id] {
     width: 24px;
   }
   .practice-list h3 {
-    font-size: 21px;
+    font-size: 1.3125rem;
   }
   .practice-list p {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .story-art {
     padding-right: 18px;
@@ -1331,28 +1331,28 @@ div[id] {
     padding: 16px 20px;
   }
   .land-note strong {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
   .story-art figcaption {
-    font-size: 8px;
+    font-size: 0.75rem;
     left: 8px;
     top: 8px;
   }
   .values > span {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .contact-top h2 {
-    font-size: 42px;
+    font-size: 2.625rem;
   }
   .contact-top > p:not(.eyebrow) {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .email-pending {
     padding: 14px;
     gap: 10px;
   }
   .email-pending p {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .locations {
     grid-template-columns: 1fr;
@@ -1364,14 +1364,14 @@ div[id] {
     justify-content: flex-start;
   }
   .locations p {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .footer-main {
     align-items: flex-start;
     gap: 25px;
   }
   .footer-main > p {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
   .footer-links {
     flex-wrap: wrap;
@@ -1381,10 +1381,10 @@ div[id] {
   .footer-bottom {
     flex-direction: column;
     gap: 10px;
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .preview-note {
-    font-size: 9px;
+    font-size: 0.75rem;
     padding: 7px 12px;
     gap: 6px;
   }

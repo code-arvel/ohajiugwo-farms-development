@@ -1,3 +1,5 @@
+/* Shared readable type scale: honours the browser’s preferred base font size. */
+:root{font-size:112.5%}
 /* One transparent logo, shared by public pages, the local editor and future admin shells. */
 @font-face {
   font-family: "Ohajiugwo Manrope";
@@ -62,7 +64,7 @@
 .farm-logo .brand-name {
   font-family: "Ohajiugwo Manrope", Arial, sans-serif;
   font-weight: 600;
-  font-size: 28px;
+  font-size: 1.75rem;
   line-height: 1.1;
   letter-spacing: -0.6px;
   color: var(--forest);
@@ -70,7 +72,7 @@
 .farm-logo .brand-description {
   font-family: "Ohajiugwo Source Serif", Georgia, serif;
   font-weight: 400;
-  font-size: 14.5px;
+  font-size: 0.90625rem;
   line-height: 1.3;
   letter-spacing: 1.1px;
   color: #705036;
@@ -94,11 +96,11 @@
     width: 50px;
   }
   .farm-logo .brand-name {
-    font-size: 24px;
+    font-size: 1.5rem;
     letter-spacing: -0.4px;
   }
   .farm-logo .brand-description {
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     letter-spacing: 0.6px;
   }
 }
@@ -115,7 +117,7 @@
     width: 46px;
   }
   .farm-logo .brand-name {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 }
 .farm-logo--compact {
@@ -131,11 +133,11 @@
   width: 38px;
 }
 .farm-logo--compact .brand-name {
-  font-size: 22px;
+  font-size: 1.375rem;
   letter-spacing: -0.4px;
 }
 .farm-logo--compact .brand-description {
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   letter-spacing: 0.6px;
 }
 
