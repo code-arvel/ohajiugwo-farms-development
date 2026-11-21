@@ -1,5 +1,6 @@
 // Exact browser-only files. No environment, source fixtures, editor content or server modules.
 export const browserAssetFiles=[
+ ['/admin/workspace/navigation.mjs','admin/workspace/navigation.mjs','text/javascript'],
  ['/admin/preview-assets/styles.css','src/styles/main.css','text/css'],
  ['/admin/export/client.mjs','admin/export/client.mjs','text/javascript'],
  ['/admin/publishing/screen.css','admin/publishing/screen.css','text/css'],

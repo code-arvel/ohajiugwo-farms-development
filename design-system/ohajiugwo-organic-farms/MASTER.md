@@ -1,5 +1,9 @@
 # Ohajiugwo Organic Farms — project design system
 
+## 21 November — compact mobile administrator navigation
+
+Owner requests a hamburger dropdown in mobile administration. Use the existing logo plus a 44px Menu disclosure button, collapsed links by default after enhancement, a single-column dropdown and natural document flow. Desktop navigation stays pinned. Support native Enter/Space, Escape/focus return, selection/outside dismissal and visible keyboard focus. Without script, links remain available. Keep a real word space where the landing story line break disappears on mobile.
+
 ## 21 November — owner-requested UI refinement
 
 Landing tagline/story heading use “Rooted-in”/“rooted-in” with restrained warm-earth (#85512f on cream; #edce91 on forest) accent. No acreage wording in the visible story/farmland copy; confirmed source acreage is retained. Administrator sidebar has no footer content, stays pinned while desktop main content scrolls, and returns to natural mobile flow. All workspace screens use the shared logo/typography/navigation; downloads uses standard heading, separated sections and feedback. These requests supersede the older visible five-hectare copy and scrolling-sidebar guidance only. Owner visual review of the implementation remains pending.

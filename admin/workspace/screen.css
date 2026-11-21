@@ -20,3 +20,13 @@
 }
 .workspace-page .workspace-intro{max-width:68ch;margin-bottom:0}.workspace-page .workspace-section{padding:28px 0;border-top:1px solid var(--line)}.workspace-page .workspace-section>p{max-width:68ch;margin:0 0 20px}.workspace-page .workspace-section h2{margin:0 0 10px}.workspace-page .workspace-section .workspace-help{font-size:14px;margin:16px 0 0}.workspace-page .workspace-guidance{max-width:72ch;margin-top:12px;padding:20px 24px;background:var(--paper);border-left:3px solid #9a7049}.workspace-page .workspace-guidance p{margin:6px 0 0}.workspace-page .workspace-notice{margin:24px 0;padding:18px 20px;border-left:4px solid #496c85;background:#eaf0f4;color:#253f53;overflow-wrap:anywhere}.workspace-page .workspace-notice[data-state=error]{border-color:#8c2924;background:#fae9e4;color:#79251f}.workspace-page .workspace-notice:focus{outline:3px solid #aa672e;outline-offset:3px}.workspace-page #export-photos p{padding:14px 0;border-bottom:1px solid var(--line);margin:0}.workspace-page #export-photos button{max-width:100%;text-align:left}
 @media(max-width:800px){.workspace-page .workspace-section{padding:24px 0}.workspace-page .workspace-guidance{padding:18px}.workspace-page #export-content{width:100%}}
+
+/* Mobile disclosure keeps navigation compact without changing desktop pinning. */
+.workspace-page .workspace-menu-toggle{display:none}
+@media(max-width:800px){
+ .workspace-page .workspace-sidebar header,.editor-page.workspace-page .workspace-sidebar header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0}
+ .workspace-page .workspace-sidebar[data-menu-ready] .workspace-menu-toggle{display:inline-flex;flex-shrink:0;align-items:center;gap:8px;justify-content:center;min-height:44px;padding:10px 12px;border:1px solid #8d9b86;background:transparent;color:var(--forest);border-radius:4px;font:500 14px/1.4 WorkspaceDM,Arial,sans-serif;cursor:pointer}
+ .workspace-page .workspace-sidebar nav,.editor-page.workspace-page .workspace-sidebar nav{grid-template-columns:1fr;margin-top:18px;padding-top:12px;border-top:1px solid var(--line);max-height:70dvh;overflow-y:auto;overscroll-behavior:contain}
+ .workspace-page .workspace-sidebar[data-menu-ready]:not([data-menu-open]) nav{display:none}
+ .workspace-page .workspace-sidebar nav a,.editor-page.workspace-page .workspace-sidebar nav button{padding:12px;min-height:44px}
+}
