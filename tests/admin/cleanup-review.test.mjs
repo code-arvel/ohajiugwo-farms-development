@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {seal} from '../../server/security.mjs';
-const {inspectCleanupReview}=await import('../../server/cleanup-review.mjs');
+const {inspectCleanupReview,classifyCleanupProviderResponse}=await import('../../server/cleanup-review.mjs');
 const key='ab'.repeat(32),user=crypto.randomUUID(),session=crypto.randomUUID();
 const token=exp=>'eyJhbGciOiJNT0NLIn0.'+Buffer.from(JSON.stringify({sub:user,session_id:session,exp})).toString('base64url')+'.DUMMY';
 test('review inspection decrypts only in memory, checks identity and expiration and prints no secrets',async()=>{
@@ -16,3 +16,5 @@ test('invalid ciphertext and identity mismatch never send a token to Auth',async
  const report=await inspectCleanupReview({sessionKey:key},{rpc:async()=>[bad,wrong],inspectToken:async()=>{calls++;}});
  assert.equal(calls,0);assert.equal(report.jobs[0].payloadReadable,false);assert.equal(report.jobs[1].identityMatches,false);
 });
+
+test('cleanup diagnostic recognises both legacy and versioned Supabase error formats without exposing provider messages',()=>{for(const data of [{code:403,error_code:'bad_jwt',msg:'invalid JWT: token is expired PRIVATE_PROVIDER_DETAIL'},{code:'bad_jwt',message:'JWT expired PRIVATE_PROVIDER_DETAIL'}]){const result=classifyCleanupProviderResponse(403,data);assert.deepEqual(result,{status:403,reason:'expired_jwt'});assert.ok(!JSON.stringify(result).includes('PRIVATE_PROVIDER_DETAIL'));}for(const data of [{code:403,error_code:'session_not_found',msg:'PRIVATE'},{code:'session_not_found',message:'PRIVATE'}])assert.deepEqual(classifyCleanupProviderResponse(403,data),{status:403,reason:'session_not_found'});assert.deepEqual(classifyCleanupProviderResponse(403,{code:403,error_code:'bad_jwt',msg:'invalid signature PRIVATE'}),{status:403,reason:'rejected'});assert.deepEqual(classifyCleanupProviderResponse(503,{}),{status:503,reason:'unavailable'});});

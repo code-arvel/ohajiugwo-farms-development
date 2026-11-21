@@ -14,5 +14,9 @@ test('real review SQL is bounded, read-only and denies both browser roles',async
  const results=await db.exec(await readFile('supabase/tests/cleanup-review-inspection.sql','utf8'));
  assert.match(results.at(-1).rows[0].result,/PASS:/);
  assert.deepEqual((await db.query('SELECT * FROM farm_private.cleanup_jobs ORDER BY id')).rows,before);
+ await db.exec('CREATE TABLE auth.sessions(id uuid PRIMARY KEY)');await db.query('INSERT INTO auth.sessions(id) VALUES($1)',[providerSession]);
+ const query=await readFile('supabase/diagnostics/cleanup-review-session-status.sql','utf8');const counts=(await db.query(query)).rows[0];assert.deepEqual(Object.fromEntries(Object.entries(counts).map(([key,value])=>[key,Number(value)])),{review_jobs:1,revoked_app_sessions:1,matching_sources:1,provider_sessions_present:1,missing_sources:0});
+ await db.query('DELETE FROM auth.sessions WHERE id=$1',[providerSession]);assert.equal(Number((await db.query(query)).rows[0].provider_sessions_present),0);assert.deepEqual((await db.query('SELECT * FROM farm_private.cleanup_jobs ORDER BY id')).rows,before);
+
  }finally{await db.close();}
 });

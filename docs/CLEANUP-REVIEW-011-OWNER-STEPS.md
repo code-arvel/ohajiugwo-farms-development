@@ -1,6 +1,8 @@
 # Migration 011 — read-only cleanup review inspection
 
-Prepared 14 November 2026. **Not applied to hosted Supabase by the agent.**
+Prepared 14 November 2026. **21 November: owner applied 011 and whole rollback verification passed. Do not rerun 001–011.** Historical application instructions below remain a record, not a repeat instruction.
+
+Current safe read-only HTTP diagnostic found four review jobs, all revoked app sessions with matching/decryptable identity data and expired-token rejections. No cleanup/recovery was performed. Next run the entire `supabase/diagnostics/cleanup-review-session-status.sql` in the existing project's SQL Editor and report its single count row; never select raw encrypted credentials or tokens into chat. Local diagnostic now supports both Supabase error response shapes; six focused tests passed. This does not prove provider sessions have been removed.
 
 The owner diagnostic shows three session jobs under review: attempts 1, completed tokens 0, application sessions revoked, credentials retained, source fingerprints matching, and provider sessions still present. This does not identify the cause or prove provider logout. Preserve these jobs and the current session key.
 
