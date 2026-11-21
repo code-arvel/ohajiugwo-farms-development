@@ -32,7 +32,7 @@ export function createWorkspaceFixture(origin,assets,{readinessFeatures=false}={
  const app=createAdminApplication(config,{auth,provider,rpc:provider.rpc,assets,mediaProcessor:{process:async()=>{throw Error('Upload disabled in this dummy review.');}},storage:{}});
  return{state,actor,handle:async request=>{
   const url=new URL(request.url);if(url.origin!==origin)return new Response('Loopback fixture only.',{status:403});
-  if(!url.pathname.startsWith('/admin'))return null;
+  if(!url.pathname.startsWith('/admin')){const asset=assets.get(url.pathname);return asset?new Response(asset.body,{headers:{'content-type':asset.type}}):null;}
   const response=await app(request);
   if(response.headers.get('content-type')?.includes('text/html')){const headers=new Headers(response.headers);headers.delete('content-length');return new Response((await response.text()).replace(/(<body[^>]*>)/,'$1<p class="workspace-fixture-notice">Local fixture · dummy records · no hosted accounts, email or permanent saves</p>'),{status:response.status,headers});}
   return response;

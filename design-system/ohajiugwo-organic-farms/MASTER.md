@@ -1,5 +1,9 @@
 # Ohajiugwo Organic Farms — project design system
 
+## 21 November — owner-requested UI refinement
+
+Landing tagline/story heading use “Rooted-in”/“rooted-in” with restrained warm-earth (#85512f on cream; #edce91 on forest) accent. No acreage wording in the visible story/farmland copy; confirmed source acreage is retained. Administrator sidebar has no footer content, stays pinned while desktop main content scrolls, and returns to natural mobile flow. All workspace screens use the shared logo/typography/navigation; downloads uses standard heading, separated sections and feedback. These requests supersede the older visible five-hectare copy and scrolling-sidebar guidance only. Owner visual review of the implementation remains pending.
+
 ## 21 November — owner-approved Farm workspace addendum
 
 For administrator surfaces, the owner approved Approach A and its written design at `docs/superpowers/specs/2026-11-21-farm-workspace-design.md`. It supersedes older prohibitions on admin styling changes within this defined scope: shared restrained navigation, spacious editorial pages, Linear-inspired forms, Airbnb-inspired filters and a Notion-inspired overview. Use the existing farm symbol/wordmark, cream/forest palette, Lora/DM Sans and logo fonts. Existing writer/security rules remain; centred authentication/acceptance composition remains. Public homepage layout/copy is preserved; more contextual photography is authorised for selection but no individual replacement is yet approved. Refer to `docs/FARM-WORKSPACE-LOCAL.md` for actual implementation/evidence and gaps; visual selection is not hosted security or screen-reader verification.

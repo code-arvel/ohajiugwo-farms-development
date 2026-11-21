@@ -82,8 +82,8 @@ test('the blog and landing footers do not display the company email', () => {
 test('the Abia story keeps its image and copy without the acreage overlay', () => {
   const html = home();
   assert.match(html, /class="story-art"><figure><img/);
-  assert.match(html, /Proudly rooted<br>in <em>Abia State\.<\/em>/);
-  assert.ok(!html.includes('class="land-note"'));
+  assert.match(html, /Proudly <span class="rooted-accent">rooted-in<\/span><br><em>Abia State\.<\/em>/);
+  assert.ok(!html.includes('class="land-note"'));assert.doesNotMatch(html, /five[- ]hectare/i);
 });
 
 test('clearing the email never creates a fake address on any page', () => {
@@ -133,7 +133,7 @@ test('the original saved homepage content and section balance are restored', () 
   const html = home();
   const saved = readFileSync('backups/original-homepage-20261015T131833Z.mjs', 'utf8');
   const headings = source => [...source.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)].map(match => [match[1], match[2].replaceAll('&amp;', '&')]);
-  assert.deepEqual(headings(html), headings(saved), 'Heading sequence matches the recovered implementation');
+  assert.deepEqual(headings(html.replace('Proudly <span class="rooted-accent">rooted-in</span><br>', 'Proudly rooted<br>in ')), headings(saved), 'Heading sequence matches the recovered implementation');
   assert.deepEqual([...html.matchAll(/<section id="([^"]+)"/g)].map(match => match[1]), ['home', 'products', 'practices', 'about', 'services', 'contact']);
   assert.equal([...html.matchAll(/class="product-card"/g)].length, 3);
   assert.ok(!/scroll-section|section-intro|future-section|purpose-grid|method-grid|learning-section|enquiry-banner/.test(html));

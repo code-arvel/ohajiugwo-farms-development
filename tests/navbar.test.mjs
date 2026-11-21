@@ -37,7 +37,7 @@ test('navbar typography and scrolling styles are separate from page typography',
   const html=header();
   assert.match(html, /href="https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=5\.463145145355659%2C7\.5058460155980935"/);
   assert.match(html, /target="_blank"\s+rel="noopener noreferrer"/);
-  assert.match(html, /Rooted in Abia\. Growing with purpose\./);
+  assert.match(html.replace(/<[^>]*>/g,''), /Rooted-in Abia\. Growing with purpose\./);
   assert.match(html, /Okwu Autonomous Community, Nigeria/);
   const css=readFileSync('src/styles/navbar.css','utf8');
   assert.match(css,/\.site-header #main-nav>a:hover\s*\{color:\s*#6b713d;?\}/);

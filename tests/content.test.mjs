@@ -70,9 +70,9 @@ test('structured company edits consistently update the existing slots without ne
   Object.assign(data.company, { name: 'LOCAL SAMPLE FARMS LTD', displayName: 'Local Sample Farms Ltd', email: 'sample@example.invalid', hectares: 7, headquarters: 'Local sample headquarters', farmland: 'Local sample farmland', values: ['Sample integrity', 'Sample stewardship', 'Sample community'] });
   const html = home(data);
   assert.match(html, /Local Sample Farms Ltd is a sustainable agricultural enterprise/);
-  assert.match(html, /7-hectare farmland at Local sample farmland/);
+  assert.match(html, /From our farmland at Local sample farmland/);
   assert.ok(!html.includes('land-note'));
-  assert.match(html, /7 hectares, cultivated with care/);
+  assert.doesNotMatch(html, /7[- ]hectare/);assert.match(html, /Cultivated with care for the soil and local biodiversity/);
   for (const value of data.company.values) assert.ok(html.includes(value));
   assert.ok(!html.includes('ohajiugwochimeziebibi@gmail.com'));
   assert.match(html, /mailto:sample@example.invalid/);
@@ -98,7 +98,8 @@ test('approved homepage markup and styling remain preserved with the approved st
   const withoutNavbar=html=>html.replace(/<header class="site-header">[\s\S]*?<\/header>/,'<header class="site-header"></header>').replace('<link rel="stylesheet" href="/logo.css">','').replace('<link rel="stylesheet" href="/navbar.css">','').replace(/(<div class="footer-main">)<a\b[\s\S]*?<\/a>/,'$1<!-- shared logo -->').replace('.site-header{flex-wrap:wrap;position:static}', '.site-header{flex-wrap:wrap}').replace(/<div class="land-note">[\s\S]*?<\/div>/, '').replaceAll('&amp;', '&').replace(/<div class="topline">[\s\S]*?<\/div>/, '<!-- information strip, checked separately -->');
   // Owner authorised contextual stock replacements/local responsive variants on 21 Nov.
   // Keep image layout/loading contracts while content/section/CSS preservation remains exact.
-  const photoLayout=html=>withoutNavbar(html).replace(/<img\b[^>]*>/g,tag=>`<img ${['class','width','height','loading'].map(key=>tag.match(new RegExp(key+'="[^" ]*(?: [^" ]*)*"'))?.[0]||'').join(' ')}>`);
+  const requestedCopy=html=>html.replace('Proudly <span class="rooted-accent">rooted-in</span><br>', 'Proudly rooted<br>in ').replace('From our five-hectare farmland at', 'From our farmland at').replace('Five hectares, cultivated with care.', 'Cultivated with care for the soil and local biodiversity.');
+  const photoLayout=html=>withoutNavbar(requestedCopy(html)).replace(/<img\b[^>]*>/g,tag=>`<img ${['class','width','height','loading'].map(key=>tag.match(new RegExp(key+'="[^" ]*(?: [^" ]*)*"'))?.[0]||'').join(' ')}>`);
   assert.equal(photoLayout(home()),photoLayout(approved.home()));
   const baselineCss=readFileSync('tests/fixtures/approved-main.css','utf8');
   assert.equal(createHash('sha256').update(baselineCss).digest('hex'), '8b23b08626ebeb5eab750dbd518c250b9a4ce099f78ee29f80f3e4a8daf43375');
@@ -109,7 +110,7 @@ test('approved homepage markup and styling remain preserved with the approved st
   assert.match(css,stripHover);
   // Compile both CSS versions to ignore formatting only; all other rules remain compared.
   const canonical=value=>transformSync(value,{loader:'css',minify:true}).code.replace(/(--[\w-]+:)([^;}]+)/g,(_,key,val)=>key+val.replace(/\s+/g,'').replaceAll('"', "'"));
-  assert.equal(canonical(css.replace(focusPatch,'').replace(stripHover,'')),canonical(baselineCss));
+  assert.equal(canonical(css.replace(focusPatch,'').replace(stripHover,'').replace('.rooted-accent{color:#85512f}','').replace('.topline .rooted-accent{color:#edce91}','')),canonical(baselineCss));
   assert.ok(home().includes('href="/blog/"'));
 });
 

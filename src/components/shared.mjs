@@ -53,7 +53,7 @@ export function header(onBlog = false, profile = company) {
   const company = profile;
   const html = `<a class="skip-link" href="#main">Skip to main content</a>
   <div class="topline">
-    <span>Rooted in Abia. Growing with purpose.</span>
+    <span><strong class="rooted-accent">Rooted-in</strong> Abia. Growing with purpose.</span>
     <span>
       <a
         href="https://www.google.com/maps/search/?api=1&query=5.463145145355659%2C7.5058460155980935"

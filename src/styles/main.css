@@ -1448,3 +1448,6 @@ div[id] {
 .home-page section[id][tabindex="-1"]:focus {
   outline: none;
 }
+
+/* Owner-requested warm-earth accent, with a light variant on the forest strip. */
+.rooted-accent{color:#85512f}.topline .rooted-accent{color:#edce91}
