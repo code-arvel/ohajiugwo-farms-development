@@ -1,7 +1,10 @@
-# Separate Free Worker PREPARATION ONLY. No deploy, credentials or active cron.
+# Separate development-only Free cleanup Worker; no public HTTP endpoint.
 name = "ohajiugwo-cleanup-development"
+account_id = "43de9552f62f216baccf88d3d2e208a6"
 main = "hosting/cleanup-worker.mjs"
 compatibility_date = "2025-01-01"
-# ADMIN_ENABLE_CLEANUP_WORKER remains unset; cron activation requires reviewed deployment approval.
-# [triggers]
-# crons = ["*/5 * * * *"]
+workers_dev = false
+preview_urls = false
+# Owner-authorized 14 November; secrets/gates provisioned privately.
+[triggers]
+crons = ["*/5 * * * *"]
