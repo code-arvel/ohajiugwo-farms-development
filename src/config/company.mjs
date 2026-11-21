@@ -28,7 +28,7 @@ export const navigation = [
 // Replace the object entries with local authentic images when supplied. See docs/ASSETS.md.
 const stockImage=(name,alt,position='center')=>({url:`/images/stock/${name}-1200.webp`,alt,position,stock:true,variants:[480,800,1200].map(width=>({url:`/images/stock/${name}-${width}.webp`,width}))});
 export const images = {
- hero:stockImage('hero','Rows of leafy vegetables growing in open soil — temporary stock photograph, not our farm','center 56%'),
+ hero:stockImage('hero','Rows of leafy crops in a sunlit field — temporary stock photograph, not our farm','center 58%'),
  greens:stockImage('greens','Fresh leafy vegetables growing in a garden bed — temporary stock photograph, not our produce'),
  fruit:stockImage('fruit','A pineapple growing among its leaves — temporary stock photograph from Mexico, not our farm','center 40%'),
  planting:stockImage('planting','Young seedlings growing in soil trays — temporary stock photograph, not our nursery'),

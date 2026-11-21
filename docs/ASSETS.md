@@ -37,3 +37,7 @@ The owner's full-sequence implementation instruction authorises the contextual s
 - Soil/seedling care: Jonathan Kemper, retained Unsplash CbZh3kaPxrE, now separate from the seedling product image.
 
 Provider source/licence pages were inspected on21 November2026. The source images were downloaded over HTTPS, inspected and converted using existing Pillow; they are not AI-generated farm evidence. The original public CSS/section order remains unchanged. Public-output and desktop/mobile image presentation need verification after final integration.
+
+## 21 November — previous hero restored at owner's request
+
+Restored the original Tim Mossholder field photograph (Unsplash nZvjBMO5p_0, original image source photo-1522184074623-e772ae8ec940) and centre 58% crop. It is served as local 480/800/1200px responsive WebP variants, downloaded from the same original source rather than introducing another photograph. Updated the current manifest with source URLs, dimensions and SHA-256 checksums. Other photography is unchanged. This remains licensed stock, not a photograph of the company farm; no visible stock badge is added.

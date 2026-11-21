@@ -1,9 +1,9 @@
 [
   {
     "use": "hero",
-    "author": "Sayeed Chowdhury",
-    "source": "https://www.pexels.com/photo/vibrant-green-lettuce-farm-at-sunset-35252801/",
-    "licence": "https://www.pexels.com/license/",
+    "author": "Tim Mossholder",
+    "source": "https://unsplash.com/photos/bed-of-green-leafed-plants-nZvjBMO5p_0",
+    "licence": "https://unsplash.com/license",
     "reviewedAt": "2026-11-21",
     "stock": true,
     "depictsCompany": false,
@@ -11,22 +11,26 @@
       {
         "url": "/public/images/stock/hero-480.webp",
         "width": 480,
-        "height": 320,
-        "sha256": "41bb28834e7b5482bf0077ee6ffe829969b4f34b2239489614370c755e26187a"
+        "sha256": "8911a98dd0d3628f0ea91be1146bef0d42983fc9e1c058ae5d848769190c90be",
+        "downloadSource": "https://images.unsplash.com/photo-1522184074623-e772ae8ec940?fm=webp&fit=crop&w=480&q=80",
+        "height": 320
       },
       {
         "url": "/public/images/stock/hero-800.webp",
         "width": 800,
-        "height": 533,
-        "sha256": "892e3261fed9126946b2c72af22d1947eff3ace6d7fbb47d2da0abddae8b85d3"
+        "sha256": "c50df900cb95e559a61d4951b5b6859793078e8d417c71f54da9532b0585e428",
+        "downloadSource": "https://images.unsplash.com/photo-1522184074623-e772ae8ec940?fm=webp&fit=crop&w=800&q=80",
+        "height": 533
       },
       {
         "url": "/public/images/stock/hero-1200.webp",
         "width": 1200,
-        "height": 800,
-        "sha256": "f0f861b0876a6e203d54987e54a76e5798089269a78c5cca19e5530a1d26c593"
+        "sha256": "cbbd488fb5483b41406e482ce014c8be864f140b5c4bf54f758ff9c98ffd7513",
+        "downloadSource": "https://images.unsplash.com/photo-1522184074623-e772ae8ec940?fm=webp&fit=crop&w=1200&q=80",
+        "height": 800
       }
-    ]
+    ],
+    "restoredAtOwnerRequest": true
   },
   {
     "use": "greens",
