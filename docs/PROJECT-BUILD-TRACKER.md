@@ -4,7 +4,7 @@
 
 ## Current sequence
 
-1. Review the disposable UI proposal, select spacious A or compact B, and approve the resulting design specification before product UI changes.
+1. **Approach A selected by owner, 21 November.** Review and approve [the written UI specification](superpowers/specs/2026-11-21-farm-workspace-design.md), then plan/implement product changes. Independent builder review found no important unanswered planning questions.
 2. Implement the shared administrator shell, overview, forms and filters by reusing the current frontend, editor and protected API contracts. Keep local regression checks alongside changes.
 3. Review contextual homepage photo candidates and replace only approved selections, with provenance, responsive sizes/crops, descriptive alternatives and source/licence records.
 4. Finish remaining local publishing/recovery operations against isolated fixtures and mocked transports: reviewed change summary, immutable release manifest, build/deploy coordination, failure recovery/rollback, retention and independent encrypted backup/restore workflows. A functional publish button must not be enabled against hosted services by this work.

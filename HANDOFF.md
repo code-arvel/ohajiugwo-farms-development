@@ -1,5 +1,11 @@
 # Ohajiugwo Organic Farms Ltd — handoff
 
+## 21 November — owner selected Approach A; written UI scope prepared
+
+Owner selected the recommended **Approach A — Farm workspace** after the saved visual proposal. This selects the spacious editorial direction; it does not approve dummy data as live output or individually select the candidate stock photographs. Wrote [the implementation design](docs/superpowers/specs/2026-11-21-farm-workspace-design.md) covering authenticated overview/navigation, reused editor/forms, applied-state filters, responsive/accessibility/error behaviour, supported data fields and preserved security/hosted boundaries. A fresh builder review found no important unanswered planning questions. Source follow-up pinned content filters to actual `updatedAt` and photo orientation/date to dimensions/`createdAt`; editable photo name/alt/tag fields do not exist in the current list API and are not fabricated by the design.
+
+Written scope approval is pending before product implementation. Next: owner reviews the concrete specification; after approval create the implementation plan and execute locally. Keep all previous hosted checkpoint deferrals and later publishing/backups/reporting work tracked separately. No application code, SQL/provider operation, image replacement, deployment or push occurred during this specification turn. Documentation-only verification: `git diff --check`; no new test pass is claimed.
+
 ## 21 November — owner defers hosted verification; full-project build and UI review take priority
 
 Owner explicitly requests marking the current work incomplete, continuing the rest of the project locally, and resuming hosted tests/pending migrations from this checkpoint later. **Stage 2 remains INCOMPLETE.** Migration 010 is owner-applied/verified; migration 011 is prepared locally and remains pending unless newer owner evidence says otherwise. Three Auth session cleanup review jobs are unresolved. Do not rerun migrations 001–010, infer 011 application, reset/requeue jobs or change the key. No hosted activity occurred in this design turn. Previously deployed development cron is not suspended by this change of work priority; last-observed configuration remains active, current remote status not rechecked.
