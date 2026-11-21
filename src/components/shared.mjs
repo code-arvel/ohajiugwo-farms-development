@@ -43,10 +43,10 @@ export function photo(
   } = {},
 ) {
   const src = (w) =>
-    image.url.startsWith("https://images.unsplash.com/")
+    image.variants?.length ? (image.variants.find(item=>item.width>=w)||image.variants.at(-1)).url : image.url.startsWith("https://images.unsplash.com/")
       ? `${image.url}?auto=format&fit=crop&w=${w}&q=80`
       : image.url;
-  return `<img class="${className}" src="${escapeHtml(src(width))}" ${image.url.startsWith("http") ? `srcset="${[480, 800, 1200, 1800].map((w) => `${escapeHtml(src(w))} ${w}w`).join(", ")}" sizes="${sizes}"` : ""} width="${width}" height="${height}" alt="${escapeHtml(image.alt)}" loading="${eager ? "eager" : "lazy"}" decoding="async" ${eager ? 'fetchpriority="high"' : ""} ${image.position ? `style="object-position:${escapeHtml(image.position)}"` : ""}>`;
+  return `<img class="${className}" src="${escapeHtml(src(width))}" ${image.variants?.length ? `srcset="${image.variants.map(item=>`${escapeHtml(item.url)} ${item.width}w`).join(", ")}" sizes="${sizes}"` : image.url.startsWith("http") ? `srcset="${[480, 800, 1200, 1800].map((w) => `${escapeHtml(src(w))} ${w}w`).join(", ")}" sizes="${sizes}"` : ""} width="${width}" height="${height}" alt="${escapeHtml(image.alt)}" loading="${eager ? "eager" : "lazy"}" decoding="async" ${eager ? 'fetchpriority="high"' : ""} ${image.position ? `style="object-position:${escapeHtml(image.position)}"` : ""}>`;
 }
 
 export function header(onBlog = false, profile = company) {

@@ -1,0 +1,3 @@
+import test from'node:test';import assert from'node:assert/strict';import{createHostedAuthProvider}from'../../server/auth/provider.mjs';
+const config={supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',publishableKey:'dummy',secretKey:'dummy'};
+test('private RPC responses are cancelled before unbounded content/export allocation',async()=>{let cancelled=false,chunks=0;const stream=new ReadableStream({pull(controller){if(++chunks<=20)controller.enqueue(new Uint8Array(1024*1024));else controller.close();},cancel(){cancelled=true;}});const provider=createHostedAuthProvider(config,{fetchImpl:async()=>new Response(stream)});await assert.rejects(()=>provider.userRpc('farm_content_list',{},'dummy'),e=>e.status===503);assert.equal(cancelled,true);});

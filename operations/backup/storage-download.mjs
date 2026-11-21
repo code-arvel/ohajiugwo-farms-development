@@ -1,0 +1,5 @@
+// Immutable original reads only; no arbitrary URL fetching and no token logging.
+export function privateOriginalReader({projectRef,secretKey,fetchImpl=fetch}){
+ if(!/^[a-z0-9]{20}$/.test(projectRef||'')||typeof secretKey!=='string'||!secretKey)throw Error('Explicit private photo source required.');
+ return async ref=>{if(!/^[a-f0-9-]{36}$/.test(ref?.id||'')||!/^[a-f0-9-]{36}$/.test(ref?.version||'')||ref.path!==`media/${ref.id}/${ref.version}/original.webp`)throw Error('Invalid immutable photo reference.');const response=await fetchImpl(`https://${projectRef}.supabase.co/storage/v1/object/authenticated/farm-photographs/${ref.path}`,{headers:{apikey:secretKey,Authorization:`Bearer ${secretKey}`},redirect:'manual',signal:AbortSignal.timeout(30000)});if(!response.ok||!response.body)throw Error('Private original download failed.');return(async function*(){let size=0;const reader=response.body.getReader();try{while(true){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>10_485_760){await reader.cancel();throw Error('Private original exceeds its bound.');}yield value;}}finally{reader.releaseLock();}})();};
+}

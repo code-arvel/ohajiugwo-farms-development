@@ -1,5 +1,12 @@
 // Exact browser-only files. No environment, source fixtures, editor content or server modules.
 export const browserAssetFiles=[
+ ['/admin/preview-assets/styles.css','src/styles/main.css','text/css'],
+ ['/admin/export/client.mjs','admin/export/client.mjs','text/javascript'],
+ ['/admin/publishing/screen.css','admin/publishing/screen.css','text/css'],
+ ['/admin/publishing/client.mjs','admin/publishing/client.mjs','text/javascript'],
+ ['/admin/reporting/reporting.css','admin/reporting/reporting.css','text/css'],
+ ['/admin/media/metadata.mjs','admin/media/metadata.mjs','text/javascript'],
+ ['/admin/media/metadata.css','admin/media/metadata.css','text/css'],
  ['/admin/media/upload-validation.mjs','admin/media/upload-validation.mjs','text/javascript'],
  ['/admin/workspace/filters.mjs','admin/workspace/filters.mjs','text/javascript'],
  ['/admin/workspace/screen.css','admin/workspace/screen.css','text/css'],

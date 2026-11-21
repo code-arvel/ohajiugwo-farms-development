@@ -16,7 +16,9 @@ export function createHostedAuthProvider(config,{fetchImpl=fetch}={}){
   }
   if(!response.ok){const failure=new AuthError('Authentication request could not be completed.',response.status);failure.failureKind='http';throw failure;}
   if(response.status===204)return null;
-  const text=await response.text();if(!text)return null;
+  // Content/history/export RPCs share this adapter: bound bytes before decoding.
+  const limit=16_777_216;if(Number(response.headers.get('content-length'))>limit){await response.body?.cancel();throw new AuthError('Authentication response exceeds its safe size.',503);}
+  const reader=response.body?.getReader();let text='';if(reader){const parts=[];let size=0;try{while(true){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){await reader.cancel();throw new AuthError('Authentication response exceeds its safe size.',503);}parts.push(value);}const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}try{text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);}catch{throw new AuthError('Authentication response could not be verified.',503);}}finally{reader.releaseLock();}}if(!text)return null;
   try{return JSON.parse(text);}catch{throw new AuthError('Authentication response could not be verified.',503);}
  }
  return {

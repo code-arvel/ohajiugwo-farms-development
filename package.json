@@ -7,7 +7,7 @@
     "build": "node scripts/build.mjs",
     "dev": "npm run editor:build && node scripts/serve.mjs",
     "preview": "node scripts/serve.mjs --production",
-    "check": "npm run editor:build && node --test --test-concurrency=1 tests/*.test.mjs",
+    "check": "npm run build && npm run editor:build && node --test --test-concurrency=1 tests/*.test.mjs",
     "editor:build": "node scripts/build-editor.mjs",
     "check:admin:unit": "node --test --test-concurrency=1 tests/admin/*.test.mjs",
     "admin:test-first-admin": "node --test tests/admin/first-admin*.test.mjs",
@@ -25,7 +25,12 @@
     "admin:test-stage2-storage-access": "node --env-file=.env.admin scripts/check-stage2-storage-access.mjs",
     "admin:test-stage2-nonmember-access": "node --env-file=.env.admin scripts/check-stage2-nonmember-access.mjs",
     "admin:dev-workspace": "node scripts/serve-workspace-fixtures.mjs",
-    "admin:qa-workspace": "node tests/admin/browser/workspace-qa.mjs"
+    "admin:qa-workspace": "node tests/admin/browser/workspace-qa.mjs",
+    "check:operations": "node --test --test-concurrency=1 tests/publishing/*.test.mjs tests/reporting/*.test.mjs tests/operations/*.test.mjs",
+    "release:fixture": "node scripts/release-fixture.mjs",
+    "backup:fixture": "node scripts/backup-fixture.mjs --fixture",
+    "check:artifact": "node scripts/check-release-artifact.mjs dist",
+    "admin:qa-readiness": "node tests/admin/browser/readiness-qa.mjs"
   },
   "engines": {
     "node": ">=22"

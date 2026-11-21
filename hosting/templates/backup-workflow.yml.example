@@ -1,0 +1,62 @@
+# INACTIVE TEMPLATE. Install only in an owner-approved PRIVATE runner repository
+# after destination/key delivery, compatible PostgreSQL client, restore and alerts
+# are verified. No backup belongs in Actions artifacts or caches.
+name: Encrypted farm backup
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: farm-private-backup
+  cancel-in-progress: false
+jobs:
+  backup:
+    if: vars.FARM_BACKUP_APPROVED == 'verified-offsite-and-restore'
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      FARM_BACKUP_KEY_FILE: ${{ runner.temp }}/farm-recovery-key
+      PGPASSFILE: ${{ runner.temp }}/farm-pgpass
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ vars.FARM_APPROVED_CODE_REVISION }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - name: Verify reviewed PostgreSQL client
+        env:
+          VERIFIED_VERSION: ${{ vars.FARM_VERIFIED_PG_DUMP_VERSION }}
+        run: test -n "$VERIFIED_VERSION" && test "$(pg_dump --version)" = "$VERIFIED_VERSION"
+      - name: Prepare ephemeral private configuration
+        env:
+          PRIVATE_CONFIGURATION: ${{ secrets.FARM_BACKUP_ENV }}
+          RECOVERY_KEY: ${{ secrets.FARM_BACKUP_RECOVERY_KEY }}
+          PRIVATE_PASSFILE: ${{ secrets.FARM_BACKUP_PGPASS }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          os.umask(0o077)
+          for name, value in [('backup.env', os.environ['PRIVATE_CONFIGURATION']), ('farm-recovery-key', os.environ['RECOVERY_KEY']), ('farm-pgpass', os.environ['PRIVATE_PASSFILE'])]:
+              if not value:
+                  raise SystemExit('Private configuration missing')
+              target = Path(os.environ['RUNNER_TEMP']) / name
+              with target.open('x') as file:
+                  file.write(value)
+          PY
+      - name: Encrypt, upload, verify and retain recovery sets
+        run: node --env-file="$RUNNER_TEMP/backup.env" scripts/run-backup-worker.mjs --confirm-project "$SUPABASE_PROJECT_REF"
+      - name: Remove ephemeral material
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          for name in ['backup.env', 'farm-recovery-key', 'farm-pgpass']:
+              (Path(os.environ['RUNNER_TEMP']) / name).unlink(missing_ok=True)
+          PY
+# After a real drill, owner may approve a daily schedule and independently tested
+# 36-hour overdue alert. Never send heartbeat from a separate unconditional step.

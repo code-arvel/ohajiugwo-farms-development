@@ -1,0 +1,60 @@
+# INACTIVE manual-run template. No remote deployment was enabled by preparing it.
+# First run needs owner approval, completed exact-commit evidence and verified
+# historical-public-URL retirement before withdrawal processing can be enabled.
+name: Reviewed farm production release
+on:
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: 'Type: I approve this reviewed production run'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: farm-production-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: inputs.approval == 'I approve this reviewed production run'
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      FARM_READINESS_FILE: ${{ runner.temp }}/farm-readiness.json
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ vars.FARM_APPROVED_CODE_REVISION }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - name: Prepare reviewed private configuration
+        env:
+          PRIVATE_CONFIGURATION: ${{ secrets.FARM_PRODUCTION_ENV }}
+          PRIVATE_READINESS: ${{ secrets.FARM_PRODUCTION_READINESS }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          os.umask(0o077)
+          for target, value in [(Path('.env.admin'), os.environ['PRIVATE_CONFIGURATION']), (Path(os.environ['FARM_READINESS_FILE']), os.environ['PRIVATE_READINESS'])]:
+              if not value:
+                  raise SystemExit('Reviewed configuration missing')
+              with target.open('x') as file:
+                  file.write(value)
+          PY
+      - name: Process one reviewed release
+        run: node --env-file=.env.admin scripts/run-release-worker.mjs --confirm-project "$SUPABASE_PROJECT_REF" --approved-production-run
+      - name: Remove ephemeral material
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          Path('.env.admin').unlink(missing_ok=True)
+          Path(os.environ['FARM_READINESS_FILE']).unlink(missing_ok=True)
+          PY
+# No push trigger, remote Git integration or automatic schedule is enabled.
+# Recurring unattended release processing remains a separately reviewed setup.

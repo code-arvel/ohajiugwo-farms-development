@@ -26,9 +26,11 @@ export const navigation = [
 
 // Temporary licensed stock: these images do not depict the company or its farmland.
 // Replace the object entries with local authentic images when supplied. See docs/ASSETS.md.
+const stockImage=(name,alt,position='center')=>({url:`/images/stock/${name}-1200.webp`,alt,position,stock:true,variants:[480,800,1200].map(width=>({url:`/images/stock/${name}-${width}.webp`,width}))});
 export const images = {
-  hero: { url: 'https://images.unsplash.com/photo-1522184074623-e772ae8ec940', alt: 'Rows of leafy crops in a sunlit field — temporary stock photograph, not our farm', position: 'center 58%', stock: true },
-  greens: { url: 'https://images.unsplash.com/photo-1591981093681-7f410be94750', alt: 'A close view of green lettuce leaves — temporary stock photograph', stock: true },
-  fruit: { url: 'https://images.unsplash.com/photo-1618871736709-0843f4cfc85b', alt: 'A pineapple against a warm yellow background — temporary stock photograph', stock: true },
-  planting: { url: 'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea', alt: 'Gloved hands planting a young seedling in soil — temporary stock photograph, not our staff', stock: true }
+ hero:stockImage('hero','Rows of leafy vegetables growing in open soil — temporary stock photograph, not our farm','center 56%'),
+ greens:stockImage('greens','Fresh leafy vegetables growing in a garden bed — temporary stock photograph, not our produce'),
+ fruit:stockImage('fruit','A pineapple growing among its leaves — temporary stock photograph from Mexico, not our farm','center 40%'),
+ planting:stockImage('planting','Young seedlings growing in soil trays — temporary stock photograph, not our nursery'),
+ story:stockImage('story','Gloved hands tending a seedling in soil — temporary stock photograph, not our staff')
 };

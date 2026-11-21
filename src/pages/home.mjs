@@ -4,13 +4,14 @@ import { validateHomepage } from "../content/schema.mjs";
 import { page } from "../layouts/page.mjs";
 import { icon, photo, emailButton, escapeHtml } from "../components/shared.mjs";
 
-export function home(content = homepageContent) {
+export function home(content = homepageContent, options = {}) {
   validateHomepage(content);
   const { company, products, services } = content;
+  const imageSet = options.images || images;
   return page(
     `
   <section id="home" tabindex="-1" class="hero" aria-labelledby="hero-title">
-    ${photo(images.hero, { className: "hero-image", width: 1800, height: 1000, eager: true, sizes: "100vw" })}
+    ${photo(imageSet.hero, { className: "hero-image", width: 1800, height: 1000, eager: true, sizes: "100vw" })}
     <div class="hero-shade"></div><div class="hero-content"><p class="eyebrow light">ABIA STATE, NIGERIA</p>
     <h1 id="hero-title">Good food.<br>Living soil.<br><em>Stronger communities.</em></h1>
     <p class="hero-description">From our soil to your table, we’re growing a better future through thoughtful, sustainable farming.</p>
@@ -21,9 +22,9 @@ export function home(content = homepageContent) {
 
   <section id="products" tabindex="-1" class="section products" aria-labelledby="products-title"><div class="section-heading"><div><h2 id="products-title">A little of what <em>we grow.</em></h2></div><p>Fresh produce, strong beginnings and the goodness of the seasons. Discover what’s growing at Ohajiugwo.</p></div>
     <div class="product-grid">
-      <article class="product-card"><div class="product-image">${photo(images.greens, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[0].title)}</h3><p>${escapeHtml(products[0].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[0].enquiry)} ${icon("arrow")}</a></div></article>
-      <article class="product-card"><div class="product-image">${photo(images.fruit, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[1].title)}</h3><p>${escapeHtml(products[1].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[1].enquiry)} ${icon("arrow")}</a></div></article>
-      <article class="product-card"><div class="product-image">${photo(images.planting, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[2].title)}</h3><p>${escapeHtml(products[2].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[2].enquiry)} ${icon("arrow")}</a></div></article>
+      <article class="product-card"><div class="product-image">${photo(imageSet.greens, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[0].title)}</h3><p>${escapeHtml(products[0].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[0].enquiry)} ${icon("arrow")}</a></div></article>
+      <article class="product-card"><div class="product-image">${photo(imageSet.fruit, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[1].title)}</h3><p>${escapeHtml(products[1].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[1].enquiry)} ${icon("arrow")}</a></div></article>
+      <article class="product-card"><div class="product-image">${photo(imageSet.planting, { width: 800, height: 650, sizes: "(max-width: 650px) 100vw, 33vw" })}</div><div class="product-copy"><h3>${escapeHtml(products[2].title)}</h3><p>${escapeHtml(products[2].description)}</p><a href="#contact" class="text-link">${escapeHtml(products[2].enquiry)} ${icon("arrow")}</a></div></article>
     </div><div class="produce-note"><p><strong>There’s more to discover.</strong> Our range also includes indigenous root crops, meat and fish.</p><span>Availability varies. Please enquire by email.</span></div>
   </section>
 
@@ -36,7 +37,7 @@ export function home(content = homepageContent) {
     </div>
   </section>
 
-  <section id="about" tabindex="-1" class="section story" aria-labelledby="story-title"><div class="story-art"><figure>${photo(images.planting, { width: 900, height: 1000 })}</figure></div><div class="story-copy"><h2 id="story-title">Proudly rooted<br>in <em>Abia State.</em></h2><p class="lead">Good farming is about more than what we harvest. It’s about what we give back.</p><p>${escapeHtml(company.displayName)} is a sustainable agricultural enterprise based in Okwu Autonomous Community. From our ${company.hectares === 5 ? "five" : escapeHtml(company.hectares)}-hectare farmland at ${escapeHtml(company.farmland.split(",")[0])}, we grow crops and raise livestock with a focus on soil vitality and local biodiversity.</p><p>${escapeHtml(company.mission)}</p><div class="values">${company.values.map((value) => `<span>${icon("check")} ${escapeHtml(value)}</span>`).join("")}</div><a class="text-link" href="#locations">Where we’re based ${icon("arrow")}</a></div></section>
+  <section id="about" tabindex="-1" class="section story" aria-labelledby="story-title"><div class="story-art"><figure>${photo(imageSet.story || imageSet.planting, { width: 900, height: 1000 })}</figure></div><div class="story-copy"><h2 id="story-title">Proudly rooted<br>in <em>Abia State.</em></h2><p class="lead">Good farming is about more than what we harvest. It’s about what we give back.</p><p>${escapeHtml(company.displayName)} is a sustainable agricultural enterprise based in Okwu Autonomous Community. From our ${company.hectares === 5 ? "five" : escapeHtml(company.hectares)}-hectare farmland at ${escapeHtml(company.farmland.split(",")[0])}, we grow crops and raise livestock with a focus on soil vitality and local biodiversity.</p><p>${escapeHtml(company.mission)}</p><div class="values">${company.values.map((value) => `<span>${icon("check")} ${escapeHtml(value)}</span>`).join("")}</div><a class="text-link" href="#locations">Where we’re based ${icon("arrow")}</a></div></section>
 
   <section id="services" tabindex="-1" class="section services" aria-labelledby="services-title"><div class="section-heading"><div><h2 id="services-title">Let’s grow <em>together.</em></h2></div><p>Practical support for emerging farmers, local growers and organisations investing in a more sustainable food system.</p></div><div class="services-grid"><article><span class="service-icon">${icon("book")}</span><h3>${escapeHtml(services[0].title)}</h3><p>${escapeHtml(services[0].description)}</p><a class="text-link" href="#contact">${escapeHtml(services[0].enquiry)} ${icon("arrow")}</a></article><article><span class="service-icon">${icon("sprout")}</span><h3>${escapeHtml(services[1].title)}</h3><p>${escapeHtml(services[1].description)}</p><a class="text-link" href="#contact">${escapeHtml(services[1].enquiry)} ${icon("arrow")}</a></article><article><span class="service-icon">${icon("leaf")}</span><h3>${escapeHtml(services[2].title)}</h3><p>${escapeHtml(services[2].description)}</p><a class="text-link" href="#contact">${escapeHtml(services[2].enquiry)} ${icon("arrow")}</a></article></div><p class="service-note">Training schedules, service scope and supply arrangements are agreed by email.</p></section>
 
@@ -44,6 +45,6 @@ export function home(content = homepageContent) {
     ${company.email ? `<a class="email-address" href="mailto:${escapeHtml(company.email)}">${escapeHtml(company.email)}</a><div class="contact-actions">${emailButton("button", "Email the Farm", company.email)}<button class="copy-email" data-email="${escapeHtml(company.email)}">${icon("copy")} Copy email</button></div><p class="copy-status" role="status" aria-live="polite"></p>` : `<div class="email-pending" id="email-status">${icon("mail")}<div><strong>Company email to be supplied</strong><p>Enquiries will open here once the farm’s email address is confirmed.</p></div></div><button class="button" disabled>${icon("mail")} Email the Farm ${icon("arrow")}</button>`}
     <p class="email-only">All produce, partnership and training enquiries are handled by email.</p></div><div id="locations" class="locations"><div>${icon("pin")}<div><h3>Our headquarters</h3><p>${escapeHtml(company.headquarters)}.</p></div></div><div>${icon("sprout")}<div><h3>Our farmland</h3><p>${escapeHtml(company.farmland)}.<br>${company.hectares === 5 ? "Five" : escapeHtml(company.hectares)} hectares, cultivated with care.</p></div></div></div></section>
   `,
-    { company },
+    { ...options, company: { ...company, ...options.company } },
   );
 }

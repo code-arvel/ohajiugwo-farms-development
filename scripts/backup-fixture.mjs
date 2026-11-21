@@ -1,0 +1,2 @@
+import { runBackupFixture } from '../operations/backup/fixture.mjs';
+if(process.argv.length!==3||process.argv[2]!=='--fixture'){console.error('Disabled. Explicit local fixture only: node scripts/backup-fixture.mjs --fixture');process.exitCode=1;}else{try{console.log(JSON.stringify(await runBackupFixture()));}catch{console.error('Local fixture backup failed; no success heartbeat was sent.');process.exitCode=1;}}

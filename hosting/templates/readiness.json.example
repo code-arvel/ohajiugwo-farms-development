@@ -1,0 +1,57 @@
+{
+  "projectRef": "<existing-project-reference>",
+  "origin": "https://ohajiugwo-farms-development.pages.dev",
+  "codeRevision": "<exact-reviewed-clean-git-commit>",
+  "gates": {
+    "hostedMigrations011To014": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "authCleanupResolved": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "realAccountsAndResetVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "hostedPrivateMediaAndPreviewVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "independentConcurrencyAndRecoveryVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "offsiteBackupAndRestoreVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "backupOwnerAndHeartbeatVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "currentDesignAccessibilityReviewed": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "productionRuntimeAndSMTPVerified": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    },
+    "productionReleaseApproved": {
+      "verified": false,
+      "verifiedAt": null,
+      "note": "Pending actual verification; fixture results cannot satisfy this gate."
+    }
+  }
+}

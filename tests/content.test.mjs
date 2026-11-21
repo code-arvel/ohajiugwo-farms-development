@@ -96,7 +96,10 @@ test('approved homepage markup and styling remain preserved with the approved st
   // The original shared header reads today's nav, so this allows precisely the new Blog link.
   // Approved navbar/logo updates, focus styling, information strip and story overlay removal.
   const withoutNavbar=html=>html.replace(/<header class="site-header">[\s\S]*?<\/header>/,'<header class="site-header"></header>').replace('<link rel="stylesheet" href="/logo.css">','').replace('<link rel="stylesheet" href="/navbar.css">','').replace(/(<div class="footer-main">)<a\b[\s\S]*?<\/a>/,'$1<!-- shared logo -->').replace('.site-header{flex-wrap:wrap;position:static}', '.site-header{flex-wrap:wrap}').replace(/<div class="land-note">[\s\S]*?<\/div>/, '').replaceAll('&amp;', '&').replace(/<div class="topline">[\s\S]*?<\/div>/, '<!-- information strip, checked separately -->');
-  assert.equal(withoutNavbar(home()),withoutNavbar(approved.home()));
+  // Owner authorised contextual stock replacements/local responsive variants on 21 Nov.
+  // Keep image layout/loading contracts while content/section/CSS preservation remains exact.
+  const photoLayout=html=>withoutNavbar(html).replace(/<img\b[^>]*>/g,tag=>`<img ${['class','width','height','loading'].map(key=>tag.match(new RegExp(key+'="[^" ]*(?: [^" ]*)*"'))?.[0]||'').join(' ')}>`);
+  assert.equal(photoLayout(home()),photoLayout(approved.home()));
   const baselineCss=readFileSync('tests/fixtures/approved-main.css','utf8');
   assert.equal(createHash('sha256').update(baselineCss).digest('hex'), '8b23b08626ebeb5eab750dbd518c250b9a4ce099f78ee29f80f3e4a8daf43375');
   const css=readFileSync('src/styles/main.css','utf8');

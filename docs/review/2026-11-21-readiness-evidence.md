@@ -1,0 +1,27 @@
+# Local readiness evidence — 21 November 2026
+
+This record distinguishes implementation from hosted results. No hosted migration, provider request, SMTP change, account/email, deployment, merge or remote push was executed during this local sequence. No interrupted command is counted as a pass. The unchanged private environment/session key was not printed or committed.
+
+Implemented locally: immutable selected-revision releases, private saved previews, metadata/usage/CAS and recoverable media, disabled backup-gated retention, authenticated convenience downloads, Node release/backup runners, encrypted incremental recovery sets and isolated restore fixtures, reporting/provider adapters and optional production-only opt-in analytics, contextual responsive local stock assets, production environment gates and offline artifact references checks.
+
+Independent read-only review identified five Important issues. Fixes and regression coverage:
+
+- Explicit numeric/non-null SQL revision validation closes direct-RPC null bypass. Isolated release SQL tests reject missing/null revisions.
+- Per-article captured photo metadata travels in immutable snapshots and populates release refs. Inheritance/rollback tests preserve the earlier metadata after live metadata edits. Conflicting shared-version details require explicit reselection.
+- A withdrawal fails before building/submitting unless the adapter explicitly supports verified retirement. The actual Cloudflare adapter currently does not; retirement installation/verification remains incomplete. No false Published acknowledgement.
+- Streaming UTF-8 decoding preserves Unicode split at every byte in the backup inventory fixture. The former implementation demonstrably corrupted that fixture; corrected test passes.
+- The common private release-store operation enforces the ten-active-job bound for prepare and rollback. The regression fills the queue and rejects the next rollback.
+
+Additional safety work: private provider JSON responses are streamed with a 16 MiB cap before decoding; a finite oversized fixture proves cancellation. One earlier test attempt was interrupted and replaced with that bounded fixture; its result was not relied on. Private previews use authorised local font CSS, avoiding external requests for private draft pages. Page-exit cleanup clears photo details and other private content. Convenience exports require recent-password/mutation authentication and same-origin CSRF, and reject content races, oversized data and unknown photo versions.
+
+Browser scope: loopback composed application, isolated headless profile, dummy identity/in-memory records and mocked provider responses. Release review/queue, ambiguous-result error/focus/retry lock, unconfigured reports, private content export and saved-revision preview pass. Publishing reflow was checked at 375/390/768/1440 px. All replacement public photographs loaded, with homepage reflow at the same widths. Screenshots are `docs/review/readiness-*.png`. Prior whole-workspace fixture checks remain separate. This does not establish owner visual approval of these new screens, actual Brave/device operation, manual 200% zoom, screen-reader behaviour or full physical keyboard/touch use.
+
+Operational gaps remain explicit: hosted 011–014 and real authentication/security/cleanup verification; old public deployment retirement; installed recurring publishing runner; off-site destination/backup owner/maintainer/key delivery/scheduler/heartbeat and real provider restore drill; live reporting/monitor setup and optional analytics privacy/retention verification. These are not replaced by fixtures or a successful build. Stage 2 is still incomplete; no production launch is claimed.
+
+Ruling: add prepared migration 014 after 013 for retention execution and article recovery expiry rather than modifying any completed migration. It defaults disabled and requires verified independent backup/restore proof. Cost if wrong: new schema/functions require owner review and isolated/hosted rollback verification before enablement.
+
+Ruling: block withdrawals before side effects while verified historic-deployment retirement is unavailable. Cost: withdrawal/rollback selections carrying withdrawals cannot run unattended yet; maintainers must finish that integration before production feature enablement.
+
+Ruling: active structured-content/photo downloads are convenience exports; full provider/Auth restore stays a maintainer operation. Cost: a convenience export cannot restore all provider state and must never be treated as the required independent backup.
+
+Final verified commands: `npm run check:admin:unit` 242/242; `npm run check:operations` 53/53; `npm run check` 53/53; `npm run check:artifact` four pages/153 references/no local errors; final release SQL script test 1/1; focused metadata/export/private-preview 5/5 after final feedback changes; `npm run hosting:check`, `hosting:build`, `hosting:check-runtime`; release fixture CLI; encrypted backup and isolated restore CLIs; readiness browser script; whole-workspace browser regression. All completed successfully. Private configuration scan and `git diff --check` passed. Inactive workflow examples parse as YAML; they have not run in GitHub Actions. Current raw worker build is 3,389,607 bytes; hosted upload/compressed-size/CPU/runtime quotas still need actual validation before launch. No live operation is inferred.

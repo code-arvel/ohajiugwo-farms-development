@@ -1,3 +1,4 @@
+import {readJsonLimited} from '../http-input.mjs';
 import {privateHeaders} from '../security.mjs';
 import {AuthError} from '../auth/sessions.mjs';
 
@@ -12,10 +13,15 @@ async function bytes(request){
  const result=new Uint8Array(size);let offset=0;for(const part of parts){result.set(part,offset);offset+=part.byteLength;}return{bytes:result,contentType:type};
 }
 function failure(error){const status=error instanceof RequestError||error instanceof AuthError?[400,401,403,404,409,413,415,428,503].includes(error.status)?error.status:503:503;const message=status===401?'Your session has ended. Sign in again.':status===413?'The photo is too large. Choose a smaller image.':status===415?'Choose a JPEG, PNG or WebP photo.':status===404?'The photo is unavailable.':status===409?'The photo upload could not be reserved. Try again.':'The photo request could not be completed. Try again shortly.';return json({error:message},status);}
-export function createMediaHandler(config,{service}){
+export function createMediaHandler(config,{service,metadata=null}){
  return async request=>{
   try{
    const url=new URL(request.url);if(url.origin!==config.origin||url.search||request.headers.get('sec-fetch-site')==='cross-site'||(request.headers.has('origin')&&request.headers.get('origin')!==config.origin))throw new RequestError(403);
+   if(metadata){
+    if(request.method==='GET'&&url.pathname==='/admin/api/media/trash')return json(await metadata.listTrash(request));
+    const detail=url.pathname.match(/^\/admin\/api\/media\/([a-f0-9-]{36})\/(metadata|usage|restore)$/i);
+    if(detail&&uuid.test(detail[1])){if(request.method==='GET'&&detail[2]==='metadata')return json(await metadata.read(request,detail[1]));if(request.method==='GET'&&detail[2]==='usage')return json(await metadata.usage(request,detail[1]));if(request.method==='POST'&&['metadata','restore'].includes(detail[2])){if(request.headers.get('origin')!==config.origin||!/^[A-Za-z0-9_-]{43}$/.test(request.headers.get('x-csrf-token')||''))throw new RequestError(403);const input=await readJsonLimited(request);return json(await metadata[detail[2]==='restore'?'restore':'save'](request,detail[1],input));}}
+   }
    if(request.method==='GET'&&url.pathname==='/admin/api/media')return json(await service.list(request));
    let match=url.pathname.match(/^\/admin\/api\/media\/([a-f0-9-]{36})\/([a-f0-9-]{36})\/preview$/i);
    if(request.method==='GET'&&match&&uuid.test(match[1])&&uuid.test(match[2])){const image=await service.preview(request,match[1],match[2]);return new Response(image,{status:200,headers:{...privateHeaders,'Content-Type':'image/webp','Content-Length':String(image.byteLength)}});}

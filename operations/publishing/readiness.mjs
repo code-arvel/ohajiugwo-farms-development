@@ -1,0 +1,4 @@
+export const launchGates=['hostedMigrations011To014','authCleanupResolved','realAccountsAndResetVerified','hostedPrivateMediaAndPreviewVerified','independentConcurrencyAndRecoveryVerified','offsiteBackupAndRestoreVerified','backupOwnerAndHeartbeatVerified','currentDesignAccessibilityReviewed','productionRuntimeAndSMTPVerified','productionReleaseApproved'];
+export function assessReadiness(evidence,{projectRef,origin,codeRevision}={}){
+ const problems=[];if(!evidence||evidence.projectRef!==projectRef||evidence.origin!==origin||evidence.codeRevision!==codeRevision)problems.push('Evidence must match this project, exact production origin and code revision.');for(const key of launchGates){const gate=evidence?.gates?.[key];if(gate?.verified!==true||typeof gate.note!=='string'||!gate.note.trim()||!Number.isFinite(Date.parse(gate.verifiedAt)))problems.push(key+': pending verified evidence.');}return{ready:problems.length===0,problems};
+}

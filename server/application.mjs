@@ -1,3 +1,12 @@
+import {createExportHandler} from './export/http.mjs';
+import {createExportScreen} from './export/screen.mjs';
+import {createPrivatePreviewHandler} from './content/private-preview.mjs';
+import {createReleaseService} from './publishing/service.mjs';
+import {createReleaseHandler} from './publishing/http.mjs';
+import {createReleaseScreenHandler} from './publishing/screen.mjs';
+import {createReportingScreenHandler} from './reporting/screen.mjs';
+import {configuredReporting} from './reporting/runtime.mjs';
+import {createMediaMetadataService} from './media/metadata-service.mjs';
 import {createOverviewScreenHandler} from './workspace/overview-screen.mjs';
 import {createHostedAuthProvider} from './auth/provider.mjs';
 import {createProviderEffects} from './auth/provider-effects.mjs';
@@ -18,7 +27,7 @@ import {createPrivateStorageProvider} from './media/storage-provider.mjs';
 import {bundledBrowserAssets} from './browser-assets.mjs';
 
 // Shared composition for Pages and local integration. No bootstrap issue/prepare HTTP route.
-export function createAdminApplication(config,{provider, rpc,auth,firstAdmin,assets=bundledBrowserAssets,getClientIp=()=> 'unknown',storage,mediaProcessor}={}){
+export function createAdminApplication(config,{provider, rpc,auth,firstAdmin,assets=bundledBrowserAssets,getClientIp=()=> 'unknown',storage,mediaProcessor,reportingService}={}){
  const customFirstAdmin=firstAdmin!=null;
  provider??=createHostedAuthProvider(config);rpc??=provider.rpc;
  const effects=createProviderEffects(config,{rpc});
@@ -31,8 +40,13 @@ export function createAdminApplication(config,{provider, rpc,auth,firstAdmin,ass
  const mediaAvailable=config.privateMediaEnabled===true&&mediaProcessor!=null;
  const contentScreen=createContentScreenHandler(config,{auth,service:createContentService({auth,provider}),assets,privateMediaEnabled:mediaAvailable});
  const mediaService=mediaAvailable?createMediaService({auth,rpc,storage:storage||createPrivateStorageProvider(config),processor:mediaProcessor}):null;
- const media=mediaAvailable?createMediaHandler(config,{service:mediaService}):null;
- const mediaScreen=mediaAvailable?createMediaScreenHandler({auth,assets,accountsEnabled:config.accountLifecycleEnabled===true}):null;
+ const media=mediaAvailable?createMediaHandler(config,{service:mediaService,metadata:config.mediaMetadataEnabled?createMediaMetadataService({auth,provider}):null}):null;
+ const mediaScreen=mediaAvailable?createMediaScreenHandler({auth,assets,metadataEnabled:config.mediaMetadataEnabled===true,accountsEnabled:config.accountLifecycleEnabled===true}):null;
+ const privatePreview=createPrivatePreviewHandler(config,{auth,assets,content:createContentService({auth,provider}),media:mediaService,metadata:config.mediaMetadataEnabled?createMediaMetadataService({auth,provider}):null});
+ const releaseService=createReleaseService({auth,provider}),releaseApi=createReleaseHandler(config,{service:releaseService}),releaseScreen=createReleaseScreenHandler(config,{auth,assets});
+ const reports=createReportingScreenHandler({...config,privateMediaEnabled:mediaAvailable},{auth,assets,service:reportingService||configuredReporting(config)});
+ const exportApi=createExportHandler(config,{auth,content:createContentService({auth,provider}),media:mediaService,storage:storage||createPrivateStorageProvider(config)}),exportScreen=createExportScreen({auth,assets,origin:config.origin,mediaEnabled:mediaAvailable,accountsEnabled:config.accountLifecycleEnabled===true});
  const overview=createOverviewScreenHandler(config,{auth,assets,mediaEnabled:mediaAvailable});
- return request=>{const path=new URL(request.url).pathname;if(path==='/admin'||path==='/admin/'||path.startsWith('/admin/workspace/'))return overview(request);if(['/admin/accept','/admin/callback'].includes(path))return acceptance(request);if(media&&(path==='/admin/api/media'||path.startsWith('/admin/api/media/')))return media(request);if(mediaScreen&&(path==='/admin/media'||path.startsWith('/admin/media/')))return mediaScreen(request);if(path==='/admin/api/content'||path.startsWith('/admin/api/content/'))return content(request);if(path==='/admin/content'||path.startsWith('/admin/content/'))return contentScreen(request);if(accounts&&(path==='/admin/accounts'||path.startsWith('/admin/api/accounts')||path.startsWith('/admin/accounts/')))return accounts(request);return session(request);};
+ const route=request=>{const path=new URL(request.url).pathname;if(path.startsWith('/admin/api/export/'))return exportApi(request);if(path==='/admin/export'||path.startsWith('/admin/export/'))return exportScreen(request);if(path.startsWith('/admin/preview/')||path.startsWith('/admin/preview-assets/'))return privatePreview(request);if(path==='/admin/releases'||path.startsWith('/admin/publishing/'))return releaseScreen(request);if(path==='/admin/api/releases'||path.startsWith('/admin/api/releases/'))return releaseApi(request);if(path==='/admin/reports'||path.startsWith('/admin/reporting/'))return reports(request);if(path==='/admin'||path==='/admin/'||path.startsWith('/admin/workspace/'))return overview(request);if(['/admin/accept','/admin/callback'].includes(path))return acceptance(request);if(media&&(path==='/admin/api/media'||path.startsWith('/admin/api/media/')))return media(request);if(mediaScreen&&(path==='/admin/media'||path.startsWith('/admin/media/')))return mediaScreen(request);if(path==='/admin/api/content'||path.startsWith('/admin/api/content/'))return content(request);if(path==='/admin/content'||path.startsWith('/admin/content/'))return contentScreen(request);if(accounts&&(path==='/admin/accounts'||path.startsWith('/admin/api/accounts')||path.startsWith('/admin/accounts/')))return accounts(request);return session(request);};
+ return async request=>{const response=await route(request),path=new URL(request.url).pathname;if(response.status===200&&response.headers.get('content-type')?.includes('text/html')&&!['/admin/login','/admin/accept','/admin/callback'].includes(path)){response.headers.append('Set-Cookie','ohajiugwo_analytics_admin_excluded=1; Path=/; Max-Age=43200; SameSite=Lax'+(config.secureCookies?'; Secure':''));}return response;};
 }

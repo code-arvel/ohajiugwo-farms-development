@@ -1,0 +1,3 @@
+// Offline generated-output check. No credentials, provider calls or network requests.
+import{checkPublicArtifact}from'../operations/health/check-artifact.mjs';
+try{const args=process.argv.slice(2);if(args.length!==1||!['dist','release-output'].includes(args[0]))throw Error('Choose dist or release-output.');const report=await checkPublicArtifact(args[0],{origin:'https://ohajiugwo-farms-development.pages.dev'});console.log(JSON.stringify(report,null,2));if(!report.passed)process.exitCode=1;}catch{console.error('Artifact check failed. Build the selected local output first.');process.exitCode=1;}

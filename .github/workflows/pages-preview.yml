@@ -38,6 +38,9 @@ jobs:
       - name: Run Stage 2 administrator tests sequentially
         run: npm run check:admin:unit
 
+      - name: Run publishing, reporting and backup tests sequentially
+        run: npm run check:operations
+
       - name: Run public and editor regression tests
         run: npm run check
 

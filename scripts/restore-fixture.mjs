@@ -1,0 +1,2 @@
+import { runRestoreFixture } from '../operations/backup/fixture.mjs';
+if(process.argv.length!==4||process.argv[2]!=='--fixture-root'){console.error('Disabled. Explicit disposable fixture only: node scripts/restore-fixture.mjs --fixture-root /tmp/farm-backup-fixture-...');process.exitCode=1;}else{try{console.log(JSON.stringify(await runRestoreFixture(process.argv[3])));}catch{console.error('Isolated fixture restore failed or target was rejected.');process.exitCode=1;}}

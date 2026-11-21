@@ -25,3 +25,15 @@ Icons: small original SVG line drawings in `src/components/shared.mjs`. No icon 
 - `*.woff2` copies were generated with the already installed FontTools, using `TTFont`, `font.flavor='woff2'` and `font.save(...)`. Compression only; glyphs, variation axes and font naming retained. The CSS prefers WOFF2, with original TTF fallback. No runtime FontTools or new npm dependency is needed. `scripts/fetch-logo-fonts.py` can retrieve the original TTF/licence files from the official repository; it is an optional maintainer tool, not part of the build.
 - Fonts apply only to the shared `.farm-logo` lettering through dedicated CSS family aliases in `src/styles/logo.css`. Existing Lora/DM Sans page typography and editor styling are unchanged.
 - The referenced horizontal sample image was not attached to the request visible to the agent. Layout follows the explicitly supplied symbol-left, title-case lettering, fonts, hierarchy and proportions, awaiting owner visual review.
+
+## 21 November — context-matched local photographs
+
+The owner's full-sequence implementation instruction authorises the contextual stock replacements. The layout/copy/branding remain unchanged. Five distinct scenes now serve locally as responsive WebP assets, with metadata stripped and sizes480/800/1200. They depict growing vegetables, leafy beds, fruit still on its plant, nursery seedlings and hands tending soil; none is represented as this farm, its workers or its products. See `docs/PHOTOGRAPHY-MANIFEST.json` for exact sources, author/licence links, review date, dimensions and SHA-256 hashes. No certification is implied. Authentic owner photographs can replace these later.
+
+- Hero rows: Sayeed Chowdhury, Pexels35252801.
+- Leafy produce: Markus Winkler, Pexels24334853.
+- Seedling trays: Eleonora Sky, Pexels7392772.
+- Pineapple growing in Mexico: Osni Shelby, Unsplash TREt-D05Ruw.
+- Soil/seedling care: Jonathan Kemper, retained Unsplash CbZh3kaPxrE, now separate from the seedling product image.
+
+Provider source/licence pages were inspected on21 November2026. The source images were downloaded over HTTPS, inspected and converted using existing Pillow; they are not AI-generated farm evidence. The original public CSS/section order remains unchanged. Public-output and desktop/mobile image presentation need verification after final integration.

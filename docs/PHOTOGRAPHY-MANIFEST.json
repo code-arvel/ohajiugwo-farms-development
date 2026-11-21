@@ -1,0 +1,147 @@
+[
+  {
+    "use": "hero",
+    "author": "Sayeed Chowdhury",
+    "source": "https://www.pexels.com/photo/vibrant-green-lettuce-farm-at-sunset-35252801/",
+    "licence": "https://www.pexels.com/license/",
+    "reviewedAt": "2026-11-21",
+    "stock": true,
+    "depictsCompany": false,
+    "variants": [
+      {
+        "url": "/public/images/stock/hero-480.webp",
+        "width": 480,
+        "height": 320,
+        "sha256": "41bb28834e7b5482bf0077ee6ffe829969b4f34b2239489614370c755e26187a"
+      },
+      {
+        "url": "/public/images/stock/hero-800.webp",
+        "width": 800,
+        "height": 533,
+        "sha256": "892e3261fed9126946b2c72af22d1947eff3ace6d7fbb47d2da0abddae8b85d3"
+      },
+      {
+        "url": "/public/images/stock/hero-1200.webp",
+        "width": 1200,
+        "height": 800,
+        "sha256": "f0f861b0876a6e203d54987e54a76e5798089269a78c5cca19e5530a1d26c593"
+      }
+    ]
+  },
+  {
+    "use": "greens",
+    "author": "Markus Winkler",
+    "source": "https://www.pexels.com/photo/a-large-green-leafy-vegetable-garden-with-many-plants-24334853/",
+    "licence": "https://www.pexels.com/license/",
+    "reviewedAt": "2026-11-21",
+    "stock": true,
+    "depictsCompany": false,
+    "variants": [
+      {
+        "url": "/public/images/stock/greens-480.webp",
+        "width": 480,
+        "height": 320,
+        "sha256": "1e9b9c04750df80503118d9cf512cfe6443020000461e275d3c29cfae59d556c"
+      },
+      {
+        "url": "/public/images/stock/greens-800.webp",
+        "width": 800,
+        "height": 533,
+        "sha256": "a4eb1fbd9fe1b8f12a0afec59d3cf42b0c79dcdad07d02e95df3e7864e3460d6"
+      },
+      {
+        "url": "/public/images/stock/greens-1200.webp",
+        "width": 1200,
+        "height": 800,
+        "sha256": "04d13da43ecb1cfd7211aaff4bed59d759907dda243f678cf9925e5b5f943d14"
+      }
+    ]
+  },
+  {
+    "use": "planting",
+    "author": "Eleonora Sky",
+    "source": "https://www.pexels.com/photo/baby-plants-growing-on-a-seedling-tray-7392772/",
+    "licence": "https://www.pexels.com/license/",
+    "reviewedAt": "2026-11-21",
+    "stock": true,
+    "depictsCompany": false,
+    "variants": [
+      {
+        "url": "/public/images/stock/planting-480.webp",
+        "width": 480,
+        "height": 320,
+        "sha256": "d0fa1ca4473819523d911ce539172a5d14415785442fdef16aecf7713e5a2873"
+      },
+      {
+        "url": "/public/images/stock/planting-800.webp",
+        "width": 800,
+        "height": 533,
+        "sha256": "0836357deabd3478d423c142050368c7f397e37efe500e3b39fb0c9480d3c01f"
+      },
+      {
+        "url": "/public/images/stock/planting-1200.webp",
+        "width": 1200,
+        "height": 800,
+        "sha256": "57bd733d01483bb50b393e1aaa618310e0ef94ca814fac616d2592ed5c517538"
+      }
+    ]
+  },
+  {
+    "use": "fruit",
+    "author": "Osni Shelby",
+    "source": "https://unsplash.com/photos/a-pineapple-growing-on-a-plant-in-a-field-TREt-D05Ruw",
+    "licence": "https://unsplash.com/license",
+    "reviewedAt": "2026-11-21",
+    "stock": true,
+    "depictsCompany": false,
+    "variants": [
+      {
+        "url": "/public/images/stock/fruit-480.webp",
+        "width": 480,
+        "height": 720,
+        "sha256": "e38acf84699b849568b8ae24db3b922e6520c1b3e5a8fb9ec957e571d6b4085f"
+      },
+      {
+        "url": "/public/images/stock/fruit-800.webp",
+        "width": 800,
+        "height": 1200,
+        "sha256": "895c867334f399123482899100b3b117ad477939f94dd15bbe85ad7398d6e731"
+      },
+      {
+        "url": "/public/images/stock/fruit-1200.webp",
+        "width": 1200,
+        "height": 1800,
+        "sha256": "430ebd0e735d285f4e34431c91fda29728d2edfa17d5784b02d028639beb07ba"
+      }
+    ]
+  },
+  {
+    "use": "story",
+    "author": "Jonathan Kemper",
+    "source": "https://unsplash.com/photos/gloved-hands-planting-seedling-in-soil-CbZh3kaPxrE",
+    "licence": "https://unsplash.com/license",
+    "reviewedAt": "2026-11-21",
+    "stock": true,
+    "depictsCompany": false,
+    "variants": [
+      {
+        "url": "/public/images/stock/story-480.webp",
+        "width": 480,
+        "height": 720,
+        "sha256": "85af652ae6cc02a6f82a88d44f3958ebb10446d44e0021085dd51b66816779b6"
+      },
+      {
+        "url": "/public/images/stock/story-800.webp",
+        "width": 800,
+        "height": 1200,
+        "sha256": "cb080e33279590eddef0531348de22690a17a20017ac3667e2625e1eefc49bc6"
+      },
+      {
+        "url": "/public/images/stock/story-1200.webp",
+        "width": 1200,
+        "height": 1800,
+        "sha256": "2c44d7164f5655c23ff4d30441e8fed04f846f1eafd43dfb459daee8c9466589"
+      }
+    ]
+  }
+]

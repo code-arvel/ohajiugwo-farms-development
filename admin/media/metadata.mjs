@@ -1,0 +1,25 @@
+const fields=[['displayName','Display name',160],['altText','Alternative text',500],['description','Description',2000],['credit','Photographer / credit',300],['licence','Licence',300],['source','Source URL (reference only)',2048],['provenance','Provenance / origin notes',2000],['folder','Folder',120]];
+// request returns parsed JSON and throws {status} on failure; include CSRF on POST.
+export async function mount({root,media,request,onSaved=()=>{}}){
+ const doc=root.ownerDocument,create=(tag,text)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
+ const panel=create('section');panel.className='media-metadata';root.replaceChildren(panel);
+ const status=create('p','Loading photograph details…');status.setAttribute('role','status');status.setAttribute('aria-live','polite');panel.append(status);
+ const say=(text,error=false,state='info')=>{status.textContent=(error?'⚠ Photograph needs attention. ':'')+text;status.dataset.state=error?'error':state;status.setAttribute('role',error?'alert':'status');if(error){status.setAttribute('tabindex','-1');status.focus?.();}};
+ let value,usage;
+ try{[value,usage]=await Promise.all([request(`/admin/api/media/${media.id}/metadata`),request(`/admin/api/media/${media.id}/usage`)]);}catch{say('Photograph details are unavailable. Close this panel and choose Details and usage again to retry.',true);return()=>panel.remove();}
+ status.textContent='Details are private until a release is published.';
+ panel.append(create('h3','Photograph details'));
+ const usageText=create('p',`Used in ${usage.revisions.length} saved revision(s) and ${usage.releases.length} retained release(s).${usage.protected?' Referenced photographs cannot be removed.':''}`);panel.append(usageText);
+ if(usage.revisions.length||usage.releases.length){const list=create('ul');for(const ref of usage.revisions)list.append(create('li',`Saved content ${ref.contentId}, revision ${ref.revision}${ref.currentDraft?' (current draft)':''}${ref.deletedAt?' (in trash)':''}`));for(const ref of usage.releases)list.append(create('li',`Retained release ${ref.releaseId}`));panel.append(list);}
+ const form=create('form'),inputs={};let busy=false;
+ for(const [key,label,maxLength] of fields){const wrapper=create('label',label),input=create(['description','provenance','altText'].includes(key)?'textarea':'input');input.name=key;input.maxLength=maxLength;input.value=value.editorial[key]||'';if(key==='source')input.type='url';wrapper.append(input);form.append(wrapper);inputs[key]=input;}
+ const tagsLabel=create('label','Tags (comma separated, up to 20)'),tags=create('input');tags.name='tags';tags.value=(value.editorial.tags||[]).join(', ');tagsLabel.append(tags);form.append(tagsLabel);
+ const focal=create('fieldset');focal.append(create('legend','Focal point (0 to 1, measured from left and top)'));const coords={};for(const key of ['x','y']){const label=create('label',key==='x'?'Horizontal':'Vertical'),input=create('input');input.name=`focal-${key}`;input.type='number';input.min='0';input.max='1';input.step='0.01';input.required=true;input.value=String(value.editorial.focalPoint?.[key]??0.5);label.append(input);focal.append(label);coords[key]=input;}form.append(focal);
+ const save=create('button','Save details');save.type='submit';form.append(save);
+ if(value.deletedAt){save.disabled=true;panel.append(create('p','This photograph is in recently deleted items. Restore it to edit details. Restoring creates private draft availability only.'));const restore=create('button','Restore photograph');restore.type='button';restore.addEventListener('click',async()=>{if(busy)return;busy=true;restore.disabled=true;try{value=await request(`/admin/api/media/${media.id}/restore`,{method:'POST',body:JSON.stringify({baseRevision:value.revision})});save.disabled=false;restore.remove();say('Photograph restored for drafts. Publication requires a separate release.',false,'success');onSaved(value);}catch(error){restore.disabled=false;say(error.status===409?'This photograph changed. Close the panel and reload its details before restoring.':'The photograph could not be restored. Try Restore photograph again.',true);}finally{busy=false;}});panel.append(restore);}
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();if(busy||value.deletedAt)return;busy=true;save.disabled=true;status.textContent='Saving details…';
+  const editorial=Object.fromEntries(fields.map(([key])=>[key,inputs[key].value.trim()]));editorial.tags=[...new Set(tags.value.split(',').map(t=>t.trim()).filter(Boolean))];editorial.focalPoint={x:Number(coords.x.value),y:Number(coords.y.value)};
+  try{value=await request(`/admin/api/media/${media.id}/metadata`,{method:'POST',body:JSON.stringify({baseRevision:value.revision,editorial})});say('Photograph details saved.',false,'success');onSaved(value);}catch(error){say(error.status===409?'This was changed by another administrator. Your entries remain here; copy them before reloading.':'Details could not be saved. Check the field limits and try Save details again.',true);}finally{busy=false;save.disabled=false;}
+ });panel.append(form);return()=>panel.remove();
+}

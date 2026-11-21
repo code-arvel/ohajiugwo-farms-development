@@ -61,3 +61,4 @@ Thumbs.db
 /supabase/.branches/
 /private-exports/
 !.env.admin.example
+/release-output/
