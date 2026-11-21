@@ -1,5 +1,6 @@
 // Exact browser-only files. No environment, source fixtures, editor content or server modules.
 export const browserAssetFiles=[
+ ['/admin/media/upload-validation.mjs','admin/media/upload-validation.mjs','text/javascript'],
  ['/admin/workspace/filters.mjs','admin/workspace/filters.mjs','text/javascript'],
  ['/admin/workspace/screen.css','admin/workspace/screen.css','text/css'],
  ['/admin/workspace/overview.mjs','admin/workspace/overview.mjs','text/javascript'],

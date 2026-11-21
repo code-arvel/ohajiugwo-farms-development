@@ -8,3 +8,5 @@
 #session-message[data-state=confirmed]{background:var(--sage);color:var(--forest);border-color:var(--forest)}
 #session-message[data-state=confirmed]::before{content:"✓"}
 #session-reload{border:1px solid currentColor;padding:10px 16px;font-weight:600}
+/* Approach A control rhythm; keep the approved centred authentication layout. */
+.accept-field input{min-height:48px;font-size:16px;border-radius:4px}.session-logout{min-height:44px}.field-error{line-height:1.6}

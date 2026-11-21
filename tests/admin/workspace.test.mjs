@@ -26,3 +26,11 @@ test('overview controller distinguishes failure from empty data, and ignores clo
  const failed=createOverviewController({render:state=>states.push(state),fetchImpl:async()=>new Response('PRIVATE_ERROR',{status:503})});await failed.load();assert.equal(states.at(-1).phase,'error');assert.ok(!JSON.stringify(states).includes('PRIVATE_ERROR'));
  const empty=createOverviewController({render:state=>states.push(state),fetchImpl:async()=>new Response('[]')});await empty.load();assert.equal(states.at(-1).phase,'empty');
 });
+
+test('photo and account screens share navigation while preserving gated private form contracts',async()=>{
+ const handler=createAdminApplication({...config,privateMediaEnabled:true,accountLifecycleEnabled:true},{auth:{authenticate:async()=>actor},provider:{rpc:async()=>null,userRpc:async()=>[]},rpc:async()=>null,mediaProcessor:{},assets:new Map()});
+ for(const [path,marker]of [['/admin/media','id="photo-form"'],['/admin/accounts','id="new-invitation-form"']]){
+  const response=await handler(new Request(config.origin+path)),html=await response.text();assert.equal(response.status,200);assert.match(html,/workspace-sidebar/);assert.match(html,/admin\/workspace\/screen.css/);assert.ok(html.includes(marker));assert.match(html,/name="admin-csrf-token"/);assert.match(response.headers.get('cache-control'),/no-store/);
+ }
+ const media=await handler(new Request(config.origin+'/admin/media'));assert.match(await media.text(),/data-filter-root/);
+});

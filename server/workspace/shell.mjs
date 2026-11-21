@@ -8,7 +8,8 @@ export function workspaceNavigation({active='overview',mediaEnabled=false,accoun
 }
 export function withWorkspaceShell(html,{active,title,mediaEnabled,accountsEnabled,mainId}={}){
  const side=workspaceNavigation({active,mediaEnabled,accountsEnabled});
- return html.replace('</head>','<link rel="stylesheet" href="/admin/workspace/screen.css"></head>').replace(/<body class="([^"]*)">/,`<body class="$1 workspace-page"><div class="workspace-app">${side}<div class="workspace-body"><header class="workspace-topbar"><span>Farm workspace <span aria-hidden="true">/</span> <strong>${e(title)}</strong></span><a href="/admin/">Overview</a></header>`).replace('</body>','</div></div></body>').replace(`href="#${mainId}"`,`href="#${mainId}"`);
+ const skip=html.match(/<a class="skip-link"[^>]*>[^<]*<\/a>/)?.[0]||'';if(skip)html=html.replace(skip,'');
+ return html.replace('</head>','<link rel="stylesheet" href="/admin/workspace/screen.css"></head>').replace(/<body class="([^"]*)">/,`<body class="$1 workspace-page">${skip}<div class="workspace-app">${side}<div class="workspace-body"><header class="workspace-topbar"><span>Farm workspace <span aria-hidden="true">/</span> <strong>${e(title)}</strong></span><a href="/admin/">Overview</a></header>`).replace('</body>','</div></div></body>');
 }
 export function workspaceFilterControls({kind='drafts'}={}){
  const group=(name,label,options)=>`<fieldset><legend>${label}</legend><div class="workspace-filter-choices">${options.map(([value,text])=>`<label><input type="radio" name="${name}" value="${value}"${value==='any'?' checked':''}>${text}</label>`).join('')}</div></fieldset>`;
