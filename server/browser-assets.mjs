@@ -1,5 +1,6 @@
 // Exact browser-only files. No environment, source fixtures, editor content or server modules.
 export const browserAssetFiles=[
+ ['/admin/workspace/filters.mjs','admin/workspace/filters.mjs','text/javascript'],
  ['/admin/workspace/screen.css','admin/workspace/screen.css','text/css'],
  ['/admin/workspace/overview.mjs','admin/workspace/overview.mjs','text/javascript'],
  ['/admin/accept/client.mjs','admin/accept/client.mjs','text/javascript'],
