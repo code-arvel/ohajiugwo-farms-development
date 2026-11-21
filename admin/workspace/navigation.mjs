@@ -10,5 +10,7 @@ export function mountNavigation(sidebar){
  sidebar.addEventListener('focusout',event=>{if(event.relatedTarget&&!sidebar.contains(event.relatedTarget))close();},{signal:events.signal});
  mobile.addEventListener('change',()=>close(),{signal:events.signal});close();sidebar.setAttribute('data-menu-ready','');
  view.addEventListener('pagehide',()=>events.abort(),{once:true});
+ // Revalidate cached private pages and rebuild disposed interaction handlers.
+ view.addEventListener('pageshow',event=>{if(event.persisted)view.location.reload();});
 }
 if(typeof document!=='undefined')document.querySelectorAll('.workspace-sidebar').forEach(mountNavigation);
