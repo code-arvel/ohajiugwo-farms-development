@@ -1,5 +1,9 @@
 # Ohajiugwo Organic Farms — project design system
 
+## 21 November — owner-approved Farm workspace addendum
+
+For administrator surfaces, the owner approved Approach A and its written design at `docs/superpowers/specs/2026-11-21-farm-workspace-design.md`. It supersedes older prohibitions on admin styling changes within this defined scope: shared restrained navigation, spacious editorial pages, Linear-inspired forms, Airbnb-inspired filters and a Notion-inspired overview. Use the existing farm symbol/wordmark, cream/forest palette, Lora/DM Sans and logo fonts. Existing writer/security rules remain; centred authentication/acceptance composition remains. Public homepage layout/copy is preserved; more contextual photography is authorised for selection but no individual replacement is yet approved. Refer to `docs/FARM-WORKSPACE-LOCAL.md` for actual implementation/evidence and gaps; visual selection is not hosted security or screen-reader verification.
+
 16 October 2026. Restored original homepage, recovered from the saved 15 October implementation. These decisions supersede the expanded multiple-page and merged-page structures.
 
 ## Purpose and scope

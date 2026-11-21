@@ -23,7 +23,9 @@
     "admin:test-stage2-access": "node --env-file=.env.admin scripts/check-stage2-command-access.mjs",
     "admin:test-stage2-access:unit": "node --test tests/admin/stage2-access-probe.test.mjs tests/admin/stage2-storage-access-probe.test.mjs",
     "admin:test-stage2-storage-access": "node --env-file=.env.admin scripts/check-stage2-storage-access.mjs",
-    "admin:test-stage2-nonmember-access": "node --env-file=.env.admin scripts/check-stage2-nonmember-access.mjs"
+    "admin:test-stage2-nonmember-access": "node --env-file=.env.admin scripts/check-stage2-nonmember-access.mjs",
+    "admin:dev-workspace": "node scripts/serve-workspace-fixtures.mjs",
+    "admin:qa-workspace": "node tests/admin/browser/workspace-qa.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -44,11 +44,11 @@
 
 **Interfaces:** Pure `filterDrafts(rows,{search,edited},now=new Date()) -> rows`; pure `filterPhotos(rows,{orientation,uploaded},now=new Date()) -> rows`; `mountFilters({root,onApply}) -> {destroy()}` manages native dialog Apply/Cancel/Clear. Existing writer API and content commands remain unchanged. Validated hash destinations are `posts`, `company`, `products` and `new`; unknown values fall back safely.
 
-- [ ] Write failing tests for loaded-record search/calendar dates/missing metadata, filter state reducer Apply/Cancel/Clear, and unsupported input rejection/defaults.
-- [ ] Run `node --test tests/admin/workspace-filters.test.mjs`; observe failure.
-- [ ] Add filter helpers/dialog and editor integration; align shell/layout; preserve existing writer, reload/reconcile/save guards. Add field-level errors based on current validators, and prominent typed feedback retaining current error text.
-- [ ] Test hash destination/dirty-state recovery and empty-filter versus request-failure behaviour using isolated browser fixtures; run targeted Node checks.
-- [ ] Commit editor/navigation/filter slice locally.
+- [x] Write failing tests for loaded-record search/calendar dates/missing metadata, filter state reducer Apply/Cancel/Clear, and unsupported input rejection/defaults.
+- [x] Run `node --test tests/admin/workspace-filters.test.mjs`; observe failure.
+- [x] Add filter helpers/dialog and editor integration; align shell/layout; preserve existing writer, reload/reconcile/save guards. Add field-level errors based on current validators, and prominent typed feedback retaining current error text.
+- [x] Test hash destination/dirty-state recovery and empty-filter versus request-failure behaviour using isolated browser fixtures; run targeted Node checks.
+- [x] Commit editor/navigation/filter slice locally.
 
 ### Task 3: Photo/account/session alignment
 
@@ -56,21 +56,25 @@
 
 **Interfaces:** Reuse Task 1 navigation and Task 2 filters. Photo filtering consumes validated existing dimensions/`createdAt`, not invented names/tags. Account and session controller element IDs/protocols stay intact.
 
-- [ ] Add regressions for photo orientation/date states and inaccessible features, real upload validation errors and preserved account/session security contracts; observe failures.
-- [ ] Integrate responsive photo/account shells and shared control/feedback styling; keep centred acceptance/sign-in, controlled media upload/removal and existing account gates.
-- [ ] Run targeted media/account/session regression tests, requiring exit 0; record browser limits separately.
-- [ ] Commit the coherent remaining surface changes locally.
+- [x] Add regressions for photo orientation/date states and inaccessible features, real upload validation errors and preserved account/session security contracts; observe failures.
+- [x] Integrate responsive photo/account shells and shared control/feedback styling; keep centred acceptance/sign-in, controlled media upload/removal and existing account gates.
+- [x] Run targeted media/account/session regression tests, requiring exit 0; record browser limits separately.
+- [x] Commit the coherent remaining surface changes locally.
 
 ### Task 4: Integration verification, visual review and handoff
 
 **Files:** Local fixture/review tooling as needed under `scripts/`/`tests/admin/browser/`, plus `HANDOFF.md`, `docs/STAGE-2-CHECKLIST.md`, `docs/PROJECT-BUILD-TRACKER.md` and design master addendum.
 
-- [ ] Run full administrator suite sequentially, then public/editor suite, then hosting build/checks where affected; inspect each final summary/exit status.
-- [ ] Capture desktop/mobile renders and exercise actual filter/dialog/form/navigation interactions with dummy fixtures; check overflow/zoom/focus and pagehide guards. Do not treat headless rendering as screen-reader or hosted proof.
-- [ ] Obtain one fresh whole-change review; resolve material issues with failing regression then passing checks.
-- [ ] Update evidence and remaining gates; keep photo candidates individually unapproved, hosted 011/auth recovery deferred and whole project incomplete.
-- [ ] Commit verified integration and report local results, limitations and next work. Do not merge/push/deploy.
+- [x] Run full administrator suite sequentially, then public/editor suite, then hosting build/checks where affected; inspect each final summary/exit status.
+- [x] Capture desktop/mobile renders and exercise actual filter/dialog/form/navigation interactions with dummy fixtures; check overflow/zoom/focus and pagehide guards. Do not treat headless rendering as screen-reader or hosted proof.
+- [x] Obtain one fresh whole-change review; resolve material issues with failing regression then passing checks.
+- [x] Update evidence and remaining gates; keep photo candidates individually unapproved, hosted 011/auth recovery deferred and whole project incomplete.
+- [x] Commit verified integration and report local results, limitations and next work. Do not merge/push/deploy.
 
 ## Execution notes
 
 Owner approved concrete design after requesting implementation; direct local execution continues under that standing authorisation. Current clean branch `stage-2-secure-content` is the dedicated isolated project branch, not main. Reuse it to preserve the owner's working directory and checkpoint; no second checkout is needed. Homepage photo selection and later publishing/backups/reporting remain separate scopes. Task interfaces were cross-checked: shared navigation feeds all protected shells; filter helpers consume existing content/media shapes; no new backend migration is required by this UI plan.
+
+## Final implementation evidence
+
+21 November: Tasks 1–4 complete locally. Final post-review checks: 220/220 administrator and 53/53 public/editor tests, hosting composition/build, existing editor browser rerun and new integrated/recovery browser QA passed. Initial media/account browser regressions passed with fake providers. Fresh source review produced three material findings, now regression-tested/fixed; mobile password discoverability, stale field feedback and primary-link contrast were also corrected. Manual browser zoom, screen-reader, physical mobile and hosted checks remain pending. Current branch is retained; no merge/push/deployment. See HANDOFF and FARM-WORKSPACE-LOCAL for source-specific evidence and review instructions.

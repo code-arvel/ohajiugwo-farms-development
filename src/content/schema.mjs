@@ -1,12 +1,12 @@
 // Shared, browser-compatible validation. No database or authentication is provided in Stage 1.
 import { validateDocument, documentText } from './article.mjs';
-const fail = message => { throw new Error(message); };
+const fail = (message, fieldPath) => { const error = new Error(message); if (fieldPath) error.fieldPath = fieldPath; throw error; };
 const object = (value, keys, label, optional = []) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${label}: expected a record.`);
   if (Object.keys(value).some(key => !keys.includes(key) && !optional.includes(key)) || keys.some(key => !Object.hasOwn(value, key))) fail(`${label}: fields do not match the fixed structure.`);
 };
-const text = (value, max, label, allowEmpty = false) => {
-  if (typeof value !== 'string' || (!allowEmpty && !value.trim()) || value.length > max || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/u.test(value)) fail(`${label}: enter ${allowEmpty ? 'up to' : '1–'} ${max} characters.`);
+const text = (value, max, label, allowEmpty = false, fieldPath) => {
+  if (typeof value !== 'string' || (!allowEmpty && !value.trim()) || value.length > max || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/u.test(value)) fail(`${label}: enter ${allowEmpty ? 'up to' : '1–'} ${max} characters.`, fieldPath);
 };
 const revision = value => { if (!Number.isSafeInteger(value) || value < 1) fail('Revision must be a positive integer.'); };
 
@@ -14,18 +14,18 @@ export function validateHomepage(data) {
   object(data, ['company', 'products', 'services'], 'Homepage');
   const c = data.company;
   object(c, ['name', 'displayName', 'email', 'headquarters', 'farmland', 'hectares', 'mission', 'vision', 'values'], 'Company');
-  for (const key of ['name', 'displayName']) text(c[key], 80, key);
-  for (const key of ['headquarters', 'farmland', 'mission', 'vision']) text(c[key], 260, key);
-  text(c.email, 254, 'Email', true);
-  if (c.email && !/^[^\s@<>"'&]+@[^\s@<>"'&]+\.[^\s@<>"'&]+$/.test(c.email)) fail('Email: enter a valid enquiry address or leave empty to disable email actions.');
-  if (!Number.isFinite(c.hectares) || c.hectares <= 0 || c.hectares > 100000) fail('Farmland area: enter a positive number.');
+  for (const key of ['name', 'displayName']) text(c[key], 80, key, false, `company.${key}`);
+  for (const key of ['headquarters', 'farmland', 'mission', 'vision']) text(c[key], 260, key, false, `company.${key}`);
+  text(c.email, 254, 'Email', true, 'company.email');
+  if (c.email && !/^[^\s@<>"'&]+@[^\s@<>"'&]+\.[^\s@<>"'&]+$/.test(c.email)) fail('Email: enter a valid enquiry address or leave empty to disable email actions.', 'company.email');
+  if (!Number.isFinite(c.hectares) || c.hectares <= 0 || c.hectares > 100000) fail('Farmland area: enter a positive number.', 'company.hectares');
   if (!Array.isArray(c.values) || c.values.length !== 3) fail('Keep the three existing values.');
-  c.values.forEach(value => text(value, 80, 'Value'));
+  c.values.forEach((value, i) => text(value, 80, 'Value', false, `company.values.${i}`));
   for (const collection of ['products', 'services']) {
     if (!Array.isArray(data[collection]) || data[collection].length !== 3) fail(`Keep the three approved ${collection} slots.`);
     data[collection].forEach((item, i) => {
       object(item, ['title', 'description', 'enquiry'], `${collection} ${i + 1}`);
-      text(item.title, 80, 'Title'); text(item.description, 200, 'Description'); text(item.enquiry, 50, 'Enquiry label');
+      text(item.title, 80, 'Title', false, `${collection}.${i}.title`); text(item.description, 200, 'Description', false, `${collection}.${i}.description`); text(item.enquiry, 50, 'Enquiry label', false, `${collection}.${i}.enquiry`);
     });
   }
   return data;
