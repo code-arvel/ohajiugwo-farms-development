@@ -1,3 +1,4 @@
+import {createOverviewScreenHandler} from './workspace/overview-screen.mjs';
 import {createHostedAuthProvider} from './auth/provider.mjs';
 import {createProviderEffects} from './auth/provider-effects.mjs';
 import {createAuthService} from './auth/sessions.mjs';
@@ -32,5 +33,6 @@ export function createAdminApplication(config,{provider, rpc,auth,firstAdmin,ass
  const mediaService=mediaAvailable?createMediaService({auth,rpc,storage:storage||createPrivateStorageProvider(config),processor:mediaProcessor}):null;
  const media=mediaAvailable?createMediaHandler(config,{service:mediaService}):null;
  const mediaScreen=mediaAvailable?createMediaScreenHandler({auth,assets}):null;
- return request=>{const path=new URL(request.url).pathname;if(['/admin/accept','/admin/callback'].includes(path))return acceptance(request);if(media&&(path==='/admin/api/media'||path.startsWith('/admin/api/media/')))return media(request);if(mediaScreen&&(path==='/admin/media'||path.startsWith('/admin/media/')))return mediaScreen(request);if(path==='/admin/api/content'||path.startsWith('/admin/api/content/'))return content(request);if(path==='/admin/content'||path.startsWith('/admin/content/'))return contentScreen(request);if(accounts&&(path==='/admin/accounts'||path.startsWith('/admin/api/accounts')||path.startsWith('/admin/accounts/')))return accounts(request);return session(request);};
+ const overview=createOverviewScreenHandler(config,{auth,assets,mediaEnabled:mediaAvailable});
+ return request=>{const path=new URL(request.url).pathname;if(path==='/admin'||path==='/admin/'||path.startsWith('/admin/workspace/'))return overview(request);if(['/admin/accept','/admin/callback'].includes(path))return acceptance(request);if(media&&(path==='/admin/api/media'||path.startsWith('/admin/api/media/')))return media(request);if(mediaScreen&&(path==='/admin/media'||path.startsWith('/admin/media/')))return mediaScreen(request);if(path==='/admin/api/content'||path.startsWith('/admin/api/content/'))return content(request);if(path==='/admin/content'||path.startsWith('/admin/content/'))return contentScreen(request);if(accounts&&(path==='/admin/accounts'||path.startsWith('/admin/api/accounts')||path.startsWith('/admin/accounts/')))return accounts(request);return session(request);};
 }

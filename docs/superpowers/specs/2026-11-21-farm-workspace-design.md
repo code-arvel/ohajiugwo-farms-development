@@ -1,6 +1,6 @@
 # Farm workspace — Approach A design
 
-21 November 2026. **Approach A selected by owner; this written implementation scope awaits approval.** Visual reference: `design-system/ohajiugwo-organic-farms/proposals/workspace-review.html` with Approach A selected. This document describes the next local UI implementation slice, not completion of the entire project.
+21 November 2026. **Approach A and this written implementation scope approved by owner, 21 November 2026.** Visual reference: `design-system/ohajiugwo-organic-farms/proposals/workspace-review.html` with Approach A selected. This document describes the next local UI implementation slice, not completion of the entire project.
 
 ## Intent and alternatives
 
