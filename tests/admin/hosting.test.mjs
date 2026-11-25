@@ -32,3 +32,11 @@ test('hosting preparation packages the approved public preview and composed admi
   assert.equal((await worker.fetch(new Request(origin+'/admin/'),vars)).status,303);assert.equal((await worker.fetch(new Request(origin+'/admin/setup'),vars)).status,404);assert.equal((await worker.fetch(new Request(origin+'/_worker.js'),vars)).status,404);
  }finally{await rm(outDir,{recursive:true,force:true});}
 });
+
+test('photo metadata runtime flag is declared only in Preview configuration after hosted schema setup',()=>{
+ const config=readFileSync('wrangler.toml','utf8');
+ const preview=config.match(/\[env\.preview\.vars\]([\s\S]*?)(?=\n\[|$)/)?.[1]||'';
+ assert.match(preview,/ADMIN_ENABLE_MEDIA_METADATA\s*=\s*"confirmed-development-only"/);
+ assert.equal((config.match(/ADMIN_ENABLE_MEDIA_METADATA\s*=/g)||[]).length,1);
+ assert.ok(!/ADMIN_ENABLE_RELEASES\s*=|ADMIN_ENABLE_PRODUCTION_ROUTES\s*=/.test(config));
+});

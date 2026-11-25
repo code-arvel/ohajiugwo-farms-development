@@ -9,3 +9,9 @@ pages_build_output_dir = "hosting-output"
 [[env.preview.services]]
 binding = "MEDIA_PROCESSOR"
 service = "ohajiugwo-image-processor-development"
+
+# Hosted 013/014 are owner-applied and SQL verified. Runtime variables must be
+# declared here because this file is the Pages deployment source of truth.
+# This enables private photo details/recoverable trash in Preview only.
+[env.preview.vars]
+ADMIN_ENABLE_MEDIA_METADATA = "confirmed-development-only"

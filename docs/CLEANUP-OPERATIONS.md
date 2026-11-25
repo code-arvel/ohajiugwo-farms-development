@@ -1,5 +1,7 @@
 # Development cleanup operations
 
+**25 November checkpoint (supersedes older pending notes):** 001–011 are owner-applied/SQL verified; do not rerun. Four-session manual cleanup is complete with independent saved-state counts 4/4/4/0/0/0. Owner fresh Preview login and refresh work; pre-recovery session survival is unconfirmed. Permanent expired-token worker handling remains unfinished. 012–014 still await owner setup/verification. Follow the current table in [Stage 2 checklist](STAGE-2-CHECKLIST.md).
+
 ## Verified evidence — 14 November
 
 Natural cron events at 08:10 and 08:15 UTC were observed in the live tail. The first media batch claimed/completed one job with no retry/review/unconfirmed result; the second had no work. Owner SQL independently confirmed the new automatic-test job done, one attempt, two paths and zero Storage metadata rows; no manual batch processed it. Automatic photo cleanup passes for this scenario. The first authentication batch placed three jobs in `review`, so Auth cleanup/reconciliation is **not** complete. Review records must be inspected safely rather than reset or silently acknowledged. The tail was stopped; cron remains enabled.

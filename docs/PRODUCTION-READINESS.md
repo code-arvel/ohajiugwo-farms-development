@@ -1,5 +1,9 @@
 # Production setup and remaining verification
 
+**25 November database updates complete:** owner screenshots confirm migration 014 application success and its entire rollback-only retention verification PASS. **001–014 are owner-applied and hosted SQL verified; do not rerun them.** Retention starts disabled and must remain off without real verified off-site backup/restore. Local results and hosted SQL do not prove provider/HTTP/browser features. Next inspect signed-in Preview photo controls/runtime gate, then verify new media/preview/download workflows. Stage 2 remains incomplete. This supersedes earlier 014-pending notes below.
+
+**25 November checkpoint (supersedes older pending notes):** 001–011 are owner-applied/SQL verified; do not rerun. Four-session manual cleanup is complete with independent saved-state counts 4/4/4/0/0/0. Owner fresh Preview login and refresh work; pre-recovery session survival is unconfirmed. Permanent expired-token worker handling remains unfinished. 012–014 still await owner setup/verification. Follow the current table in [Stage 2 checklist](STAGE-2-CHECKLIST.md).
+
 Full local construction is in progress, not a declaration of launch readiness. Owner selected the existing free Pages domain: `https://ohajiugwo-farms-development.pages.dev`. Keep the distinct development Preview alias unchanged. No custom domain purchase, R2 activation or GA4 collection is authorised by code preparation.
 
 ## Separate evidence gates
