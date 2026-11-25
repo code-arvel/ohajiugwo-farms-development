@@ -1,5 +1,7 @@
 # Development cleanup operations
 
+**25 November latest hosted checkpoint:** 001–016 owner-applied and full rollback SQL verified; never rerun without cause. Agent separately verified three NEW015/016 command service-access/anonymous-denial HTTP boundaries using NULL-only refusal inputs, with no records/emails/settings changed. Reconciliation/email runtime gates remain off; successful deployed-worker cleanup, recovery template readiness and approved real additional-admin invite/reset/revoke/security/concurrency/accessibility are pending. Current HANDOFF/checklist supersede older setup-pending statements below.
+
 **25 November checkpoint (supersedes older pending notes):** 001–011 are owner-applied/SQL verified; do not rerun. Four-session manual cleanup is complete with independent saved-state counts 4/4/4/0/0/0. Owner fresh Preview login and refresh work; pre-recovery session survival is unconfirmed. Permanent expired-token worker handling remains unfinished. 012–014 still await owner setup/verification. Follow the current table in [Stage 2 checklist](STAGE-2-CHECKLIST.md).
 
 ## Verified evidence — 14 November
