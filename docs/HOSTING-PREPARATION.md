@@ -1,5 +1,7 @@
 # Free hosting status — 18 October 2026
 
+**25 November development refresh:** existing Stage2 Pages Preview refreshed from 5870e28 by successful GitHub run 45691262545 (385 tests); immutable a2f84e9c, stable alias verified home/login200 and unsigned session401/private. Existing private cleanup Worker refreshed to 0aaa4056-c120-4d60-a043-a640a2c8ce65, five-minute cron/9 existing secret bindings preserved. NEW session-reconciliation/account-email-delivery gates remain absent/OFF; existing12 Preview secrets preserved. No production/main release, new account/email/SMTP or payment. 001–016 ownerSQL checks complete; positive new-feature behavior/races remain separate and pending.
+
 **27 October verification update:** Cloudflare Pages API confirms `MEDIA_PROCESSOR` exists only in Preview; production has no service binding or administrator runtime variables. A real remote development Images check passed with generated PNG fixtures, WebP container/dimension inspection and safe rejection cases. This is separate from deployed authenticated upload and cleanup, which remain pending. See [IMAGES-PROVIDER-VERIFICATION.md](IMAGES-PROVIDER-VERIFICATION.md). CI run 40537612472 for `a1a25ca` completed successfully and deployed Preview only. Older scope-unknown/actual-transform-unverified notes below are superseded only to this documented extent.
 
 

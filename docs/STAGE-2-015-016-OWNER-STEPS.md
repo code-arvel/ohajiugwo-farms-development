@@ -1,5 +1,7 @@
 # Next Stage 2 database steps: 015 and 016
 
+**Completed 25 November:** owner applied015 and 016 and ran both full rollback verifications successfully. Agent separately verified new commands’ service-access/anonymous-denial HTTP boundary. **Do not repeat the application/verification sequence below**; it is retained as historical procedure. Existing Stage2 Preview/private Worker code refreshed with both new runtime gates OFF. Current next action is read-only Recovery template inspection, followed by reviewed feature enablement and specifically approved real tests. No real second-recipient email/account action has occurred.
+
 These are NEW updates. Updates 001–014 and their owner-run SQL checks are already complete. Do not run them again. Keep automatic session reconciliation and account email delivery disabled until their own verification is complete. First-administrator bootstrap stays off.
 
 ## What changes
