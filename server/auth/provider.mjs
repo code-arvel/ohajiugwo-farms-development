@@ -38,6 +38,15 @@ export function createHostedAuthProvider(config,{fetchImpl=fetch}={}){
    if(!user||typeof user.id!=='string'||typeof user.email!=='string')throw new AuthError('Invitation response could not be verified.',503);
    return {user:{id:user.id,email:user.email}};
   },
+  getUserById:async id=>{
+   if(!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(id||''))throw new AuthError('Invalid provider identity.',400);
+   const result=await request('/auth/v1/admin/users/'+id,{method:'GET',privileged:true});return result?.user||result;
+  },
+  sendPasswordRecoveryEmail:async(email,redirectTo)=>{
+   const target=new URL(redirectTo);
+   if(target.origin!==config.origin||target.pathname!=='/admin/accept'||target.search)throw new AuthError('Recovery redirect could not be verified.',400);
+   await request('/auth/v1/recover?redirect_to='+encodeURIComponent(redirectTo),{body:{email}});
+  },
   generateRecovery:async email=>{
    const redirect=config.origin+'/admin/accept';
    const result=await request('/auth/v1/admin/generate_link?redirect_to='+encodeURIComponent(redirect),{privileged:true,body:{type:'recovery',email}});

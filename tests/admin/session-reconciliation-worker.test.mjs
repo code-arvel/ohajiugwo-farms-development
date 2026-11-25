@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {seal} from '../../server/security.mjs';
+import {createCleanupWorker} from '../../server/cleanup-worker.mjs';
+import {loadAdminConfig} from '../../server/config.mjs';
+const user='11111111-1111-4111-8111-111111111111',session='22222222-2222-4222-8222-222222222222',url='https://abcdefghijklmnopqrst.supabase.co';
+const token=exp=>[Buffer.from('{"alg":"HS256"}').toString('base64url'),Buffer.from(JSON.stringify({sub:user,session_id:session,iss:url+'/auth/v1',exp})).toString('base64url'),'PRIVATE_SIGNATURE'].join('.');
+const config={sessionKey:'ab'.repeat(32),supabaseUrl:url,sessionReconciliationEnabled:true};
+async function run({gate=true,kind='session',exp=Math.floor(Date.now()/1000)-60,status=403,result=true,fail=false}={}){
+ const events=[],job={id:crypto.randomUUID(),source_kind:kind,encrypted_credentials:await seal({access_token:token(exp)},config.sessionKey,'PRIVATE_AAD'),aad:'PRIVATE_AAD',completed_tokens:0};
+ const rpc=async(name,p)=>{events.push({name,p});if(name==='farm_cleanup_claim')return[job];if(name==='farm_cleanup_session_reconcile'){if(fail)throw Error('PRIVATE_DETAIL');return result;}return true;};
+ const report=await createCleanupWorker({...config,sessionReconciliationEnabled:gate},{rpc,provider:{signOut:async()=>{throw Object.assign(Error('PRIVATE_PROVIDER_DETAIL'),{status});}}}).run();return{events,report};
+}
+test('expired rejected session invokes guarded reconciliation only and never acknowledges HTTP rejection as success',async()=>{const{events,report}=await run();assert.equal(report.completed,1);const found=events.find(e=>e.name==='farm_cleanup_session_reconcile');assert.ok(found);assert.equal(found.p.p_user_id,user);assert.equal(found.p.p_provider_session_id,session);assert.equal(events.some(e=>e.name==='farm_cleanup_finish'||e.name==='farm_cleanup_progress'),false);assert.ok(!JSON.stringify(report).includes('PRIVATE'));});
+test('default-off, unexpired token, non-session job and transient provider failure never use reconciliation',async()=>{for(const input of [{gate:false},{exp:Math.floor(Date.now()/1000)+3600},{kind:'invitation'},{kind:'effect'},{status:503}]){const{events,report}=await run(input);assert.equal(events.some(e=>e.name==='farm_cleanup_session_reconcile'),false);assert.equal(report.completed,0);assert.equal(input.status===503?report.retried:report.review,1);}});
+test('reconciliation refusal remains review and transport ambiguity remains retry, never false success',async()=>{for(const input of [{result:false},{fail:true}]){const{events,report}=await run(input);assert.equal(report.completed,0);assert.equal(input.fail?report.retried:report.review,1);assert.equal(events.at(-1).p.p_outcome,input.fail?'retry':'review');}});
+test('session reconciliation requires explicit exact development or production configuration gate',()=>{const env={ADMIN_ENVIRONMENT:'hosted-development',ADMIN_ORIGIN:'https://preview.example.test',SUPABASE_PROJECT_REF:'abcdefghijklmnopqrst',SUPABASE_URL:url,SUPABASE_PUBLISHABLE_KEY:'MOCK',SUPABASE_SECRET_KEY:'MOCK',ADMIN_SESSION_KEY:'ab'.repeat(32)};assert.equal(loadAdminConfig(env).sessionReconciliationEnabled,false);assert.equal(loadAdminConfig({...env,ADMIN_ENABLE_SESSION_RECONCILIATION:'true'}).sessionReconciliationEnabled,false);assert.equal(loadAdminConfig({...env,ADMIN_ENABLE_SESSION_RECONCILIATION:'confirmed-development-only'}).sessionReconciliationEnabled,true);});

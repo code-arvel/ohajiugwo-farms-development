@@ -1,0 +1,16 @@
+# Stage 2 administrator invitation and recovery email delivery
+
+> Inline execution; reuse approved recipient/password acceptance, recent-auth/CSRF, durable provider effects and existing SMTP. Local mocked/SQL tests only until explicit owner approval for real account/email action. Preserve approved UI styling.
+
+Goal: complete the generation-only additional-administrator/reset issue flows so the application can request actual delivery through existing Supabase Auth SMTP, without exposing bearer links or automatically retrying uncertain sends.
+
+Architecture: new migration016 after015 adds private delivery_state (not_sent/sending/sent_to_provider) to invitation ledger, service-only recent-admin/owned-live-invitation email begin/finish commands, and safe delivery status in existing redacted admin inventory. Existing generate-only paths remain available with new default-off ADMIN_ENABLE_ACCOUNT_EMAIL_DELIVERY gate. Existing issue leases and write-ahead effects remain authority. Begin marks sending BEFORE provider call; finish atomically uses existing issue-effect finalisation then records provider acceptance. Partial/unknown outcomes stay review; same ready row never sends twice. Never claim inbox delivery from provider response. A replacement rotates app nonce/generation and requires explicit action.
+
+Reuse first-admin email pattern: unseal exact app nonce, redirect fragment id+nonce bound to it, configured provider template appends TokenHash. For additional invite use inviteUserByEmail once, not generate_link plus invite. For reset use recover endpoint once and SQL-bound intended user/email; store encrypted delivery marker consumed by existing recipient-bound reset acceptance. First-admin bootstrap stays off. Add read-only provider identity lookup if needed to verify reset identity before send; no bearer action link returned to client/logs. Reset email template readiness is an explicit hosted prerequisite.
+
+Tasks:
+1. SQL/state/grants tests RED→GREEN, 016 + whole rollback fixture. Current data/grants/membership preserved. Repeated begin/finish/wrong owner/purpose/session/expired lease fail closed. Inventory contains delivery status only, no nonce/token/ciphertext. No hosted calls.
+2. Provider/service mocked tests RED→GREEN for additional invite/recovery sent once with exact nonce redirect, ready idempotent status, identity rejection, uncertain delivery review, generation-only compatibility and no credentials in API. Finish existing mocked recipient/password/replay coverage plus actual SQL integration.
+3. Carry honest prepared/requested-to-provider/review messages and explicit send confirmation through existing accounts UI without redesign. Default-off gate prevents actual sends; preserve no-email labels for generation-only flow. Regression/browser fixture checks sequentially; independent review, docs/HANDOFF; separately ask approval for one concrete invite to owner-controlled second address only after hosted setup is ready.
+
+No SMTP/template changes, real account creation, emails, browser password entry or deployment in local implementation. Actual provider response, inbox receipt and recipient acceptance/reset/login/revocation must be separately observed before completion.
