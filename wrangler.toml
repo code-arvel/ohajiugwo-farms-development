@@ -15,3 +15,7 @@ service = "ohajiugwo-image-processor-development"
 # This enables private photo details/recoverable trash in Preview only.
 [env.preview.vars]
 ADMIN_ENABLE_MEDIA_METADATA = "confirmed-development-only"
+
+# Owner approved one second-administrator invitation test on 26 November.
+# Provider requests still require recent administrator confirmation and explicit action.
+ADMIN_ENABLE_ACCOUNT_EMAIL_DELIVERY = "confirmed-development-only"
